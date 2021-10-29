@@ -2,17 +2,17 @@
   "name": "inline-parameters",
   "displayName": "Inline Parameters for VSCode",
   "description": "Function parameter annotations displaying inline in VSCode",
-  "publisher": "liamhammett",
+  "publisher": "",
   "icon": "icon.png",
   "version": "0.2.2-fork-0.2",
   "license": "MIT",
-  "homepage": "https://github.com/imliam/vscode-inline-parameters",
+  "homepage": "https://github.com/RobertOstermann/vscode-inline-parameters",
   "bugs": {
-    "url": "https://github.com/imliam/vscode-inline-parameters/issues"
+    "url": "https://github.com/RobertOstermann/vscode-inline-parameters/issues"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/imliam/vscode-inline-parameters"
+    "url": "https://github.com/RobertOstermann/vscode-inline-parameters"
   },
   "main": "./out/extension.js",
   "engines": {
@@ -39,6 +39,41 @@
             "type": "boolean",
             "description": "Show inline parameters",
             "default": true
+          },
+          "inline-parameters.phpEnabled": {
+            "type": "boolean",
+            "description": "Enable inline parameters for PHP",
+            "default": true
+          },
+          "inline-parameters.luaEnabled": {
+            "type": "boolean",
+            "description": "Enable inline parameters for Lua",
+            "default": true
+          },
+          "inline-parameters.javascriptEnabled": {
+            "type": "boolean",
+            "description": "Enable inline parameters for Javascript",
+            "default": true
+          },
+          "inline-parameters.typescriptEnabled": {
+            "type": "boolean",
+            "description": "Enable inline parameters for Typescript",
+            "default": true
+          },
+          "inline-parameters.javaEnabled": {
+            "type": "boolean",
+            "description": "Enable inline parameters for Java",
+            "default": true
+          },
+          "inline-parameters.lineLimit": {
+            "type": "number",
+            "description": "The max number of lines in a file",
+            "default": 0
+          },
+          "inline-parameters.fastParameters": {
+            "type": "number",
+            "description": "Parse a section of the text. Useful for large files.",
+            "default": 0
           },
           "inline-parameters.leadingCharacters": {
             "type": "string",

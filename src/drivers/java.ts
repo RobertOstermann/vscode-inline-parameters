@@ -43,8 +43,8 @@ export function getParameterNameList(editor: vscode.TextEditor, languageParamete
 
                         return parameter
                     })
-            } catch (err) {
-                console.error(err)
+            } catch (error) {
+                console.error(error)
             }
         }
 
@@ -57,7 +57,7 @@ export function getParameterNameList(editor: vscode.TextEditor, languageParamete
         for (let i = 0; i < languageParameters.length; i++) {
             const parameter = languageParameters[i];
             const key = parameter.key;
-            
+
             if (isVariadic && key >= parameters.length - 1) {
                 if (namedValueName === undefined) namedValueName = parameters[parameters.length - 1]
 
@@ -68,8 +68,8 @@ export function getParameterNameList(editor: vscode.TextEditor, languageParamete
                 parameters[i] = showVariadicNumbers(namedValueName, -parametersLength + 1 + key)
 
                 continue;
-            } 
-            
+            }
+
             if (parameters[key]) {
                 let name = parameters[key]
 
@@ -97,7 +97,7 @@ export function parse(code: string): ParameterPosition[][] {
     let parameters: ParameterPosition[][] = []
 
     functionCalls.forEach((call) => {
-        parameters.push(getParametersFromMethod(editor,call))
+        parameters.push(getParametersFromMethod(editor, call))
     })
 
     return parameters

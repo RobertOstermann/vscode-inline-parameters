@@ -15,7 +15,7 @@ export function getParameterNameList(editor: vscode.TextEditor, languageParamete
         const shouldHideRedundantAnnotations = vscode.workspace.getConfiguration('inline-parameters').get('hideRedundantAnnotations')
 
         if (description && description.length > 0) {
-            try { 
+            try {
                 let definition: string = chooseTheMostLikelyFunctionDefinition(<MarkdownString[]>description[0].contents);
                 if (definition === undefined) return reject();
                 // Find the bracket matching () => or () :
@@ -27,10 +27,10 @@ export function getParameterNameList(editor: vscode.TextEditor, languageParamete
                     switch (e) {
                         case ")":
                             if (bracketsCount === 0 && isFindingBrackets) pos[1] = i;
-                            bracketsCount ++;
+                            bracketsCount++;
                             break;
                         case "(":
-                            bracketsCount --;
+                            bracketsCount--;
                             if (bracketsCount === 0 && isFindingBrackets) {
                                 pos[0] = i;
                                 isFindingBrackets = false;
@@ -55,8 +55,8 @@ export function getParameterNameList(editor: vscode.TextEditor, languageParamete
                 }
 
                 definition = definition.slice(1, -1)
-                    .replace(/\<.*?\>/g,'')
-                    .replace(/\(.*?\)/g,'');
+                    .replace(/\<.*?\>/g, '')
+                    .replace(/\(.*?\)/g, '');
 
                 const jsParameterNameRegex = /^[a-zA-Z_$]([0-9a-zA-Z_$]+)?/g
 
@@ -81,8 +81,8 @@ export function getParameterNameList(editor: vscode.TextEditor, languageParamete
                 if (parameters[0] === "this") {
                     parameters.shift();
                 }
-            } catch (err) {
-                console.error(err)
+            } catch (error) {
+                console.error(error)
             }
         }
 
@@ -107,7 +107,7 @@ export function getParameterNameList(editor: vscode.TextEditor, languageParamete
                 parameters[i] = showVariadicNumbers(namedValueName, -parametersLength + 1 + key)
                 continue;
             }
-        
+
             if (parameters[key]) {
                 let name = parameters[key]
 
@@ -132,15 +132,15 @@ export function parse(code: string, options: any) {
 
     try {
         javascriptAst = recast.parse(code, options).program.body
-    } catch (err) {
+    } catch (error) {
         return [];
     }
 
-   return lookForFunctionCalls(editor, javascriptAst)
+    return lookForFunctionCalls(editor, javascriptAst)
 }
 
 function lookForFunctionCalls(editor: vscode.TextEditor, body: any): ParameterPosition[][] {
-    let parameters:ParameterPosition[][] = [];
+    let parameters: ParameterPosition[][] = [];
 
     let arr = []
 
@@ -183,7 +183,7 @@ function lookForFunctionCalls(editor: vscode.TextEditor, body: any): ParameterPo
     })
 
     calls.forEach((call, index) => {
-         if (call.callee && call.callee.loc) {
+        if (call.callee && call.callee.loc) {
 
             if (call.arguments) {
                 const hideSingleParameters = vscode.workspace.getConfiguration('inline-parameters').get('hideSingleParameters')
@@ -193,7 +193,7 @@ function lookForFunctionCalls(editor: vscode.TextEditor, body: any): ParameterPo
                 }
 
                 const expression = getExpressionLoc(call)
-                
+
                 if (call.arguments.length > 0) {
                     parameters[index] = [];
                     call.arguments.forEach((argument: any, key: number) => {
@@ -256,7 +256,7 @@ function getExpressionLoc(call: any) {
             }
         }
     }
-    
+
     if (call.callee.type === "CallExpression") {
         const { start, end } = call.callee.arguments[0].loc
 

@@ -14,7 +14,7 @@ export function getParameterNameList(editor: vscode.TextEditor, languageParamete
         ))
         const shouldHideRedundantAnnotations = vscode.workspace.getConfiguration('inline-parameters').get('hideRedundantAnnotations')
         const luaParameterNameRegex = /^[a-zA-Z_]([0-9a-zA-Z_]+)?/g
-    
+
         if (description && description.length > 0) {
             try {
                 const regEx = /^function\ .*\((.*)\)/gm
@@ -25,8 +25,8 @@ export function getParameterNameList(editor: vscode.TextEditor, languageParamete
                 }
 
                 definition = definitions[0]
-            } catch (err) {
-                console.error(err)
+            } catch (error) {
+                console.error(error)
             }
         }
 
