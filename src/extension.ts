@@ -47,9 +47,14 @@ async function updateDecorations(activeEditor, languageDrivers: Record<string, L
   if (fastParameters) {
     activeEditor.setDecorations(hintDecorationType, []);
     let current = activeEditor.selection.active.line;
-    const start = new vscode.Position(current - Number(fastParameters), 0);
-    const end = new vscode.Position(current + Number(fastParameters), 0);
-    const range = new vscode.Range(start, end);
+    let startLine = current - Number(fastParameters);
+    startLine = startLine < 0 ? 0 : startLine;
+    let endLine = current + Number(fastParameters);
+    endLine = endLine > activeEditor.document.lineCount ? activeEditor.document.lineCount : endLine;
+    console.log(startLine + ' ' + endLine);
+    let start = new vscode.Position(startLine, 0);
+    let end = new vscode.Position(endLine, 0);
+    let range = new vscode.Range(start, end);
     code = activeEditor.document.getText(range);
   }
 
@@ -57,8 +62,9 @@ async function updateDecorations(activeEditor, languageDrivers: Record<string, L
 
   try {
     functionParametersList = driver.parse(code)
-  } catch (err) {
+  } catch (error) {
     // Error parsing language's AST, likely a syntax error on the user's side
+    console.log(error);
   }
 
   if (!functionParametersList || functionParametersList.length === 0) {
@@ -81,7 +87,8 @@ async function updateDecorations(activeEditor, languageDrivers: Record<string, L
         activeEditor,
         languageParameters
       )
-    } catch (err) {
+    } catch (error) {
+      console.log(error);
       continue;
     }
 
