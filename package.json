@@ -198,15 +198,19 @@
   },
   "scripts": {
     "preinstall": "mkdir -p ./node_modules && touch ./node_modules/.metadata_never_index",
-    "vscode:prepublish": "npm run compile",
+    "vscode:prepublish": "npm run esbuild-base -- --minify",
     "compile": "tsc -p ./",
-    "watch": "tsc -watch -p ./"
+    "watch": "tsc -watch -p ./",
+    "esbuild-base": "esbuild ./src/extension.ts --bundle --outfile=out/main.js --external:vscode --format=cjs --platform=node",
+    "esbuild": "npm run esbuild-base -- --sourcemap",
+    "esbuild-watch": "npm run esbuild-base -- --sourcemap --watch"
   },
   "devDependencies": {
     "@types/glob": "^7.1.2",
     "@types/mocha": "^5.0.0",
     "@types/node": "^12.12.44",
     "@types/vscode": "^1.40.0",
+    "esbuild": "^0.13.10",
     "glob": "^7.1.5",
     "mocha": "^6.2.2",
     "typescript": "^3.9.5",
