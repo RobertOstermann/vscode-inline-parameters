@@ -4,7 +4,7 @@
   "description": "Function parameter annotations displaying inline in VSCode",
   "publisher": "RobertOstermann",
   "icon": "icon.png",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "license": "MIT",
   "homepage": "https://github.com/RobertOstermann/vscode-inline-parameters",
   "bugs": {
@@ -70,9 +70,9 @@
             "description": "The max number of lines in a file",
             "default": 0
           },
-          "inline-parameters.phpFastParameterRange": {
+          "inline-parameters.timer": {
             "type": "number",
-            "description": "The number of lines above and below the current selection to parse. This is useful for large files.",
+            "description": "The time (ms) between updates to the parameters",
             "default": 0
           },
           "inline-parameters.leadingCharacters": {

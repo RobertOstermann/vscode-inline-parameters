@@ -11,6 +11,7 @@ import Commands from './commands'
 import { LanguageDriver, ParameterPosition } from './utils'
 
 const hintDecorationType = vscode.window.createTextEditorDecorationType({})
+let decorations: vscode.DecorationOptions[] = []
 
 async function updateDecorations(activeEditor, languageDrivers: Record<string, LanguageDriver>) {
   if (!activeEditor) {
@@ -19,33 +20,33 @@ async function updateDecorations(activeEditor, languageDrivers: Record<string, L
 
   const isEnabled = vscode.workspace
     .getConfiguration("inline-parameters")
-    .get("enabled");
+    .get("enabled")
 
   if (!(activeEditor.document.languageId in languageDrivers) || !isEnabled) {
-    activeEditor.setDecorations(hintDecorationType, []);
-    return;
+    activeEditor.setDecorations(hintDecorationType, [])
+    return
   }
 
   const lineLimit = vscode.workspace
     .getConfiguration("inline-parameters")
-    .get("lineLimit");
+    .get("lineLimit")
 
   if (lineLimit && lineLimit < activeEditor.document.lineCount) {
-    activeEditor.setDecorations(hintDecorationType, []);
-    return;
+    activeEditor.setDecorations(hintDecorationType, [])
+    return
   }
 
   const driver: LanguageDriver =
-    languageDrivers[activeEditor.document.languageId];
+    languageDrivers[activeEditor.document.languageId]
 
-  let code = activeEditor.document.getText();
-  let functionParametersList: ParameterPosition[][];
+  let code = activeEditor.document.getText()
+  let functionParametersList: ParameterPosition[][]
 
   try {
     functionParametersList = driver.parse(code)
   } catch (error) {
     // Error parsing language's AST, likely a syntax error on the user's side
-    console.log(error);
+    console.log(error)
   }
 
   if (!functionParametersList || functionParametersList.length === 0) {
@@ -59,9 +60,9 @@ async function updateDecorations(activeEditor, languageDrivers: Record<string, L
   const parameterCase = vscode.workspace.getConfiguration('inline-parameters').get('parameterCase')
 
   for (const languageParameters of functionParametersList) {
-    if (languageParameters === undefined) continue;
+    if (languageParameters === undefined) continue
 
-    let parameters;
+    let parameters
 
     try {
       parameters = await driver.getParameterNameList(
@@ -69,14 +70,14 @@ async function updateDecorations(activeEditor, languageDrivers: Record<string, L
         languageParameters
       )
     } catch (error) {
-      continue;
+      continue
     }
 
     for (let index = 0; index < languageParameters.length; index++) {
       let parameterName = parameters[index]
       let parameter = languageParameters[index]
 
-      if (parameterName === undefined) continue;
+      if (parameterName === undefined) continue
 
       const start = new vscode.Position(
         parameter.start.line,
@@ -109,62 +110,76 @@ async function updateDecorations(activeEditor, languageDrivers: Record<string, L
     }
   }
 
-  activeEditor.setDecorations(hintDecorationType, languageFunctions)
+  decorations = languageFunctions
+  activeEditor.setDecorations(hintDecorationType, decorations)
 }
 
 function getActiveLanguageDrivers() {
-  let languageDrivers: Record<string, LanguageDriver> = {};
+  let languageDrivers: Record<string, LanguageDriver> = {}
 
   const phpEnabled = vscode.workspace
     .getConfiguration("inline-parameters")
-    .get("phpEnabled");
+    .get("phpEnabled")
 
   const luaEnabled = vscode.workspace
     .getConfiguration("inline-parameters")
-    .get("luaEnabled");
+    .get("luaEnabled")
 
   const javascriptEnabled = vscode.workspace
     .getConfiguration("inline-parameters")
-    .get("javascriptEnabled");
+    .get("javascriptEnabled")
 
   const typescriptEnabled = vscode.workspace
     .getConfiguration("inline-parameters")
-    .get("typescriptEnabled");
+    .get("typescriptEnabled")
 
   const javaEnabled = vscode.workspace
     .getConfiguration("inline-parameters")
-    .get("javaEnabled");
+    .get("javaEnabled")
 
   if (phpEnabled) {
-    languageDrivers.php = phpDriver;
+    languageDrivers.php = phpDriver
   }
 
   if (luaEnabled) {
-    languageDrivers.lua = luaDriver;
+    languageDrivers.lua = luaDriver
   }
 
   if (javascriptEnabled) {
-    languageDrivers.javascript = javascriptDriver;
-    languageDrivers.javascriptreact = javascriptReactDriver;
+    languageDrivers.javascript = javascriptDriver
+    languageDrivers.javascriptreact = javascriptReactDriver
   }
 
   if (typescriptEnabled) {
-    languageDrivers.typescript = typescriptDriver;
-    languageDrivers.typescriptreact = typescriptReactDriver;
+    languageDrivers.typescript = typescriptDriver
+    languageDrivers.typescriptreact = typescriptReactDriver
   }
 
   if (javaEnabled) {
-    languageDrivers.java = javaDriver;
+    languageDrivers.java = javaDriver
   }
 
-  return languageDrivers;
+  return languageDrivers
 }
 
 export function activate(context: vscode.ExtensionContext) {
   let timeout: NodeJS.Timer | undefined = undefined
+  let intervalId: NodeJS.Timeout
   let activeEditor = vscode.window.activeTextEditor
+  let languageDrivers = getActiveLanguageDrivers()
+  let timer = vscode.workspace
+    .getConfiguration("inline-parameters")
+    .get("timer")
 
   Commands.registerCommands()
+
+  if (timer) {
+    intervalId = setInterval(updateDecorationsOnTimer, Number(timer))
+  }
+
+  function updateDecorationsOnTimer() {
+    updateDecorations(activeEditor, languageDrivers)
+  }
 
   function triggerUpdateDecorations(timer: boolean = true) {
     if (timeout) {
@@ -173,13 +188,23 @@ export function activate(context: vscode.ExtensionContext) {
     }
 
     timeout = setTimeout(
-      () => updateDecorations(activeEditor, getActiveLanguageDrivers()),
+      () => updateDecorations(activeEditor, languageDrivers),
       timer ? 2500 : 25
-    );
+    )
   }
 
   vscode.workspace.onDidChangeConfiguration((event) => {
     if (event.affectsConfiguration('inline-parameters')) {
+      timer = vscode.workspace
+        .getConfiguration("inline-parameters")
+        .get("timer")
+      if (timer) {
+        if (intervalId) {
+          clearInterval(intervalId)
+        }
+        intervalId = setInterval(updateDecorationsOnTimer, Number(timer))
+      }
+      languageDrivers = getActiveLanguageDrivers()
       triggerUpdateDecorations(false)
     }
   })

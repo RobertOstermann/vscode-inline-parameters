@@ -61,7 +61,7 @@ The extension provides a handful of configuration settings you can use to custom
 | `inline-parameters.showVariadicNumbers`      | Show the number of times a variadic parameter has been called                                           | `true`     |
 | `inline-parameters.hideRedundantAnnotations` | If the value given to a parameter is the same as the parameter name, hide the parameter name            | `true`     |
 | `inline-parameters.lineLimit`                | The max number of lines in a file.                                                                      | `0`        |
-| `inline-parameters.phpFastParameterRange`    | The number of lines above and below the current selection to parse. This is useful for large files.     | `0`        |
+| `inline-parameters.timer`                    | The time (ms) between updates to the parameters                                                         | `0`        |
 
 There are also a handful of settings that can be used to customise the styling of the annotation to your own personal preference.
 
