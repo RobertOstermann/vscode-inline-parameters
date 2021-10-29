@@ -1,6 +1,6 @@
 {
-  "name": "inline-parameters",
-  "displayName": "Inline Parameters for VSCode",
+  "name": "inline-parameters-extended",
+  "displayName": "Inline Parameters Extended for VSCode",
   "description": "Function parameter annotations displaying inline in VSCode",
   "publisher": "RobertOstermann",
   "icon": "icon.png",
