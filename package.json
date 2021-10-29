@@ -2,9 +2,9 @@
   "name": "inline-parameters",
   "displayName": "Inline Parameters for VSCode",
   "description": "Function parameter annotations displaying inline in VSCode",
-  "publisher": "",
+  "publisher": "RobertOstermann",
   "icon": "icon.png",
-  "version": "0.2.2-fork-0.2",
+  "version": "0.1.0",
   "license": "MIT",
   "homepage": "https://github.com/RobertOstermann/vscode-inline-parameters",
   "bugs": {
@@ -52,12 +52,12 @@
           },
           "inline-parameters.javascriptEnabled": {
             "type": "boolean",
-            "description": "Enable inline parameters for Javascript",
+            "description": "Enable inline parameters for Javascript and JavascriptReact",
             "default": true
           },
           "inline-parameters.typescriptEnabled": {
             "type": "boolean",
-            "description": "Enable inline parameters for Typescript",
+            "description": "Enable inline parameters for Typescript and TypescriptReact",
             "default": true
           },
           "inline-parameters.javaEnabled": {
@@ -70,9 +70,9 @@
             "description": "The max number of lines in a file",
             "default": 0
           },
-          "inline-parameters.fastParameters": {
+          "inline-parameters.phpFastParameterRange": {
             "type": "number",
-            "description": "Parse a section of the text. Useful for large files.",
+            "description": "The number of lines above and below the current selection to parse. This is useful for large files.",
             "default": 0
           },
           "inline-parameters.leadingCharacters": {

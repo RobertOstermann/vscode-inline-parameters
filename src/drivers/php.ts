@@ -17,10 +17,25 @@ const parser = new engine({
 })
 
 export function getParameterNameList(editor: vscode.TextEditor, languageParameters: ParameterPosition[]): Promise<string[]> {
+  const phpFastParameterRange = vscode.workspace
+    .getConfiguration("inline-parameters")
+    .get("phpFastParameterRange");
+
   return new Promise(async (resolve, reject) => {
     let isVariadic = false
     let parameters: any[]
     const firstParameter = languageParameters[0]
+
+    if (phpFastParameterRange) {
+      let currentLine = editor.selection.active.line;
+      let lineCount = editor.document.lineCount - 1;
+      let start = getFastParametersStartLine(Number(phpFastParameterRange), currentLine, lineCount);
+      let end = getFastParametersEndLine(Number(phpFastParameterRange), currentLine, lineCount);
+      if (start > firstParameter.expression.line || end < firstParameter.expression.line) {
+        return reject();
+      }
+    }
+
     const description: any = await vscode.commands.executeCommand<vscode.Hover[]>('vscode.executeHoverProvider', editor.document.uri, new vscode.Position(
       firstParameter.expression.line,
       firstParameter.expression.character
@@ -162,4 +177,20 @@ function getParametersFromExpression(expression: any): ParameterPosition[] | und
   })
 
   return parameters
+}
+
+function getFastParametersStartLine(range: number, currentLine: number, lineCount: number): number {
+  let endLine = currentLine + range;
+  let endLineExtra = endLine > lineCount ? endLine - lineCount : 0;
+  let startLine = currentLine - range - endLineExtra;
+  startLine = startLine < 0 ? 0 : startLine;
+  return startLine;
+}
+
+function getFastParametersEndLine(range: number, currentLine: number, lineCount: number): number {
+  let startLine = currentLine - range;
+  let startLineExtra = startLine < 0 ? range - currentLine : 0;
+  let endLine = currentLine + range + startLineExtra;
+  endLine = endLine > lineCount ? lineCount : endLine;
+  return endLine;
 }

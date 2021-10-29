@@ -38,26 +38,7 @@ async function updateDecorations(activeEditor, languageDrivers: Record<string, L
   const driver: LanguageDriver =
     languageDrivers[activeEditor.document.languageId];
 
-  const fastParameters = vscode.workspace
-    .getConfiguration("inline-parameters")
-    .get("fastParameters");
-
   let code = activeEditor.document.getText();
-
-  if (fastParameters) {
-    activeEditor.setDecorations(hintDecorationType, []);
-    let current = activeEditor.selection.active.line;
-    let startLine = current - Number(fastParameters);
-    startLine = startLine < 0 ? 0 : startLine;
-    let endLine = current + Number(fastParameters);
-    endLine = endLine > activeEditor.document.lineCount ? activeEditor.document.lineCount : endLine;
-    console.log(startLine + ' ' + endLine);
-    let start = new vscode.Position(startLine, 0);
-    let end = new vscode.Position(endLine, 0);
-    let range = new vscode.Range(start, end);
-    code = activeEditor.document.getText(range);
-  }
-
   let functionParametersList: ParameterPosition[][];
 
   try {
@@ -88,7 +69,6 @@ async function updateDecorations(activeEditor, languageDrivers: Record<string, L
         languageParameters
       )
     } catch (error) {
-      console.log(error);
       continue;
     }
 
@@ -181,16 +161,6 @@ function getActiveLanguageDrivers() {
 }
 
 export function activate(context: vscode.ExtensionContext) {
-  const languageDrivers: Record<string, LanguageDriver> = {
-    php: phpDriver,
-    lua: luaDriver,
-    javascript: javascriptDriver,
-    javascriptreact: javascriptReactDriver,
-    typescript: typescriptDriver,
-    typescriptreact: typescriptReactDriver,
-    java: javaDriver,
-  }
-
   let timeout: NodeJS.Timer | undefined = undefined
   let activeEditor = vscode.window.activeTextEditor
 

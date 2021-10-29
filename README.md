@@ -45,46 +45,54 @@ Currently, the extension has 2 major steps that all language drivers must implem
 
 The extension provides a handful of configuration settings you can use to customise the look and behaviour of the parameters.
 
-| Name | Description | Default |
-|-------|------------|---------|
-| `inline-parameters.enabled`  | Show inline parameters | `true` |
-| `inline-parameters.leadingCharacters`  | Characters to be shown before each parameter annotation | `""` |
-| `inline-parameters.trailingCharacters`  | Characters to be shown after each parameter annotation | `":"` |
-| `inline-parameters.showPhpDollar`  | Show the $ character before PHP parameter names | `false` |
-| `inline-parameters.hideSingleParameters`  | Hide inline parameters if a function only has 1 parameter | `false` |
-| `inline-parameters.parameterCase`  | Forcibly change the case of the inline parameter name. Options are `normal`, `lowercase` or `uppercase` | `"normal"` |
-| `inline-parameters.showVariadicNumbers`  | Show the number of times a variadic parameter has been called | `true` |
-| `inline-parameters.hideRedundantAnnotations`  | If the value given to a parameter is the same as the parameter name, hide the parameter name | `true` |
+| Name                                         | Description                                                                                             | Default    |
+| -------------------------------------------- | ------------------------------------------------------------------------------------------------------- | ---------- |
+| `inline-parameters.enabled`                  | Show inline parameters                                                                                  | `true`     |
+| `inline-parameters.phpEnabled`               | Show inline parameters for PHP                                                                          | `true`     |
+| `inline-parameters.luaEnabled`               | Show inline parameters for Lua                                                                          | `true`     |
+| `inline-parameters.javascriptEnabled`        | Show inline parameters for Javascript and JavascriptReact                                               | `true`     |
+| `inline-parameters.typescriptEnabled`        | Show inline parameters for Typescript and TypescriptReact                                               | `true`     |
+| `inline-parameters.javaEnabled`              | Show inline parameters for Java                                                                         | `true`     |
+| `inline-parameters.leadingCharacters`        | Characters to be shown before each parameter annotation                                                 | `""`       |
+| `inline-parameters.trailingCharacters`       | Characters to be shown after each parameter annotation                                                  | `":"`      |
+| `inline-parameters.showPhpDollar`            | Show the $ character before PHP parameter names                                                         | `false`    |
+| `inline-parameters.hideSingleParameters`     | Hide inline parameters if a function only has 1 parameter                                               | `false`    |
+| `inline-parameters.parameterCase`            | Forcibly change the case of the inline parameter name. Options are `normal`, `lowercase` or `uppercase` | `"normal"` |
+| `inline-parameters.showVariadicNumbers`      | Show the number of times a variadic parameter has been called                                           | `true`     |
+| `inline-parameters.hideRedundantAnnotations` | If the value given to a parameter is the same as the parameter name, hide the parameter name            | `true`     |
+| `inline-parameters.lineLimit`                | The max number of lines in a file.                                                                      | `0`        |
+| `inline-parameters.phpFastParameterRange`    | The number of lines above and below the current selection to parse. This is useful for large files.     | `0`        |
 
 There are also a handful of settings that can be used to customise the styling of the annotation to your own personal preference.
 
-| Name | Description | Default |
-|-------|------------|---------|
-| `inline-parameters.fontWeight` | Annotation styling of font-weight CSS property | `"400"` |
-| `inline-parameters.fontStyle` | Annotation styling of font-style CSS property | `"italic"` |
-| `inline-parameters.fontSize` | Annotation styling of font size CSS property | `0.85em` |
-| `inline-parameters.margin` | Annotation styling of margin CSS property | `0.25em` |
-| `inline-parameters.padding` | Annotation styling of padding CSS property | `0.25em 0.5em` |
-| `inline-parameters.border` | Annotation styling of border CSS property | `none` |
-| `inline-parameters.borderRadius` | Annotation styling of border-radius CSS property | `0.25em` |
+| Name                             | Description                                      | Default        |
+| -------------------------------- | ------------------------------------------------ | -------------- |
+| `inline-parameters.fontWeight`   | Annotation styling of font-weight CSS property   | `"400"`        |
+| `inline-parameters.fontStyle`    | Annotation styling of font-style CSS property    | `"italic"`     |
+| `inline-parameters.fontSize`     | Annotation styling of font size CSS property     | `0.85em`       |
+| `inline-parameters.margin`       | Annotation styling of margin CSS property        | `0.25em`       |
+| `inline-parameters.padding`      | Annotation styling of padding CSS property       | `0.25em 0.5em` |
+| `inline-parameters.border`       | Annotation styling of border CSS property        | `none`         |
+| `inline-parameters.borderRadius` | Annotation styling of border-radius CSS property | `0.25em`       |
 
 ## Themable Colours
 
 You can change the default foreground and background colours in the `workbench.colorCustomizations` property in user settings.
 
-| Name | Description |
-|------|-------------|
+| Name                                    | Description                                         |
+| --------------------------------------- | --------------------------------------------------- |
 | `inlineparameters.annotationForeground` | Specifies the foreground colour for the annotations |
 | `inlineparameters.annotationBackground` | Specifies the background colour for the annotations |
 
 ## Commands
 
-| Name | Description |
-|------|-------------|
+| Name                       | Description                   |
+| -------------------------- | ----------------------------- |
 | `inline-parameters.toggle` | Hide / show inline parameters |
 
 ## Credits / Links
 
+- [RichardLuo0](https://github.com/RichardLuo0)
 - [Liam Hammett](https://github.com/imliam)
 - [VSCode's Extension Samples](https://github.com/microsoft/vscode-extension-samples/tree/master/decorator-sample), which was a huge help to get started
 - [Benjamin Lannon](https://github.com/lannonbr) for the (no longer maintained) [VSCode JS Annotations extension](https://github.com/lannonbr/vscode-js-annotations) (where some AST parsing for the Javascript languages was borrowed from)
