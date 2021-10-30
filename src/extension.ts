@@ -12,8 +12,9 @@ import { LanguageDriver, ParameterPosition } from './utils'
 
 const hintDecorationType = vscode.window.createTextEditorDecorationType({})
 let decorations: vscode.DecorationOptions[] = []
+let oldLineCount = 0
 
-async function updateDecorations(activeEditor, languageDrivers: Record<string, LanguageDriver>) {
+async function updateDecorations(activeEditor: vscode.TextEditor, languageDrivers: Record<string, LanguageDriver>) {
   if (!activeEditor) {
     return
   }
@@ -22,18 +23,49 @@ async function updateDecorations(activeEditor, languageDrivers: Record<string, L
     .getConfiguration("inline-parameters")
     .get("enabled")
 
-  if (!(activeEditor.document.languageId in languageDrivers) || !isEnabled) {
-    activeEditor.setDecorations(hintDecorationType, [])
-    return
-  }
-
   const lineLimit = vscode.workspace
     .getConfiguration("inline-parameters")
     .get("lineLimit")
 
-  if (lineLimit && lineLimit < activeEditor.document.lineCount) {
-    activeEditor.setDecorations(hintDecorationType, [])
+  const lineCount = activeEditor.document.lineCount - 1
+
+  if (
+    !isEnabled ||
+    !(activeEditor.document.languageId in languageDrivers) ||
+    (lineLimit && lineLimit <= lineCount)
+  ) {
+    decorations = []
+    oldLineCount = 0
+    activeEditor.setDecorations(hintDecorationType, decorations)
     return
+  }
+
+  const largeFileOptimizations = vscode.workspace
+    .getConfiguration("inline-parameters")
+    .get("largeFileOptimizations")
+
+  if (largeFileOptimizations && largeFileOptimizations < lineCount && decorations.length > 0) {
+    let currentLine = activeEditor.selection.active.line
+    let unchangedDecorations: vscode.DecorationOptions[] = []
+    if (lineCount === oldLineCount) {
+      decorations.forEach((decoration) => {
+        let decorationStart = decoration.range.start.line
+        let decorationEnd = decoration.range.end.line
+        if (decorationStart < currentLine || decorationEnd > currentLine) {
+          unchangedDecorations.push(decoration)
+        }
+      })
+    } else {
+      decorations.forEach((decoration) => {
+        let decorationStart = decoration.range.start.line
+        if (decorationStart < currentLine) {
+          unchangedDecorations.push(decoration)
+        }
+      })
+    }
+
+    decorations = unchangedDecorations
+    activeEditor.setDecorations(hintDecorationType, unchangedDecorations)
   }
 
   const driver: LanguageDriver =
@@ -62,7 +94,19 @@ async function updateDecorations(activeEditor, languageDrivers: Record<string, L
   for (const languageParameters of functionParametersList) {
     if (languageParameters === undefined) continue
 
-    let parameters
+    if (largeFileOptimizations && largeFileOptimizations < lineCount && decorations.length > 0) {
+      let currentLine = activeEditor.selection.active.line
+      let parameterLine = languageParameters[0].start.line
+      if (lineCount === oldLineCount) {
+        if (parameterLine < currentLine || parameterLine > currentLine) {
+          continue
+        }
+      } else if (parameterLine < currentLine) {
+        continue
+      }
+    }
+
+    let parameters: string[]
 
     try {
       parameters = await driver.getParameterNameList(
@@ -110,52 +154,57 @@ async function updateDecorations(activeEditor, languageDrivers: Record<string, L
     }
   }
 
-  decorations = languageFunctions
+  oldLineCount = lineCount
+  if (largeFileOptimizations && largeFileOptimizations < lineCount) {
+    decorations = decorations.concat(languageFunctions)
+  } else {
+    decorations = languageFunctions
+  }
   activeEditor.setDecorations(hintDecorationType, decorations)
 }
 
 function getActiveLanguageDrivers() {
   let languageDrivers: Record<string, LanguageDriver> = {}
 
-  const phpEnabled = vscode.workspace
+  const enablePHP = vscode.workspace
     .getConfiguration("inline-parameters")
-    .get("phpEnabled")
+    .get("enablePHP")
 
-  const luaEnabled = vscode.workspace
+  const enableLua = vscode.workspace
     .getConfiguration("inline-parameters")
-    .get("luaEnabled")
+    .get("enableLua")
 
-  const javascriptEnabled = vscode.workspace
+  const enableJavascript = vscode.workspace
     .getConfiguration("inline-parameters")
-    .get("javascriptEnabled")
+    .get("enableJavascript")
 
-  const typescriptEnabled = vscode.workspace
+  const enableTypescript = vscode.workspace
     .getConfiguration("inline-parameters")
-    .get("typescriptEnabled")
+    .get("enableTypescript")
 
-  const javaEnabled = vscode.workspace
+  const enableJava = vscode.workspace
     .getConfiguration("inline-parameters")
-    .get("javaEnabled")
+    .get("enableJava")
 
-  if (phpEnabled) {
+  if (enablePHP) {
     languageDrivers.php = phpDriver
   }
 
-  if (luaEnabled) {
+  if (enableLua) {
     languageDrivers.lua = luaDriver
   }
 
-  if (javascriptEnabled) {
+  if (enableJavascript) {
     languageDrivers.javascript = javascriptDriver
     languageDrivers.javascriptreact = javascriptReactDriver
   }
 
-  if (typescriptEnabled) {
+  if (enableTypescript) {
     languageDrivers.typescript = typescriptDriver
     languageDrivers.typescriptreact = typescriptReactDriver
   }
 
-  if (javaEnabled) {
+  if (enableJava) {
     languageDrivers.java = javaDriver
   }
 
@@ -164,22 +213,10 @@ function getActiveLanguageDrivers() {
 
 export function activate(context: vscode.ExtensionContext) {
   let timeout: NodeJS.Timer | undefined = undefined
-  let intervalId: NodeJS.Timeout
   let activeEditor = vscode.window.activeTextEditor
   let languageDrivers = getActiveLanguageDrivers()
-  let timer = vscode.workspace
-    .getConfiguration("inline-parameters")
-    .get("timer")
 
   Commands.registerCommands()
-
-  if (timer) {
-    intervalId = setInterval(updateDecorationsOnTimer, Number(timer))
-  }
-
-  function updateDecorationsOnTimer() {
-    updateDecorations(activeEditor, languageDrivers)
-  }
 
   function triggerUpdateDecorations(timer: boolean = true) {
     if (timeout) {
@@ -195,15 +232,9 @@ export function activate(context: vscode.ExtensionContext) {
 
   vscode.workspace.onDidChangeConfiguration((event) => {
     if (event.affectsConfiguration('inline-parameters')) {
-      timer = vscode.workspace
-        .getConfiguration("inline-parameters")
-        .get("timer")
-      if (timer) {
-        if (intervalId) {
-          clearInterval(intervalId)
-        }
-        intervalId = setInterval(updateDecorationsOnTimer, Number(timer))
-      }
+      decorations = []
+      oldLineCount = 0
+      activeEditor.setDecorations(hintDecorationType, [])
       languageDrivers = getActiveLanguageDrivers()
       triggerUpdateDecorations(false)
     }

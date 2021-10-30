@@ -4,7 +4,7 @@
   "description": "Function parameter annotations displaying inline in VSCode",
   "publisher": "RobertOstermann",
   "icon": "icon.png",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "license": "MIT",
   "homepage": "https://github.com/RobertOstermann/vscode-inline-parameters",
   "bugs": {
@@ -40,27 +40,27 @@
             "description": "Show inline parameters",
             "default": true
           },
-          "inline-parameters.phpEnabled": {
+          "inline-parameters.enablePHP": {
             "type": "boolean",
             "description": "Enable inline parameters for PHP",
             "default": true
           },
-          "inline-parameters.luaEnabled": {
+          "inline-parameters.enableLua": {
             "type": "boolean",
             "description": "Enable inline parameters for Lua",
             "default": true
           },
-          "inline-parameters.javascriptEnabled": {
+          "inline-parameters.enableJavascript": {
             "type": "boolean",
             "description": "Enable inline parameters for Javascript and JavascriptReact",
             "default": true
           },
-          "inline-parameters.typescriptEnabled": {
+          "inline-parameters.enableTypescript": {
             "type": "boolean",
             "description": "Enable inline parameters for Typescript and TypescriptReact",
             "default": true
           },
-          "inline-parameters.javaEnabled": {
+          "inline-parameters.enableJava": {
             "type": "boolean",
             "description": "Enable inline parameters for Java",
             "default": true
@@ -70,9 +70,9 @@
             "description": "The max number of lines in a file",
             "default": 0
           },
-          "inline-parameters.timer": {
+          "inline-parameters.largeFileOptimizations": {
             "type": "number",
-            "description": "The time (ms) between updates to the parameters",
+            "description": "The number of lines in a file required to use large file optimizations.",
             "default": 0
           },
           "inline-parameters.leadingCharacters": {
@@ -203,7 +203,9 @@
     "watch": "tsc -watch -p ./",
     "esbuild-base": "esbuild ./src/extension.ts --bundle --outfile=out/extension.js --external:vscode --format=cjs --platform=node",
     "esbuild": "npm run -S esbuild-base -- --sourcemap",
-    "esbuild-watch": "npm run -S esbuild-base -- --sourcemap --watch"
+    "esbuild-watch": "npm run -S esbuild-base -- --sourcemap --watch",
+    "package": "vsce package",
+    "publish": "vsce publish"
   },
   "devDependencies": {
     "@types/glob": "^7.1.2",

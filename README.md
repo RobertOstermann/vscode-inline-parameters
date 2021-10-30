@@ -48,11 +48,11 @@ The extension provides a handful of configuration settings you can use to custom
 | Name                                         | Description                                                                                             | Default    |
 | -------------------------------------------- | ------------------------------------------------------------------------------------------------------- | ---------- |
 | `inline-parameters.enabled`                  | Show inline parameters                                                                                  | `true`     |
-| `inline-parameters.phpEnabled`               | Show inline parameters for PHP                                                                          | `true`     |
-| `inline-parameters.luaEnabled`               | Show inline parameters for Lua                                                                          | `true`     |
-| `inline-parameters.javascriptEnabled`        | Show inline parameters for Javascript and JavascriptReact                                               | `true`     |
-| `inline-parameters.typescriptEnabled`        | Show inline parameters for Typescript and TypescriptReact                                               | `true`     |
-| `inline-parameters.javaEnabled`              | Show inline parameters for Java                                                                         | `true`     |
+| `inline-parameters.enablePHP`                | Show inline parameters for PHP                                                                          | `true`     |
+| `inline-parameters.enableLua`                | Show inline parameters for Lua                                                                          | `true`     |
+| `inline-parameters.enableJavascript`         | Show inline parameters for Javascript and JavascriptReact                                               | `true`     |
+| `inline-parameters.enableTypescript`         | Show inline parameters for Typescript and TypescriptReact                                               | `true`     |
+| `inline-parameters.enableJava`               | Show inline parameters for Java                                                                         | `true`     |
 | `inline-parameters.leadingCharacters`        | Characters to be shown before each parameter annotation                                                 | `""`       |
 | `inline-parameters.trailingCharacters`       | Characters to be shown after each parameter annotation                                                  | `":"`      |
 | `inline-parameters.showPhpDollar`            | Show the $ character before PHP parameter names                                                         | `false`    |
@@ -61,7 +61,7 @@ The extension provides a handful of configuration settings you can use to custom
 | `inline-parameters.showVariadicNumbers`      | Show the number of times a variadic parameter has been called                                           | `true`     |
 | `inline-parameters.hideRedundantAnnotations` | If the value given to a parameter is the same as the parameter name, hide the parameter name            | `true`     |
 | `inline-parameters.lineLimit`                | The max number of lines in a file.                                                                      | `0`        |
-| `inline-parameters.timer`                    | The time (ms) between updates to the parameters                                                         | `0`        |
+| `inline-parameters.largeFileOptimizations`   | The number of lines in a file required to use large file optimizations.                                 | `0`        |
 
 There are also a handful of settings that can be used to customise the styling of the annotation to your own personal preference.
 
