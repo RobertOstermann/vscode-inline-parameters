@@ -231,6 +231,7 @@ export function activate(context: vscode.ExtensionContext) {
   vscode.window.onDidChangeActiveTextEditor(
     (editor) => {
       activeEditor = editor
+      activeEditor.setDecorations(hintDecorationType, [])
 
       if (editor) {
         triggerUpdateDecorations(false)
