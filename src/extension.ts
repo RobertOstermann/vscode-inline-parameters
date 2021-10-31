@@ -12,9 +12,10 @@ import { LanguageDriver, ParameterPosition } from './utils'
 
 const hintDecorationType = vscode.window.createTextEditorDecorationType({})
 let decorations: vscode.DecorationOptions[] = []
-let oldLineCount = 0
 
 async function updateDecorations(activeEditor: vscode.TextEditor, languageDrivers: Record<string, LanguageDriver>) {
+  let currentDecorations: vscode.DecorationOptions[] = []
+
   if (!activeEditor) {
     return
   }
@@ -27,6 +28,10 @@ async function updateDecorations(activeEditor: vscode.TextEditor, languageDriver
     .getConfiguration("inline-parameters")
     .get("lineLimit")
 
+  let visibleRangeStart = activeEditor.visibleRanges[0].start.line
+  let visibleRangeEnd = activeEditor.visibleRanges[0].end.line
+  let range = Math.ceil((visibleRangeEnd - visibleRangeStart) / 2)
+
   const lineCount = activeEditor.document.lineCount - 1
 
   if (
@@ -34,9 +39,7 @@ async function updateDecorations(activeEditor: vscode.TextEditor, languageDriver
     !(activeEditor.document.languageId in languageDrivers) ||
     (lineLimit && lineLimit <= lineCount)
   ) {
-    decorations = []
-    oldLineCount = 0
-    activeEditor.setDecorations(hintDecorationType, decorations)
+    activeEditor.setDecorations(hintDecorationType, [])
     return
   }
 
@@ -45,26 +48,17 @@ async function updateDecorations(activeEditor: vscode.TextEditor, languageDriver
     .get("largeFileOptimizations")
 
   if (largeFileOptimizations && largeFileOptimizations < lineCount && decorations.length > 0) {
+    currentDecorations = decorations
     let currentLine = activeEditor.selection.active.line
     let unchangedDecorations: vscode.DecorationOptions[] = []
-    if (lineCount === oldLineCount) {
-      decorations.forEach((decoration) => {
-        let decorationStart = decoration.range.start.line
-        let decorationEnd = decoration.range.end.line
-        if (decorationStart < currentLine || decorationEnd > currentLine) {
-          unchangedDecorations.push(decoration)
-        }
-      })
-    } else {
-      decorations.forEach((decoration) => {
-        let decorationStart = decoration.range.start.line
-        if (decorationStart < currentLine) {
-          unchangedDecorations.push(decoration)
-        }
-      })
-    }
+    decorations.forEach((decoration) => {
+      let decorationStart = decoration.range.start.line
+      if (decorationStart < currentLine - range) {
+        unchangedDecorations.push(decoration)
+      }
+    })
 
-    decorations = unchangedDecorations
+    currentDecorations = unchangedDecorations
     activeEditor.setDecorations(hintDecorationType, unchangedDecorations)
   }
 
@@ -94,14 +88,10 @@ async function updateDecorations(activeEditor: vscode.TextEditor, languageDriver
   for (const languageParameters of functionParametersList) {
     if (languageParameters === undefined) continue
 
-    if (largeFileOptimizations && largeFileOptimizations < lineCount && decorations.length > 0) {
+    if (largeFileOptimizations && largeFileOptimizations < lineCount) {
       let currentLine = activeEditor.selection.active.line
       let parameterLine = languageParameters[0].start.line
-      if (lineCount === oldLineCount) {
-        if (parameterLine < currentLine || parameterLine > currentLine) {
-          continue
-        }
-      } else if (parameterLine < currentLine) {
+      if (parameterLine < currentLine - range || parameterLine > currentLine + range) {
         continue
       }
     }
@@ -154,13 +144,13 @@ async function updateDecorations(activeEditor: vscode.TextEditor, languageDriver
     }
   }
 
-  oldLineCount = lineCount
-  if (largeFileOptimizations && largeFileOptimizations < lineCount) {
-    decorations = decorations.concat(languageFunctions)
+  if (largeFileOptimizations && largeFileOptimizations < lineCount && currentDecorations.length > 0) {
+    currentDecorations = currentDecorations.concat(languageFunctions)
   } else {
-    decorations = languageFunctions
+    currentDecorations = languageFunctions
   }
-  activeEditor.setDecorations(hintDecorationType, decorations)
+  decorations = currentDecorations
+  activeEditor.setDecorations(hintDecorationType, currentDecorations)
 }
 
 function getActiveLanguageDrivers() {
@@ -232,8 +222,6 @@ export function activate(context: vscode.ExtensionContext) {
 
   vscode.workspace.onDidChangeConfiguration((event) => {
     if (event.affectsConfiguration('inline-parameters')) {
-      decorations = []
-      oldLineCount = 0
       activeEditor.setDecorations(hintDecorationType, [])
       languageDrivers = getActiveLanguageDrivers()
       triggerUpdateDecorations(false)
