@@ -1,11 +1,11 @@
-import { parse as abstractParse } from './abstract-javascript'
-export { getParameterNameList } from './abstract-javascript'
+import { parse as abstractParse } from './abstract-javascript';
+export { getParameterNameList } from './abstract-javascript';
 
 export function parse(code: string) {
     return abstractParse(code, {
         parser: {
             parse(source: any) {
-                const babelParser = require("recast/parsers/babel").parser
+                const babelParser = require("recast/parsers/babel").parser;
 
                 const opts = {
                     allowImportExportEverywhere: true,
@@ -39,10 +39,10 @@ export function parse(code: string) {
                     startLine: 1,
                     strictMode: false,
                     tokens: true
-                }
+                };
 
-                return babelParser.parse(source, opts)
+                return babelParser.parse(source, opts);
             }
         }
-    })
+    });
 }

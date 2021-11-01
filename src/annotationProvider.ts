@@ -4,7 +4,7 @@ import {
     DecorationOptions,
     Range,
     workspace,
-} from "vscode"
+} from "vscode";
 
 export class Annotations {
     public static parameterAnnotation(
@@ -30,6 +30,6 @@ export class Annotations {
                     `,
                 },
             } as DecorationInstanceRenderOptions,
-        } as DecorationOptions
+        } as DecorationOptions;
     }
 }

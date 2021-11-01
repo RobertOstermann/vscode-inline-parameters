@@ -1,4 +1,4 @@
-let a = (a: string, b: Record<string, number>, c?: number): void => {};
+let a = (a: string, b: Record<string, number>, c?: number): void => { };
 
 a("a", {}, 11);
 
@@ -9,24 +9,24 @@ function b(
   b: A<string, Symbol, string>,
   c: Record<string, number>,
   d: number
-): (() => void) | void {}
+): (() => void) | void { }
 
 b("aa", "aa", {}, 2);
 
 class B {
-  foo(a: (c: string, q: string) => void, c: number) {}
+  foo(a: (c: string, q: string) => void, c: number) { }
 
   bar: (a: string) => void;
 }
 
-new B().foo(() => {}, 1);
+new B().foo(() => { }, 1);
 
 new B().bar("aa");
 
 a.call(this, 1);
 
 let c = (a: string, b: () => void, c?: number) => {
-  return () => {};
+  return () => { };
 };
 
-c("", () => {}, 2);
+c("", () => { }, 2);

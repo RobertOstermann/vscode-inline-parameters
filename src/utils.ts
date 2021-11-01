@@ -1,50 +1,50 @@
-import * as vscode from 'vscode'
-import { MarkdownString } from 'vscode'
+import * as vscode from 'vscode';
+import { MarkdownString } from 'vscode';
 
 export interface ParameterPosition {
-    namedValue?: string
+    namedValue?: string;
 
     expression: {
         line: number,
         character: number,
-    }
+    };
 
-    key: number
+    key: number;
 
     start: {
         line: number,
         character: number,
-    }
+    };
 
     end: {
         line: number,
         character: number,
-    }
+    };
 }
 
 export interface LanguageDriver {
-    getParameterNameList(editor: vscode.TextEditor, languageParameters: ParameterPosition[]): Promise<(string | undefined)[]>
-    parse(code: string): ParameterPosition[][]
+    getParameterNameList(editor: vscode.TextEditor, languageParameters: ParameterPosition[]): Promise<(string | undefined)[]>;
+    parse(code: string): ParameterPosition[][];
 }
 
 export function removeShebang(sourceCode: string): string {
-    const sourceCodeArr = sourceCode.split("\n")
+    const sourceCodeArr = sourceCode.split("\n");
 
     if (sourceCodeArr[0].substr(0, 2) === "#!") {
-        sourceCodeArr[0] = ""
+        sourceCodeArr[0] = "";
     }
 
-    return sourceCodeArr.join("\n")
+    return sourceCodeArr.join("\n");
 }
 
 export function showVariadicNumbers(str: string, number: number): string {
-    const showVariadicNumbers = vscode.workspace.getConfiguration('inline-parameters').get('showVariadicNumbers')
+    const showVariadicNumbers = vscode.workspace.getConfiguration('inline-parameters').get('showVariadicNumbers');
 
     if (showVariadicNumbers) {
-        return `${str}[${number}]`
+        return `${str}[${number}]`;
     }
 
-    return str
+    return str;
 }
 
 export function chooseTheMostLikelyFunctionDefinition(hoverList: MarkdownString[]): string | undefined {
