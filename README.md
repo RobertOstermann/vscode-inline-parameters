@@ -5,9 +5,9 @@
 </p>
 
 <p align="center">
-  <a href="https://marketplace.visualstudio.com/items?itemName=liamhammett.inline-parameters"><img src="https://vsmarketplacebadge.apphb.com/version-short/liamhammett.inline-parameters.svg" alt="VS Marketplace Version"></a>
-  <a href="https://marketplace.visualstudio.com/items?itemName=liamhammett.inline-parameters"><img src="https://vsmarketplacebadge.apphb.com/installs-short/liamhammett.inline-parameters.svg" alt="VS Marketplace Installs"></a>
-  <a href="https://marketplace.visualstudio.com/items?itemName=liamhammett.inline-parameters"><img src="https://vsmarketplacebadge.apphb.com/rating-short/liamhammett.inline-parameters.svg" alt="VS Marketplace Rating"></a>
+  <a href="https://marketplace.visualstudio.com/items?itemName=RobertOstermann.inline-parameters-extended"><img src="https://vsmarketplacebadge.apphb.com/version-short/RobertOstermann.inline-parameters-extended.svg" alt="VS Marketplace Version"></a>
+  <a href="https://marketplace.visualstudio.com/items?itemName=RobertOstermann.inline-parameters-extended"><img src="https://vsmarketplacebadge.apphb.com/installs-short/RobertOstermann.inline-parameters-extended.svg" alt="VS Marketplace Installs"></a>
+  <a href="https://marketplace.visualstudio.com/items?itemName=RobertOstermann.inline-parameters-extended"><img src="https://vsmarketplacebadge.apphb.com/rating-short/RobertOstermann.inline-parameters-extended.svg" alt="VS Marketplace Rating"></a>
 </p>
   
 <p align="center">
