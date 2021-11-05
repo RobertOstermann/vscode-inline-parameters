@@ -39,7 +39,7 @@ async function updateDecorations(activeEditor: vscode.TextEditor, languageDriver
     !(activeEditor.document.languageId in languageDrivers) ||
     (lineLimit && lineLimit <= lineCount)
   ) {
-    activeEditor.setDecorations(hintDecorationType, []);
+    activeEditor?.setDecorations(hintDecorationType, []);
     return;
   }
 
@@ -59,7 +59,7 @@ async function updateDecorations(activeEditor: vscode.TextEditor, languageDriver
     });
 
     currentDecorations = unchangedDecorations;
-    activeEditor.setDecorations(hintDecorationType, unchangedDecorations);
+    activeEditor?.setDecorations(hintDecorationType, unchangedDecorations);
   }
 
   const driver: LanguageDriver =
@@ -150,7 +150,7 @@ async function updateDecorations(activeEditor: vscode.TextEditor, languageDriver
     currentDecorations = languageFunctions;
   }
   decorations = currentDecorations;
-  activeEditor.setDecorations(hintDecorationType, currentDecorations);
+  activeEditor?.setDecorations(hintDecorationType, currentDecorations);
 }
 
 function getActiveLanguageDrivers() {
@@ -222,7 +222,7 @@ export function activate(context: vscode.ExtensionContext) {
 
   vscode.workspace.onDidChangeConfiguration((event) => {
     if (event.affectsConfiguration('inline-parameters')) {
-      activeEditor.setDecorations(hintDecorationType, []);
+      activeEditor?.setDecorations(hintDecorationType, []);
       languageDrivers = getActiveLanguageDrivers();
       triggerUpdateDecorations(false);
     }
@@ -231,7 +231,7 @@ export function activate(context: vscode.ExtensionContext) {
   vscode.window.onDidChangeActiveTextEditor(
     (editor) => {
       activeEditor = editor;
-      activeEditor.setDecorations(hintDecorationType, []);
+      activeEditor?.setDecorations(hintDecorationType, []);
 
       if (editor) {
         triggerUpdateDecorations(false);
