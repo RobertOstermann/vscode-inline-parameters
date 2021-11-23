@@ -5,6 +5,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [0.1.9] - 2021-11-04
+
+- Fixed problem of decorations not being removed when there are errors in the code
+
 ## [0.1.8] - 2021-11-04
 
 - Fixed _Cannot read property `setDecorations` of undefined_

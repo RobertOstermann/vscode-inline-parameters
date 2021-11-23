@@ -72,7 +72,18 @@ async function updateDecorations(activeEditor: vscode.TextEditor, languageDriver
     functionParametersList = driver.parse(code);
   } catch (error) {
     // Error parsing language's AST, likely a syntax error on the user's side
-    console.log(error);
+    currentDecorations = decorations;
+    let currentLine = activeEditor.selection.active.line;
+    let unchangedDecorations: vscode.DecorationOptions[] = [];
+    decorations.forEach((decoration) => {
+      let decorationStart = decoration.range.start.line;
+      if (decorationStart < currentLine - range) {
+        unchangedDecorations.push(decoration);
+      }
+    });
+
+    currentDecorations = unchangedDecorations;
+    activeEditor?.setDecorations(hintDecorationType, unchangedDecorations);
   }
 
   if (!functionParametersList || functionParametersList.length === 0) {
