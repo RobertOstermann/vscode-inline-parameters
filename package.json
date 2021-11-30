@@ -4,7 +4,7 @@
   "description": "Function parameter annotations displaying inline in VSCode",
   "publisher": "RobertOstermann",
   "icon": "icon.png",
-  "version": "0.1.9",
+  "version": "0.2.0",
   "license": "MIT",
   "homepage": "https://github.com/RobertOstermann/vscode-inline-parameters",
   "bugs": {
@@ -164,6 +164,16 @@
             "type": "string",
             "default": "none",
             "description": "Annotation styling of border CSS property"
+          },
+          "inline-parameters.renderOptions": {
+            "type": "string",
+            "description": "Forcibly change the case of the inline parameter name",
+            "enum": [
+              "afterParameter",
+              "nearParameter",
+              "nearParentheses"
+            ],
+            "default": "nearParentheses"
           }
         }
       }

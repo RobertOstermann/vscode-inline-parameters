@@ -45,23 +45,24 @@ Currently, the extension has 2 major steps that all language drivers must implem
 
 The extension provides a handful of configuration settings you can use to customise the look and behaviour of the parameters.
 
-| Name                                         | Description                                                                                             | Default    |
-| -------------------------------------------- | ------------------------------------------------------------------------------------------------------- | ---------- |
-| `inline-parameters.enabled`                  | Show inline parameters                                                                                  | `true`     |
-| `inline-parameters.enablePHP`                | Show inline parameters for PHP                                                                          | `true`     |
-| `inline-parameters.enableLua`                | Show inline parameters for Lua                                                                          | `true`     |
-| `inline-parameters.enableJavascript`         | Show inline parameters for Javascript and JavascriptReact                                               | `true`     |
-| `inline-parameters.enableTypescript`         | Show inline parameters for Typescript and TypescriptReact                                               | `true`     |
-| `inline-parameters.enableJava`               | Show inline parameters for Java                                                                         | `true`     |
-| `inline-parameters.leadingCharacters`        | Characters to be shown before each parameter annotation                                                 | `""`       |
-| `inline-parameters.trailingCharacters`       | Characters to be shown after each parameter annotation                                                  | `":"`      |
-| `inline-parameters.showPhpDollar`            | Show the $ character before PHP parameter names                                                         | `false`    |
-| `inline-parameters.hideSingleParameters`     | Hide inline parameters if a function only has 1 parameter                                               | `false`    |
-| `inline-parameters.parameterCase`            | Forcibly change the case of the inline parameter name. Options are `normal`, `lowercase` or `uppercase` | `"normal"` |
-| `inline-parameters.showVariadicNumbers`      | Show the number of times a variadic parameter has been called                                           | `true`     |
-| `inline-parameters.hideRedundantAnnotations` | If the value given to a parameter is the same as the parameter name, hide the parameter name            | `true`     |
-| `inline-parameters.lineLimit`                | The max number of lines in a file.                                                                      | `0`        |
-| `inline-parameters.largeFileOptimizations`   | The number of lines in a file required to use large file optimizations.                                 | `0`        |
+| Name                                         | Description                                                                                             | Default          |
+| -------------------------------------------- | ------------------------------------------------------------------------------------------------------- | ---------------- |
+| `inline-parameters.enabled`                  | Show inline parameters                                                                                  | `true`           |
+| `inline-parameters.enablePHP`                | Show inline parameters for PHP                                                                          | `true`           |
+| `inline-parameters.enableLua`                | Show inline parameters for Lua                                                                          | `true`           |
+| `inline-parameters.enableJavascript`         | Show inline parameters for Javascript and JavascriptReact                                               | `true`           |
+| `inline-parameters.enableTypescript`         | Show inline parameters for Typescript and TypescriptReact                                               | `true`           |
+| `inline-parameters.enableJava`               | Show inline parameters for Java                                                                         | `true`           |
+| `inline-parameters.leadingCharacters`        | Characters to be shown before each parameter annotation                                                 | `""`             |
+| `inline-parameters.trailingCharacters`       | Characters to be shown after each parameter annotation                                                  | `":"`            |
+| `inline-parameters.showPhpDollar`            | Show the $ character before PHP parameter names                                                         | `false`          |
+| `inline-parameters.hideSingleParameters`     | Hide inline parameters if a function only has 1 parameter                                               | `false`          |
+| `inline-parameters.parameterCase`            | Forcibly change the case of the inline parameter name. Options are `normal`, `lowercase` or `uppercase` | `"normal"`       |
+| `inline-parameters.showVariadicNumbers`      | Show the number of times a variadic parameter has been called                                           | `true`           |
+| `inline-parameters.hideRedundantAnnotations` | If the value given to a parameter is the same as the parameter name, hide the parameter name            | `true`           |
+| `inline-parameters.lineLimit`                | The max number of lines in a file.                                                                      | `0`              |
+| `inline-parameters.largeFileOptimizations`   | The number of lines in a file required to use large file optimizations.                                 | `0`              |
+| `inline-parameters.renderOptions`            | The display location of the inline parameters                                                           | `nearParatheses` |
 
 There are also a handful of settings that can be used to customise the styling of the annotation to your own personal preference.
 
