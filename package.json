@@ -207,7 +207,6 @@
     ]
   },
   "scripts": {
-    "preinstall": "mkdir -p ./node_modules && touch ./node_modules/.metadata_never_index",
     "vscode:prepublish": "npm run -S esbuild-base -- --minify",
     "compile": "tsc -p ./",
     "watch": "tsc -watch -p ./",
