@@ -84,82 +84,79 @@ export default class PHPHelper {
   }
 
   static async getParameterNames(uri: vscode.Uri, languageParameters: ParameterPosition[]): Promise<string[]> {
-    // eslint-disable-next-line no-async-promise-executor
-    return new Promise(async (resolve, reject) => {
-      let isVariadic = false;
-      let parameters: any[];
-      const firstParameter = languageParameters[0];
+    const firstParameter = languageParameters[0];
+    let parameters: any[];
+    let isVariadic = false;
 
-      const description: any = await vscode.commands.executeCommand<vscode.Hover[]>(
-        "vscode.executeHoverProvider",
-        uri,
-        new vscode.Position(
-          firstParameter.expression.line,
-          firstParameter.expression.character
-        )
-      );
+    const description: any = await vscode.commands.executeCommand<vscode.Hover[]>(
+      "vscode.executeHoverProvider",
+      uri,
+      new vscode.Position(
+        firstParameter.expression.line,
+        firstParameter.expression.character
+      )
+    );
 
-      if (description && description.length > 0) {
-        try {
-          const regEx = /(?<=@param.+)(\.{3})?(\$[a-zA-Z0-9_]+)/g;
-          parameters = getFunctionDefinition(<vscode.MarkdownString[]>description[0].contents)?.match(regEx);
-        } catch (error) {
-          console.error(error);
-        }
+    if (description && description.length > 0) {
+      try {
+        const regEx = /(?<=@param.+)(\.{3})?(\$[a-zA-Z0-9_]+)/g;
+        parameters = getFunctionDefinition(<vscode.MarkdownString[]>description[0].contents)?.match(regEx);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    if (!parameters) {
+      return Promise.reject();
+    }
+
+    parameters = parameters.map((parameter: any) => {
+      if (parameter.startsWith("...")) {
+        isVariadic = true;
+        parameter = parameter.slice(3);
       }
 
-      if (!parameters) {
-        return reject();
-      }
+      return parameter;
+    });
 
-      parameters = parameters.map((parameter: any) => {
-        if (parameter.startsWith("...")) {
-          isVariadic = true;
-          parameter = parameter.slice(3);
+    let namedValueName = undefined;
+    const parametersLength = parameters.length;
+    const suppressWhenArgumentMatchesName = PHPConfiguration.suppressWhenArgumentMatchesName();
+    for (let i = 0; i < languageParameters.length; i++) {
+      const parameter = languageParameters[i];
+      const key = parameter.key;
+
+      if (isVariadic && key >= parameters.length - 1) {
+        if (namedValueName === undefined) namedValueName = parameters[parameters.length - 1];
+
+        if (suppressWhenArgumentMatchesName && namedValueName.replace("$", "") === parameter.namedValue) {
+          return Promise.reject();
         }
 
-        return parameter;
-      });
-
-      let namedValueName = undefined;
-      const parametersLength = parameters.length;
-      const suppressWhenArgumentMatchesName = PHPConfiguration.suppressWhenArgumentMatchesName();
-      for (let i = 0; i < languageParameters.length; i++) {
-        const parameter = languageParameters[i];
-        const key = parameter.key;
-
-        if (isVariadic && key >= parameters.length - 1) {
-          if (namedValueName === undefined) namedValueName = parameters[parameters.length - 1];
-
-          if (suppressWhenArgumentMatchesName && namedValueName.replace("$", "") === parameter.namedValue) {
-            return reject();
-          }
-
-          let name = namedValueName;
-          name = PHPHelper.showDollarSign(name);
-          parameters[i] = showVariadicNumbers(name, -parametersLength + 1 + key);
-          continue;
-        }
-
-        if (parameters[key]) {
-          let name = parameters[key];
-
-          if (suppressWhenArgumentMatchesName && name.replace("$", "") === parameter.namedValue) {
-            parameters[i] = undefined;
-            continue;
-          }
-
-          name = PHPHelper.showDollarSign(name);
-          parameters[i] = name;
-          continue;
-        }
-
-        parameters[i] = undefined;
+        let name = namedValueName;
+        name = PHPHelper.showDollarSign(name);
+        parameters[i] = showVariadicNumbers(name, -parametersLength + 1 + key);
         continue;
       }
 
-      return resolve(parameters);
-    });
+      if (parameters[key]) {
+        let name = parameters[key];
+
+        if (suppressWhenArgumentMatchesName && name.replace("$", "") === parameter.namedValue) {
+          parameters[i] = undefined;
+          continue;
+        }
+
+        name = PHPHelper.showDollarSign(name);
+        parameters[i] = name;
+        continue;
+      }
+
+      parameters[i] = undefined;
+      continue;
+    }
+
+    return parameters;
   }
 
   static showDollarSign(str: string): string {

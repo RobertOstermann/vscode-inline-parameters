@@ -52,5 +52,6 @@ export function getFunctionDefinition(hoverList: MarkdownString[]): string | und
         if (hover.value.includes("```"))
             return hover.value;
     }
+
     return undefined;
 }
