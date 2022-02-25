@@ -14,7 +14,7 @@
     "type": "git",
     "url": "https://github.com/RobertOstermann/vscode-inline-parameters"
   },
-  "main": "./out/extension.js",
+  "main": "./out/src/extension.js",
   "engines": {
     "vscode": "^1.40.0"
   },
@@ -35,69 +35,39 @@
       {
         "title": "Inline Parameters",
         "properties": {
-          "inline-parameters.enabled": {
+          "inline-parameters.php.enabled": {
             "type": "boolean",
-            "description": "Show inline parameters",
+            "description": "Enable inline parameters for PHP.",
             "default": true
           },
-          "inline-parameters.enablePHP": {
+          "inline-parameters.php.showDollar": {
             "type": "boolean",
-            "description": "Enable inline parameters for PHP",
+            "description": "Show the $ character before PHP parameter names.",
+            "default": false
+          },
+          "inline-parameters.lua.enabled": {
+            "type": "boolean",
+            "description": "Enable inline parameters for Lua.",
             "default": true
           },
-          "inline-parameters.enableLua": {
+          "inline-parameters.java.enabled": {
             "type": "boolean",
-            "description": "Enable inline parameters for Lua",
+            "description": "Enable inline parameters for Java.",
             "default": true
-          },
-          "inline-parameters.enableJavascript": {
-            "type": "boolean",
-            "description": "Enable inline parameters for Javascript and JavascriptReact",
-            "default": true
-          },
-          "inline-parameters.enableTypescript": {
-            "type": "boolean",
-            "description": "Enable inline parameters for Typescript and TypescriptReact",
-            "default": true
-          },
-          "inline-parameters.enableJava": {
-            "type": "boolean",
-            "description": "Enable inline parameters for Java",
-            "default": true
-          },
-          "inline-parameters.lineLimit": {
-            "type": "number",
-            "description": "The max number of lines in a file",
-            "default": 0
-          },
-          "inline-parameters.largeFileOptimizations": {
-            "type": "number",
-            "description": "The number of lines in a file required to use large file optimizations.",
-            "default": 0
           },
           "inline-parameters.leadingCharacters": {
             "type": "string",
-            "description": "Characters to be shown before each parameter annotation",
+            "description": "Characters to be shown before each parameter annotation.",
             "default": ""
           },
           "inline-parameters.trailingCharacters": {
             "type": "string",
-            "description": "Characters to be shown after each parameter annotation",
+            "description": "Characters to be shown after each parameter annotation.",
             "default": ":"
-          },
-          "inline-parameters.showPhpDollar": {
-            "type": "boolean",
-            "description": "Show the $ character before PHP parameter names",
-            "default": false
-          },
-          "inline-parameters.hideSingleParameters": {
-            "type": "boolean",
-            "description": "Hide inline parameters if a function only has 1 parameter",
-            "default": false
           },
           "inline-parameters.parameterCase": {
             "type": "string",
-            "description": "Forcibly change the case of the inline parameter name",
+            "description": "Forcibly change the case of the inline parameter name.",
             "enum": [
               "normal",
               "lowercase",
@@ -107,94 +77,14 @@
           },
           "inline-parameters.showVariadicNumbers": {
             "type": "boolean",
-            "description": "Show the number of times a variadic parameter has been called",
+            "description": "Show the number of times a variadic parameter has been called.",
             "default": true
           },
-          "inline-parameters.hideRedundantAnnotations": {
+          "inline-parameters.suppressWhenArgumentMatchesName": {
             "type": "boolean",
-            "description": "If the value given to a parameter is the same as the parameter name, hide it",
+            "description": "Suppress parameter name hints on arguments whose text is identical to the parameter name.",
             "default": true
-          },
-          "inline-parameters.fontWeight": {
-            "type": "string",
-            "default": "400",
-            "enum": [
-              "100",
-              "200",
-              "300",
-              "400",
-              "500",
-              "600",
-              "700",
-              "800",
-              "900"
-            ],
-            "description": "Annotation styling of font-weight CSS property"
-          },
-          "inline-parameters.fontStyle": {
-            "type": "string",
-            "default": "italic",
-            "enum": [
-              "normal",
-              "italic"
-            ],
-            "description": "Annotation styling of font-style CSS property"
-          },
-          "inline-parameters.fontSize": {
-            "type": "string",
-            "default": "0.85em",
-            "description": "Annotation styling of font size CSS property"
-          },
-          "inline-parameters.margin": {
-            "type": "string",
-            "default": "0.25em",
-            "description": "Annotation styling of margin CSS property"
-          },
-          "inline-parameters.padding": {
-            "type": "string",
-            "default": "0.25em 0.5em",
-            "description": "Annotation styling of padding CSS property"
-          },
-          "inline-parameters.borderRadius": {
-            "type": "string",
-            "default": "0.25em",
-            "description": "Annotation styling of border-radius CSS property"
-          },
-          "inline-parameters.border": {
-            "type": "string",
-            "default": "none",
-            "description": "Annotation styling of border CSS property"
-          },
-          "inline-parameters.renderOptions": {
-            "type": "string",
-            "description": "Forcibly change the case of the inline parameter name",
-            "enum": [
-              "afterParameter",
-              "nearParameter",
-              "nearParentheses"
-            ],
-            "default": "nearParentheses"
           }
-        }
-      }
-    ],
-    "colors": [
-      {
-        "id": "inlineparameters.annotationForeground",
-        "description": "Specifies the foreground color for the annotations",
-        "defaults": {
-          "dark": "#adbec5",
-          "light": "#797a79",
-          "highContrast": "#adbec5"
-        }
-      },
-      {
-        "id": "inlineparameters.annotationBackground",
-        "description": "Specifies the background color for the annotations",
-        "defaults": {
-          "dark": "#1e2c31",
-          "light": "#f4f5f4",
-          "highContrast": "#1e2c31"
         }
       }
     ],
@@ -208,9 +98,13 @@
   },
   "scripts": {
     "vscode:prepublish": "npm run -S esbuild-base -- --minify",
-    "compile": "tsc -p ./",
+    "compile": "rimraf out && tsc -p ./",
     "watch": "tsc -watch -p ./",
-    "esbuild-base": "esbuild ./src/extension.ts --bundle --outfile=out/extension.js --external:vscode --format=cjs --platform=node",
+    "test": "node ./node_modules/vscode/bin/test",
+    "download-api": "vscode-dts dev",
+    "postdownload-api": "vscode-dts main",
+    "postinstall": "npm run download-api",
+    "esbuild-base": "rimraf out && esbuild ./src/extension.ts --bundle --outfile=out/src/extension.js --external:vscode --format=cjs --platform=node",
     "esbuild": "npm run -S esbuild-base -- --sourcemap",
     "esbuild-watch": "npm run -S esbuild-base -- --sourcemap --watch"
   },
@@ -218,8 +112,10 @@
     "@types/glob": "^7.1.2",
     "@types/mocha": "^5.0.0",
     "@types/node": "^12.12.44",
-    "@types/vscode": "^1.40.0",
     "esbuild": "^0.13.10",
+    "eslint": "^8.1.0",
+    "eslint-plugin-simple-import-sort": "^7.0.0",
+    "eslint-plugin-tsdoc": "^0.2.14",
     "glob": "^7.1.5",
     "mocha": "^6.2.2",
     "typescript": "^3.9.5",
