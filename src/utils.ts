@@ -1,6 +1,12 @@
 import * as vscode from "vscode";
 import { MarkdownString } from "vscode";
 
+export interface ParameterDetails {
+    name: string;
+
+    definition: string;
+}
+
 export interface ParameterPosition {
     namedValue?: string;
 

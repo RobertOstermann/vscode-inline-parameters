@@ -1,7 +1,7 @@
 import * as php from "php-parser";
 import * as vscode from "vscode";
 
-import { getFunctionDefinition, ParameterPosition, removeShebang, showVariadicNumbers } from "../utils";
+import { ParameterDetails, ParameterPosition, removeShebang, showVariadicNumbers } from "../utils";
 import PHPConfiguration from "./phpConfiguration";
 
 export default class PHPHelper {
@@ -83,7 +83,7 @@ export default class PHPHelper {
     return parameters;
   }
 
-  static async getParameterNames(uri: vscode.Uri, languageParameters: ParameterPosition[]): Promise<string[]> {
+  static async getParameterNames(uri: vscode.Uri, languageParameters: ParameterPosition[]): Promise<ParameterDetails[]> {
     const firstParameter = languageParameters[0];
     let parameters: any[];
     let isVariadic = false;
@@ -99,8 +99,9 @@ export default class PHPHelper {
 
     if (description && description.length > 0) {
       try {
-        const regEx = /(?<=@param.+)(\.{3})?(\$[a-zA-Z0-9_]+)/g;
-        parameters = getFunctionDefinition(<vscode.MarkdownString[]>description[0].contents)?.match(regEx);
+        const regex = /(?<=@param)[^.]*?((?:\.{3})?\$[\w]+).*?[\r\n|\n](.*?)[\r\n|\n](?:_@param|_@return)/gs;
+        const definition = this.getFunctionDefinition(<vscode.MarkdownString[]>description[0].contents);
+        parameters = definition ? [...definition.matchAll(regex)] : [];
       } catch (error) {
         console.error(error);
       }
@@ -110,53 +111,61 @@ export default class PHPHelper {
       return Promise.reject();
     }
 
-    parameters = parameters.map((parameter: any) => {
-      if (parameter.startsWith("...")) {
+    const parameterDetails: ParameterDetails[] = parameters.map((parameterInformation: any): ParameterDetails => {
+      let name = parameterInformation[1];
+      const definition = parameterInformation[2];
+
+      if (name.startsWith("...")) {
         isVariadic = true;
-        parameter = parameter.slice(3);
+        name = name.slice(3);
       }
+
+      const parameter: ParameterDetails = {
+        name: name,
+        definition: definition
+      };
 
       return parameter;
     });
 
-    let namedValueName = undefined;
-    const parametersLength = parameters.length;
+    let namedValue = undefined;
+    const parametersLength = parameterDetails.length;
     const suppressWhenArgumentMatchesName = PHPConfiguration.suppressWhenArgumentMatchesName();
     for (let i = 0; i < languageParameters.length; i++) {
       const parameter = languageParameters[i];
       const key = parameter.key;
 
-      if (isVariadic && key >= parameters.length - 1) {
-        if (namedValueName === undefined) namedValueName = parameters[parameters.length - 1];
+      if (isVariadic && key >= parameterDetails.length - 1) {
+        if (namedValue === undefined) namedValue = parameterDetails[parameterDetails.length - 1].name;
 
-        if (suppressWhenArgumentMatchesName && namedValueName.replace("$", "") === parameter.namedValue) {
+        if (suppressWhenArgumentMatchesName && namedValue.replace("$", "") === parameter.namedValue) {
           return Promise.reject();
         }
 
-        let name = namedValueName;
+        let name = namedValue;
         name = PHPHelper.showDollarSign(name);
-        parameters[i] = showVariadicNumbers(name, -parametersLength + 1 + key);
+        parameterDetails[i].name = showVariadicNumbers(name, -parametersLength + 1 + key);
         continue;
       }
 
-      if (parameters[key]) {
-        let name = parameters[key];
+      if (parameterDetails[key]) {
+        let name = parameterDetails[key].name;
 
         if (suppressWhenArgumentMatchesName && name.replace("$", "") === parameter.namedValue) {
-          parameters[i] = undefined;
+          parameterDetails[i] = undefined;
           continue;
         }
 
         name = PHPHelper.showDollarSign(name);
-        parameters[i] = name;
+        parameterDetails[i].name = name;
         continue;
       }
 
-      parameters[i] = undefined;
+      parameterDetails[i] = undefined;
       continue;
     }
 
-    return parameters;
+    return parameterDetails;
   }
 
   static showDollarSign(str: string): string {
@@ -165,5 +174,14 @@ export default class PHPHelper {
     }
 
     return str.replace("$", "");
+  }
+
+  static getFunctionDefinition(hoverList: vscode.MarkdownString[]): string | undefined {
+    for (const hover of hoverList) {
+      if (hover.value.includes("```"))
+        return hover.value;
+    }
+
+    return undefined;
   }
 }
