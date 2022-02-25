@@ -13,7 +13,7 @@ export default class phpDriver {
         const start = document.offsetAt(range.start);
         const end = document.offsetAt(range.end);
 
-        const functionParameters = PHPHelper.parse(text);
+        const functionParameters = PHPHelper.parse(text, start, end);
         for (const languageParameters of functionParameters) {
           if (languageParameters === undefined) continue;
           let parameters: ParameterDetails[];
@@ -30,25 +30,23 @@ export default class phpDriver {
 
             if (!parameterDetails) continue;
 
-            if (parameter.start.line >= start && parameter.start.line <= end) {
-              let inlayHint: vscode.InlayHint;
+            let inlayHint: vscode.InlayHint;
 
-              if (PHPConfiguration.hintBeforeParameter()) {
-                const position = new vscode.Position(parameter.start.line, parameter.start.character);
-                const inlayHintPart = new vscode.InlayHintLabelPart(parameterDetails.name);
-                inlayHint = new vscode.InlayHint(position, [inlayHintPart], vscode.InlayHintKind.Parameter);
-                inlayHint.tooltip = new vscode.MarkdownString(parameterDetails.definition);
-                inlayHint.paddingRight = true;
-              } else {
-                const position = new vscode.Position(parameter.end.line, parameter.end.character);
-                const inlayHintPart = new vscode.InlayHintLabelPart(parameterDetails.name);
-                inlayHint = new vscode.InlayHint(position, [inlayHintPart], vscode.InlayHintKind.Parameter);
-                inlayHint.tooltip = new vscode.MarkdownString(parameterDetails.definition);
-                inlayHint.paddingLeft = true;
-              }
-
-              result.push(inlayHint);
+            if (PHPConfiguration.hintBeforeParameter()) {
+              const position = new vscode.Position(parameter.start.line, parameter.start.character);
+              const inlayHintPart = new vscode.InlayHintLabelPart(parameterDetails.name);
+              inlayHint = new vscode.InlayHint(position, [inlayHintPart], vscode.InlayHintKind.Parameter);
+              inlayHint.tooltip = new vscode.MarkdownString(parameterDetails.definition);
+              inlayHint.paddingRight = true;
+            } else {
+              const position = new vscode.Position(parameter.end.line, parameter.end.character);
+              const inlayHintPart = new vscode.InlayHintLabelPart(parameterDetails.name);
+              inlayHint = new vscode.InlayHint(position, [inlayHintPart], vscode.InlayHintKind.Parameter);
+              inlayHint.tooltip = new vscode.MarkdownString(parameterDetails.definition);
+              inlayHint.paddingLeft = true;
             }
+
+            result.push(inlayHint);
           }
         }
 

@@ -5,7 +5,7 @@ import { ParameterDetails, ParameterPosition, removeShebang, showVariadicNumbers
 import PHPConfiguration from "./phpConfiguration";
 
 export default class PHPHelper {
-  static parse(code: string): ParameterPosition[][] {
+  static parse(code: string, start: number, end: number): ParameterPosition[][] {
     const parameters: ParameterPosition[][] = [];
     const parser = new php.Engine({
       parser: {
@@ -25,7 +25,7 @@ export default class PHPHelper {
     const functionCalls: any[] = this.crawlAST(ast);
 
     functionCalls.forEach((expression) => {
-      parameters.push(this.getParametersFromExpression(expression));
+      parameters.push(this.getParametersFromExpression(expression, start, end));
     });
 
     return parameters;
@@ -50,7 +50,7 @@ export default class PHPHelper {
     return functionCalls;
   }
 
-  static getParametersFromExpression(expression: any): ParameterPosition[] | undefined {
+  static getParametersFromExpression(expression: any, start: number, end: number): ParameterPosition[] | undefined {
     const parameters = [];
     if (!expression.arguments) {
       return undefined;
@@ -62,22 +62,24 @@ export default class PHPHelper {
       }
 
       const expressionLoc = expression.what.offset ? expression.what.offset.loc.start : expression.what.loc.end;
-      parameters.push({
-        namedValue: argument.name ?? null,
-        expression: {
-          line: parseInt(expressionLoc.line) - 1,
-          character: parseInt(expressionLoc.column),
-        },
-        key: key,
-        start: {
-          line: parseInt(argument.loc.start.line) - 1,
-          character: parseInt(argument.loc.start.column),
-        },
-        end: {
-          line: parseInt(argument.loc.end.line) - 1,
-          character: parseInt(argument.loc.end.column),
-        },
-      });
+      if (expressionLoc.line >= start && expressionLoc.line <= end) {
+        parameters.push({
+          namedValue: argument.name ?? null,
+          expression: {
+            line: parseInt(expressionLoc.line) - 1,
+            character: parseInt(expressionLoc.column),
+          },
+          key: key,
+          start: {
+            line: parseInt(argument.loc.start.line) - 1,
+            character: parseInt(argument.loc.start.column),
+          },
+          end: {
+            line: parseInt(argument.loc.end.line) - 1,
+            character: parseInt(argument.loc.end.column),
+          },
+        });
+      }
     });
 
     return parameters;
@@ -99,7 +101,6 @@ export default class PHPHelper {
 
     if (description && description.length > 0) {
       try {
-        // const regex = /(?<=@param)[^.]*?((?:\.{3})?\$[\w]+).*?[\r\n|\n](.*?)[\r\n|\n](?:_@param|_@return)/gs;
         const regex = /(?<=@param)[^.]*?((?:\.{3})?\$[\w]+).*?[\r\n|\n—] ?(.*?)[\r\n|\n](?:_@param|_@return)/gs;
         const definition = this.getFunctionDefinition(<vscode.MarkdownString[]>description[0].contents);
         parameters = definition ? [...definition.matchAll(regex)] : [];
