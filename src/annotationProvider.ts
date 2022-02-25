@@ -1,8 +1,8 @@
 import {
     DecorationInstanceRenderOptions,
-    ThemeColor,
     DecorationOptions,
     Range,
+    ThemeColor,
     workspace,
 } from "vscode";
 
@@ -12,7 +12,7 @@ export class Annotations {
         range: Range
     ): DecorationOptions {
         const renderOptions = workspace.getConfiguration("inline-parameters").get("renderOptions");
-        if (renderOptions === 'afterParameter') {
+        if (renderOptions === "afterParameter") {
             const afterParameter = new Range(range?.start, range?.end);
             return {
                 range: afterParameter,
@@ -34,7 +34,7 @@ export class Annotations {
                     },
                 } as DecorationInstanceRenderOptions,
             } as DecorationOptions;
-        } else if (renderOptions === 'nearParameter') {
+        } else if (renderOptions === "nearParameter") {
             const nearParameter = new Range(range?.start, range?.start);
             return {
                 range: nearParameter,
@@ -56,7 +56,7 @@ export class Annotations {
                     },
                 } as DecorationInstanceRenderOptions,
             } as DecorationOptions;
-        } else if (renderOptions === 'nearParentheses') {
+        } else if (renderOptions === "nearParentheses") {
             const nearParentheses = new Range(range?.start, range?.end);
             return {
                 range: nearParentheses,

@@ -26,11 +26,9 @@ No longer do you have to be confused about whether the needle or haystack comes 
 
 Currently, this extension supports the following languages:
 
-- JavaScript (and with React)
-- TypeScript (and with React)
-- PHP (with the [Intelephense](https://marketplace.visualstudio.com/items?itemName=bmewburn.vscode-intelephense-client) language server)
-- Lua (with [Sumneko's Lua language server](https://marketplace.visualstudio.com/items?itemName=sumneko.lua))
 - Java
+- Lua (with [Sumneko's Lua language server](https://marketplace.visualstudio.com/items?itemName=sumneko.lua))
+- PHP (with the [Intelephense](https://marketplace.visualstudio.com/items?itemName=bmewburn.vscode-intelephense-client) language server)
 
 ### Want to contribute additional language support?
 
@@ -39,51 +37,22 @@ Additional language support is welcome as pull requests, and highly encouraged. 
 Currently, the extension has 2 major steps that all language drivers must implement:
 
 1. Parsing the source code of the currently active file (eg. by using an AST library - [AST Explorer](https://astexplorer.net/) can assist in navigating it) to retrieve a list of positions where annotations should be inserted
-2. Getting the name of the parameters to use as the annotations. Existing language drivers does this by triggering the hover providers for the function being called, and extracting the parameter names from the description
+2. Getting the name of the parameters to use as the annotations. Existing language drivers do this by triggering the hover providers for the function being called, and extracting the parameter names from the description
 
 ## Settings
 
 The extension provides a handful of configuration settings you can use to customise the look and behaviour of the parameters.
 
-| Name                                         | Description                                                                                             | Default          |
-| -------------------------------------------- | ------------------------------------------------------------------------------------------------------- | ---------------- |
-| `inline-parameters.enabled`                  | Show inline parameters                                                                                  | `true`           |
-| `inline-parameters.enablePHP`                | Show inline parameters for PHP                                                                          | `true`           |
-| `inline-parameters.enableLua`                | Show inline parameters for Lua                                                                          | `true`           |
-| `inline-parameters.enableJavascript`         | Show inline parameters for Javascript and JavascriptReact                                               | `true`           |
-| `inline-parameters.enableTypescript`         | Show inline parameters for Typescript and TypescriptReact                                               | `true`           |
-| `inline-parameters.enableJava`               | Show inline parameters for Java                                                                         | `true`           |
-| `inline-parameters.leadingCharacters`        | Characters to be shown before each parameter annotation                                                 | `""`             |
-| `inline-parameters.trailingCharacters`       | Characters to be shown after each parameter annotation                                                  | `":"`            |
-| `inline-parameters.showPhpDollar`            | Show the $ character before PHP parameter names                                                         | `false`          |
-| `inline-parameters.hideSingleParameters`     | Hide inline parameters if a function only has 1 parameter                                               | `false`          |
-| `inline-parameters.parameterCase`            | Forcibly change the case of the inline parameter name. Options are `normal`, `lowercase` or `uppercase` | `"normal"`       |
-| `inline-parameters.showVariadicNumbers`      | Show the number of times a variadic parameter has been called                                           | `true`           |
-| `inline-parameters.hideRedundantAnnotations` | If the value given to a parameter is the same as the parameter name, hide the parameter name            | `true`           |
-| `inline-parameters.lineLimit`                | The max number of lines in a file.                                                                      | `0`              |
-| `inline-parameters.largeFileOptimizations`   | The number of lines in a file required to use large file optimizations.                                 | `0`              |
-| `inline-parameters.renderOptions`            | The display location of the inline parameters                                                           | `nearParatheses` |
-
-There are also a handful of settings that can be used to customise the styling of the annotation to your own personal preference.
-
-| Name                             | Description                                      | Default        |
-| -------------------------------- | ------------------------------------------------ | -------------- |
-| `inline-parameters.fontWeight`   | Annotation styling of font-weight CSS property   | `"400"`        |
-| `inline-parameters.fontStyle`    | Annotation styling of font-style CSS property    | `"italic"`     |
-| `inline-parameters.fontSize`     | Annotation styling of font size CSS property     | `0.85em`       |
-| `inline-parameters.margin`       | Annotation styling of margin CSS property        | `0.25em`       |
-| `inline-parameters.padding`      | Annotation styling of padding CSS property       | `0.25em 0.5em` |
-| `inline-parameters.border`       | Annotation styling of border CSS property        | `none`         |
-| `inline-parameters.borderRadius` | Annotation styling of border-radius CSS property | `0.25em`       |
-
-## Themable Colours
-
-You can change the default foreground and background colours in the `workbench.colorCustomizations` property in user settings.
-
-| Name                                    | Description                                         |
-| --------------------------------------- | --------------------------------------------------- |
-| `inlineparameters.annotationForeground` | Specifies the foreground colour for the annotations |
-| `inlineparameters.annotationBackground` | Specifies the background colour for the annotations |
+| Name                                                | Description                                                                                  | Default |
+| --------------------------------------------------- | -------------------------------------------------------------------------------------------- | ------- |
+| `inline-parameters.enabled`                         | Show inline parameters                                                                       | `true`  |
+| `inline-parameters.java.enabled`                    | Show inline parameters for Java                                                              | `true`  |
+| `inline-parameters.lua.enabled`                     | Show inline parameters for Lua                                                               | `true`  |
+| `inline-parameters.php.enabled`                     | Show inline parameters for PHP                                                               | `true`  |
+| `inline-parameters.php.showDollarSign`              | Show the $ character before PHP parameter names                                              | `false` |
+| `inline-parameters.hideSingleParameters`            | Hide inline parameters if a function only has 1 parameter                                    | `false` |
+| `inline-parameters.showVariadicNumbers`             | Show the number of times a variadic parameter has been called                                | `true`  |
+| `inline-parameters.suppressWhenArgumentMatchesName` | If the value given to a parameter is the same as the parameter name, hide the parameter name | `true`  |
 
 ## Commands
 

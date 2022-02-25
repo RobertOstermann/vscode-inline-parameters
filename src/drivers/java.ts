@@ -1,24 +1,24 @@
-import * as vscode from 'vscode';
-import { removeShebang, ParameterPosition, showVariadicNumbers, chooseTheMostLikelyFunctionDefinition } from '../utils';
+import { ArgumentsContext, ExpressionContext, JavaParserListener, MethodCallContext, parse as javaparse, ParseTree, walk } from "java-ast";
+import * as vscode from "vscode";
+import { MarkdownString } from "vscode";
 
-import { parse as javaparse, walk, ParseTree, JavaParserListener, MethodCallContext, ExpressionContext, ArgumentsContext } from 'java-ast';
-import { MarkdownString } from 'vscode';
+import { getFunctionDefinition, ParameterPosition, removeShebang, showVariadicNumbers } from "../utils";
 
 export function getParameterNameList(editor: vscode.TextEditor, languageParameters: ParameterPosition[]): Promise<string[]> {
     return new Promise(async (resolve, reject) => {
         let isVariadic = false;
         let parameters: any[];
         const firstParameter = languageParameters[0];
-        const description = await vscode.commands.executeCommand<vscode.Hover[]>('vscode.executeHoverProvider', editor.document.uri, new vscode.Position(
+        const description = await vscode.commands.executeCommand<vscode.Hover[]>("vscode.executeHoverProvider", editor.document.uri, new vscode.Position(
             firstParameter.expression.line,
             firstParameter.expression.character
         ));
-        const shouldHideRedundantAnnotations = vscode.workspace.getConfiguration('inline-parameters').get('hideRedundantAnnotations');
+        const shouldHideRedundantAnnotations = vscode.workspace.getConfiguration("inline-parameters").get("hideRedundantAnnotations");
 
         if (description && description.length > 0) {
             try {
                 const functionDefinitionRegex = /[^ ](?!^)\((.*)\)/gm;
-                let definition: string | string[] | undefined = chooseTheMostLikelyFunctionDefinition(<MarkdownString[]>description[0].contents)?.match(functionDefinitionRegex);
+                let definition: string | string[] | undefined = getFunctionDefinition(<MarkdownString[]>description[0].contents)?.match(functionDefinitionRegex);
 
                 if (!definition || definition.length === 0) {
                     return reject();
@@ -28,10 +28,10 @@ export function getParameterNameList(editor: vscode.TextEditor, languageParamete
 
                 const jsParameterNameRegex = /[a-zA-Z_$][0-9a-zA-Z_$]*$/g;
 
-                parameters = definition.split(',')
+                parameters = definition.split(",")
                     .map((parameter: string) => parameter.trim())
                     .map((parameter: string) => {
-                        if (parameter.includes('...')) {
+                        if (parameter.includes("...")) {
                             isVariadic = true;
                         }
 
@@ -71,7 +71,7 @@ export function getParameterNameList(editor: vscode.TextEditor, languageParamete
             }
 
             if (parameters[key]) {
-                let name = parameters[key];
+                const name = parameters[key];
 
                 if (shouldHideRedundantAnnotations && name === parameter.namedValue) {
                     parameters[i] = undefined;
@@ -94,7 +94,7 @@ export function parse(code: string): ParameterPosition[][] {
     const editor = vscode.window.activeTextEditor;
 
     const functionCalls: any[] = getFunctionCalls(ast);
-    let parameters: ParameterPosition[][] = [];
+    const parameters: ParameterPosition[][] = [];
 
     functionCalls.forEach((call) => {
         parameters.push(getParametersFromMethod(editor, call));
@@ -104,9 +104,9 @@ export function parse(code: string): ParameterPosition[][] {
 }
 
 function getFunctionCalls(ast: ParseTree): any[] {
-    let functionCalls: any[] = [];
+    const functionCalls: any[] = [];
 
-    const hideSingleParameters = vscode.workspace.getConfiguration('inline-parameters').get('hideSingleParameters');
+    const hideSingleParameters = vscode.workspace.getConfiguration("inline-parameters").get("hideSingleParameters");
 
     class JavaMethodListener implements JavaParserListener {
         enterArguments = (args: ArgumentsContext) => {
@@ -138,9 +138,9 @@ function position(parameter) {
 }
 
 function getParametersFromMethod(editor: vscode.TextEditor, method: any): ParameterPosition[] {
-    let parameters = [];
+    const parameters = [];
 
-    let params = method.expressionList().expression();
+    const params = method.expressionList().expression();
 
     params.forEach((param, key) => {
         parameters.push(parseParam(editor, method, param, key));

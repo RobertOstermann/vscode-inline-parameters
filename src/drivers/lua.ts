@@ -1,24 +1,25 @@
-import * as vscode from 'vscode';
-import { removeShebang, ParameterPosition, chooseTheMostLikelyFunctionDefinition } from '../utils';
+import * as vscode from "vscode";
 
-const parser = require('luaparse');
+import { getFunctionDefinition, ParameterPosition, removeShebang } from "../utils";
+
+const parser = require("luaparse");
 
 export function getParameterNameList(editor: vscode.TextEditor, languageParameters: ParameterPosition[]): Promise<string[]> {
     return new Promise(async (resolve, reject) => {
-        let definition: string = '';
+        let definition = "";
         let definitions: string[];
         const firstParameter = languageParameters[0];
-        const description: any = await vscode.commands.executeCommand<vscode.Hover[]>('vscode.executeHoverProvider', editor.document.uri, new vscode.Position(
+        const description: any = await vscode.commands.executeCommand<vscode.Hover[]>("vscode.executeHoverProvider", editor.document.uri, new vscode.Position(
             firstParameter.expression.line,
             firstParameter.expression.character
         ));
-        const shouldHideRedundantAnnotations = vscode.workspace.getConfiguration('inline-parameters').get('hideRedundantAnnotations');
+        const shouldHideRedundantAnnotations = vscode.workspace.getConfiguration("inline-parameters").get("hideRedundantAnnotations");
         const luaParameterNameRegex = /^[a-zA-Z_]([0-9a-zA-Z_]+)?/g;
 
         if (description && description.length > 0) {
             try {
                 const regEx = /^function\ .*\((.*)\)/gm;
-                definitions = chooseTheMostLikelyFunctionDefinition(<vscode.MarkdownString[]>description[0].contents)?.match(regEx);
+                definitions = getFunctionDefinition(<vscode.MarkdownString[]>description[0].contents)?.match(regEx);
 
                 if (!definitions || !definitions[0]) {
                     return reject();
@@ -31,9 +32,9 @@ export function getParameterNameList(editor: vscode.TextEditor, languageParamete
         }
 
         const parameters: string[] = definition
-            .substring(definition.indexOf('(') + 1, definition.lastIndexOf(')'))
-            .replace(/\[/g, '').replace(/\]/g, '')
-            .split(',')
+            .substring(definition.indexOf("(") + 1, definition.lastIndexOf(")"))
+            .replace(/\[/g, "").replace(/\]/g, "")
+            .split(",")
             .map(parameter => parameter.trim())
             .map(parameter => {
                 const matches = parameter.match(luaParameterNameRegex);
@@ -55,7 +56,7 @@ export function getParameterNameList(editor: vscode.TextEditor, languageParamete
                 return false;
             }
 
-            let name = parameters[key];
+            const name = parameters[key];
 
             if (shouldHideRedundantAnnotations && name === namedValue) {
                 return false;
@@ -75,7 +76,7 @@ export function parse(code: string): ParameterPosition[][] {
         locations: true,
     });
     const functionCalls: any[] = crawlAst(ast);
-    let parameters: ParameterPosition[][] = [];
+    const parameters: ParameterPosition[][] = [];
 
     functionCalls.forEach((expression) => {
         parameters.push(getParametersFromExpression(expression));
@@ -85,16 +86,16 @@ export function parse(code: string): ParameterPosition[][] {
 }
 
 function crawlAst(ast, functionCalls = []) {
-    const canAcceptArguments = ast.type && ast.type === 'CallExpression';
+    const canAcceptArguments = ast.type && ast.type === "CallExpression";
     const hasArguments = ast.arguments && ast.arguments.length > 0;
-    const shouldHideArgumentNames = vscode.workspace.getConfiguration('inline-parameters').get('hideSingleParameters') && ast.arguments && ast.arguments.length === 1;
+    const shouldHideArgumentNames = vscode.workspace.getConfiguration("inline-parameters").get("hideSingleParameters") && ast.arguments && ast.arguments.length === 1;
 
     if (canAcceptArguments && hasArguments && !shouldHideArgumentNames) {
         functionCalls.push(ast);
     }
 
     for (const [key, value] of Object.entries(ast)) {
-        if (key === 'comments') {
+        if (key === "comments") {
             continue;
         }
 
@@ -111,7 +112,7 @@ function getParametersFromExpression(expression: any): ParameterPosition[] | und
         return undefined;
     }
 
-    let parameters = [];
+    const parameters = [];
 
     expression.arguments.forEach((argument: any, key: number) => {
         parameters.push({
