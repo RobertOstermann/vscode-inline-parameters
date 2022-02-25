@@ -99,7 +99,8 @@ export default class PHPHelper {
 
     if (description && description.length > 0) {
       try {
-        const regex = /(?<=@param)[^.]*?((?:\.{3})?\$[\w]+).*?[\r\n|\n](.*?)[\r\n|\n](?:_@param|_@return)/gs;
+        // const regex = /(?<=@param)[^.]*?((?:\.{3})?\$[\w]+).*?[\r\n|\n](.*?)[\r\n|\n](?:_@param|_@return)/gs;
+        const regex = /(?<=@param)[^.]*?((?:\.{3})?\$[\w]+).*?[\r\n|\n—] ?(.*?)[\r\n|\n](?:_@param|_@return)/gs;
         const definition = this.getFunctionDefinition(<vscode.MarkdownString[]>description[0].contents);
         parameters = definition ? [...definition.matchAll(regex)] : [];
       } catch (error) {
@@ -144,7 +145,11 @@ export default class PHPHelper {
 
         let name = namedValue;
         name = PHPHelper.showDollarSign(name);
-        parameterDetails[i].name = showVariadicNumbers(name, -parametersLength + 1 + key);
+        parameterDetails[i] = {
+          name: showVariadicNumbers(name, key - parametersLength + 1),
+          definition: parameterDetails[parameterDetails.length - 1].definition
+        };
+        console.log(i + " - " + parameterDetails[i].name);
         continue;
       }
 

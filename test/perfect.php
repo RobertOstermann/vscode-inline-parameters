@@ -1,6 +1,6 @@
 <?php
 
-var_dump($expression);
+var_dump($expression, $expression, $expression, $expression);
 
 $expression = "Example";
 
