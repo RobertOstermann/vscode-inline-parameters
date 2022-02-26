@@ -5,7 +5,7 @@ import { ParameterDetails, ParameterPosition, removeShebang, showVariadicNumbers
 import PHPConfiguration from "./phpConfiguration";
 
 export default class PHPHelper {
-  static parse(code: string, start: number, end: number): ParameterPosition[][] {
+  static parse(code: string, start: number): ParameterPosition[][] {
     const parameters: ParameterPosition[][] = [];
     const parser = new php.Engine({
       parser: {
@@ -25,7 +25,7 @@ export default class PHPHelper {
     const functionCalls: any[] = this.crawlAST(ast);
 
     functionCalls.forEach((expression) => {
-      parameters.push(this.getParametersFromExpression(expression, start, end));
+      parameters.push(this.getParametersFromExpression(expression, start));
     });
 
     return parameters;
@@ -50,7 +50,7 @@ export default class PHPHelper {
     return functionCalls;
   }
 
-  static getParametersFromExpression(expression: any, start: number, end: number): ParameterPosition[] | undefined {
+  static getParametersFromExpression(expression: any, start: number): ParameterPosition[] | undefined {
     const parameters = [];
     if (!expression.arguments) {
       return undefined;
@@ -62,24 +62,22 @@ export default class PHPHelper {
       }
 
       const expressionLoc = expression.what.offset ? expression.what.offset.loc.start : expression.what.loc.end;
-      if (expressionLoc.line >= start && expressionLoc.line <= end) {
-        parameters.push({
-          namedValue: argument.name ?? null,
-          expression: {
-            line: parseInt(expressionLoc.line) - 1,
-            character: parseInt(expressionLoc.column),
-          },
-          key: key,
-          start: {
-            line: parseInt(argument.loc.start.line) - 1,
-            character: parseInt(argument.loc.start.column),
-          },
-          end: {
-            line: parseInt(argument.loc.end.line) - 1,
-            character: parseInt(argument.loc.end.column),
-          },
-        });
-      }
+      parameters.push({
+        namedValue: argument.name ?? null,
+        expression: {
+          line: parseInt(expressionLoc.line) + start - 1,
+          character: parseInt(expressionLoc.column),
+        },
+        key: key,
+        start: {
+          line: parseInt(argument.loc.start.line) + start - 1,
+          character: parseInt(argument.loc.start.column),
+        },
+        end: {
+          line: parseInt(argument.loc.end.line) + start - 1,
+          character: parseInt(argument.loc.end.column),
+        },
+      });
     });
 
     return parameters;
@@ -150,7 +148,7 @@ export default class PHPHelper {
           name: showVariadicNumbers(name, key - parametersLength + 1),
           definition: parameterDetails[parameterDetails.length - 1].definition
         };
-        console.log(i + " - " + parameterDetails[i].name);
+
         continue;
       }
 

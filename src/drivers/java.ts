@@ -175,7 +175,5 @@ function parseParam(editor: vscode.TextEditor, expression: any, argument: Expres
     parameter.start.character -= offset;
     parameter.end.character -= offset;
 
-    console.log("JACK:  " + argument.text + position(parameter));
-
     return parameter;
 }

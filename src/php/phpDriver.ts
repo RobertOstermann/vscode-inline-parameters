@@ -10,10 +10,8 @@ export default class phpDriver {
       async provideInlayHints(document: vscode.TextDocument, range: vscode.Range): Promise<vscode.InlayHint[]> {
         const result: vscode.InlayHint[] = [];
         const text = document.getText(range);
-        const start = document.offsetAt(range.start);
-        const end = document.offsetAt(range.end);
 
-        const functionParameters = PHPHelper.parse(text, start, end);
+        const functionParameters = PHPHelper.parse(text, range.start.line);
         for (const languageParameters of functionParameters) {
           if (languageParameters === undefined) continue;
           let parameters: ParameterDetails[];
