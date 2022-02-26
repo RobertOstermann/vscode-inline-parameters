@@ -1,32 +1,7 @@
 import * as vscode from "vscode";
 import { MarkdownString } from "vscode";
 
-export interface ParameterDetails {
-    name: string;
-
-    definition: string;
-}
-
-export interface ParameterPosition {
-    namedValue?: string;
-
-    expression: {
-        line: number,
-        character: number,
-    };
-
-    key: number;
-
-    start: {
-        line: number,
-        character: number,
-    };
-
-    end: {
-        line: number,
-        character: number,
-    };
-}
+import ParameterPosition from "./helpers/parameterPosition";
 
 export interface LanguageDriver {
     getParameterNameList(editor: vscode.TextEditor, languageParameters: ParameterPosition[]): Promise<(string | undefined)[]>;
@@ -36,7 +11,7 @@ export interface LanguageDriver {
 export function removeShebang(sourceCode: string): string {
     const sourceCodeArr = sourceCode.split("\n");
 
-    if (sourceCodeArr[0].substr(0, 2) === "#!") {
+    if (sourceCodeArr[0].slice(0, 2) === "#!") {
         sourceCodeArr[0] = "";
     }
 

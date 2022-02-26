@@ -1,6 +1,7 @@
 import * as vscode from "vscode";
 
-import { ParameterDetails } from "../utils";
+import Helper from "../helpers/helper";
+import ParameterDetails from "../helpers/parameterDetails";
 import PHPConfiguration from "./phpConfiguration";
 import PHPHelper from "./phpHelper";
 
@@ -24,23 +25,24 @@ export default class phpDriver {
 
           for (let index = 0; index < languageParameters.length; index++) {
             const parameter = languageParameters[index];
-            const parameterDetails = parameters[index];
+            const parameterName = Helper.formatParameterName(parameters[index].name);
+            const parameterDefinition = parameters[index].definition;
 
-            if (!parameterDetails) continue;
+            if (!parameterName) continue;
 
             let inlayHint: vscode.InlayHint;
 
             if (PHPConfiguration.hintBeforeParameter()) {
               const position = new vscode.Position(parameter.start.line, parameter.start.character);
-              const inlayHintPart = new vscode.InlayHintLabelPart(parameterDetails.name);
+              const inlayHintPart = new vscode.InlayHintLabelPart(parameterName);
               inlayHint = new vscode.InlayHint(position, [inlayHintPart], vscode.InlayHintKind.Parameter);
-              inlayHint.tooltip = new vscode.MarkdownString(parameterDetails.definition);
+              inlayHint.tooltip = new vscode.MarkdownString(parameterDefinition);
               inlayHint.paddingRight = true;
             } else {
               const position = new vscode.Position(parameter.end.line, parameter.end.character);
-              const inlayHintPart = new vscode.InlayHintLabelPart(parameterDetails.name);
+              const inlayHintPart = new vscode.InlayHintLabelPart(parameterName);
               inlayHint = new vscode.InlayHint(position, [inlayHintPart], vscode.InlayHintKind.Parameter);
-              inlayHint.tooltip = new vscode.MarkdownString(parameterDetails.definition);
+              inlayHint.tooltip = new vscode.MarkdownString(parameterDefinition);
               inlayHint.paddingLeft = true;
             }
 

@@ -2,7 +2,8 @@ import { ArgumentsContext, ExpressionContext, JavaParserListener, MethodCallCont
 import * as vscode from "vscode";
 import { MarkdownString } from "vscode";
 
-import { getFunctionDefinition, ParameterPosition, removeShebang, showVariadicNumbers } from "../utils";
+import ParameterPosition from "../helpers/parameterPosition";
+import { getFunctionDefinition, removeShebang, showVariadicNumbers } from "../utils";
 
 export function getParameterNameList(editor: vscode.TextEditor, languageParameters: ParameterPosition[]): Promise<string[]> {
     return new Promise(async (resolve, reject) => {

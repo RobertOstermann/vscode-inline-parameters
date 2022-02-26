@@ -1,6 +1,7 @@
 import * as vscode from "vscode";
 
-import { getFunctionDefinition, ParameterPosition, removeShebang } from "../utils";
+import ParameterPosition from "../helpers/parameterPosition";
+import { getFunctionDefinition, removeShebang } from "../utils";
 
 const parser = require("luaparse");
 

@@ -68,6 +68,11 @@
             "description": "Show the $ character before PHP parameter names.",
             "default": false
           },
+          "inline-parameters.php.showVariadicNumbers": {
+            "type": "boolean",
+            "description": "Show the number of times a variadic parameter has been called.",
+            "default": true
+          },
           "inline-parameters.php.suppressWhenArgumentMatchesName": {
             "type": "boolean",
             "description": "Suppress parameter name hints on arguments whose text is identical to the parameter name.",

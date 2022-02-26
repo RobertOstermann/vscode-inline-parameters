@@ -1,7 +1,9 @@
 import * as php from "php-parser";
 import * as vscode from "vscode";
 
-import { ParameterDetails, ParameterPosition, removeShebang, showVariadicNumbers } from "../utils";
+import Helper from "../helpers/helper";
+import ParameterDetails from "../helpers/parameterDetails";
+import ParameterPosition from "../helpers/parameterPosition";
 import PHPConfiguration from "./phpConfiguration";
 
 export default class PHPHelper {
@@ -20,7 +22,7 @@ export default class PHPHelper {
       },
     });
 
-    code = removeShebang(code).replace("<?php", "");
+    code = Helper.removeShebang(code).replace("<?php", "");
     const ast: any = parser.parseEval(code);
     const functionCalls: any[] = this.crawlAST(ast);
 
@@ -100,7 +102,7 @@ export default class PHPHelper {
     if (description && description.length > 0) {
       try {
         const regex = /(?<=@param)[^.]*?((?:\.{3})?\$[\w]+).*?[\r\n|\n—] ?(.*?)[\r\n|\n](?:_@param|_@return)/gs;
-        const definition = this.getFunctionDefinition(<vscode.MarkdownString[]>description[0].contents);
+        const definition = Helper.getFunctionDefinition(<vscode.MarkdownString[]>description[0].contents);
         parameters = definition ? [...definition.matchAll(regex)] : [];
       } catch (error) {
         console.error(error);
@@ -142,10 +144,11 @@ export default class PHPHelper {
           return Promise.reject();
         }
 
-        let name = namedValue;
-        name = PHPHelper.showDollarSign(name);
+        const name = PHPHelper.showDollarSign(namedValue);
+        const number = key - parametersLength + 1;
+
         parameterDetails[i] = {
-          name: showVariadicNumbers(name, key - parametersLength + 1),
+          name: PHPConfiguration.showVariadicNumbers() ? `${name}[${number}]` : name,
           definition: parameterDetails[parameterDetails.length - 1].definition
         };
 
@@ -178,14 +181,5 @@ export default class PHPHelper {
     }
 
     return str.replace("$", "");
-  }
-
-  static getFunctionDefinition(hoverList: vscode.MarkdownString[]): string | undefined {
-    for (const hover of hoverList) {
-      if (hover.value.includes("```"))
-        return hover.value;
-    }
-
-    return undefined;
   }
 }
