@@ -36,10 +36,8 @@ export default class PHPHelper {
   static crawlAST(ast: any, functionCalls = []): any[] {
     const canAcceptArguments = ast.kind && (ast.kind === "call" || ast.kind === "new");
     const hasArguments = ast.arguments && ast.arguments.length > 0;
-    const shouldHideArgumentNames = vscode.workspace.getConfiguration("inline-parameters").get("hideSingleParameters")
-      && ast.arguments && ast.arguments.length === 1;
 
-    if (canAcceptArguments && hasArguments && !shouldHideArgumentNames) {
+    if (canAcceptArguments && hasArguments) {
       functionCalls.push(ast);
     }
 

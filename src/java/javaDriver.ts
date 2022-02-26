@@ -2,23 +2,23 @@ import * as vscode from "vscode";
 
 import Helper from "../helpers/helper";
 import ParameterDetails from "../helpers/parameterDetails";
-import PHPConfiguration from "./phpConfiguration";
-import PHPHelper from "./phpHelper";
+import JavaConfiguration from "./javaConfiguration";
+import JavaHelper from "./javaHelper";
 
-export default class PHPDriver {
+export default class JavaDriver {
   static Register() {
-    vscode.languages.registerInlayHintsProvider("php", new class implements vscode.InlayHintsProvider {
-      async provideInlayHints(document: vscode.TextDocument, range: vscode.Range): Promise<vscode.InlayHint[]> {
+    vscode.languages.registerInlayHintsProvider("java", new class implements vscode.InlayHintsProvider {
+      async provideInlayHints(document: vscode.TextDocument): Promise<vscode.InlayHint[]> {
         const result: vscode.InlayHint[] = [];
-        const text = document.getText(range);
+        const text = document.getText();
 
-        const functionParameters = PHPHelper.parse(text, range.start.line);
+        const functionParameters = JavaHelper.parse(text);
         for (const languageParameters of functionParameters) {
           if (languageParameters === undefined) continue;
           let parameters: ParameterDetails[];
 
           try {
-            parameters = await PHPHelper.getParameterNames(document.uri, languageParameters);
+            parameters = await JavaHelper.getParameterNames(document.uri, languageParameters);
           } catch (error) {
             continue;
           }
@@ -32,7 +32,7 @@ export default class PHPDriver {
 
             let inlayHint: vscode.InlayHint;
 
-            if (PHPConfiguration.hintBeforeParameter()) {
+            if (JavaConfiguration.hintBeforeParameter()) {
               const position = new vscode.Position(parameter.start.line, parameter.start.character);
               const inlayHintPart = new vscode.InlayHintLabelPart(parameterName);
               inlayHint = new vscode.InlayHint(position, [inlayHintPart], vscode.InlayHintKind.Parameter);

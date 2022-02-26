@@ -1,6 +1,6 @@
 import * as vscode from "vscode";
 
-export default class markdownDriver {
+export default class MarkdownDriver {
   static Register() {
     vscode.languages.registerInlayHintsProvider("markdown", new class implements vscode.InlayHintsProvider {
       provideInlayHints(document: vscode.TextDocument, range: vscode.Range): vscode.InlayHint[] {
@@ -68,6 +68,7 @@ export default class markdownDriver {
           return undefined;
         }
 
+        // eslint-disable-next-line no-constant-condition
         while (true) {
           pos = text.indexOf("foo", pos);
           if (pos < 0) {
@@ -82,6 +83,7 @@ export default class markdownDriver {
     });
 
     vscode.languages.registerHoverProvider("markdown", new class implements vscode.HoverProvider {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       async provideHover(document: vscode.TextDocument, position: vscode.Position, token: vscode.CancellationToken) {
         const wait = Math.round(Math.random() * 654);
         await new Promise(resolve => setTimeout(resolve, wait));

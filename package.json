@@ -53,6 +53,16 @@
             "description": "Enable inline parameters for Lua.",
             "default": true
           },
+          "inline-parameters.lua.hintBeforeParameter": {
+            "type": "boolean",
+            "description": "Should the inlay hint appear before the parameter. If this is set to `false` the hint will appear after the parameter.",
+            "default": true
+          },
+          "inline-parameters.lua.suppressWhenArgumentMatchesName": {
+            "type": "boolean",
+            "description": "Suppress parameter name hints on arguments whose text is identical to the parameter name.",
+            "default": true
+          },
           "inline-parameters.php.enabled": {
             "type": "boolean",
             "description": "Enable inline parameters for PHP.",
