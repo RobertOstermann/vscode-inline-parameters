@@ -5,7 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [0.1.9] - 2021-11-30
+## [1.0.0] - 2021-02-27
+
+**BREAKING CHANGES**
+
+- Rework the extension to use the new Inlay-Hints API.
+- Change the configuration properties.
+- Remove Javascript support (use VSCode provided support with settings in `javascript.inlayHints`)
+- Remove TypeScript support (use VSCode provided support with settings in `typescript.inlayHints`)
+
+## [0.2.0] - 2021-11-30
 
 - Added `renderOptions` to decorations to allow display before or after the parameter
 
