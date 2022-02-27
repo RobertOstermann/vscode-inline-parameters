@@ -52,7 +52,7 @@ export default class JavaHelper {
 
     const params = method.expressionList().expression();
 
-    params.forEach((param, key) => {
+    params.forEach((param: java.ExpressionContext, key: number) => {
       parameters.push(this.parseParameter(editor, method, param, key));
     });
 
@@ -73,7 +73,7 @@ export default class JavaHelper {
       },
       end: {
         line: argument.stop.line - 1,
-        character: argument.stop.charPositionInLine,
+        character: argument.stop.charPositionInLine + 1 + argument.stop.stopIndex - argument.stop.startIndex,
       },
     };
 

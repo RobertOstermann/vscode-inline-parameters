@@ -25,7 +25,7 @@ export default class JavaDriver {
 
           for (let index = 0; index < languageParameters.length; index++) {
             const parameter = languageParameters[index];
-            const parameterName = Helper.formatParameterName(parameters[index].name);
+            const parameterName = Helper.formatParameterName(parameters[index].name, JavaConfiguration.hintBeforeParameter());
             const parameterDefinition = parameters[index].definition;
 
             if (!parameterName) continue;

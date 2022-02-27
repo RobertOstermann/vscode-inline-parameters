@@ -25,7 +25,7 @@ export default class LuaDriver {
 
           for (let index = 0; index < languageParameters.length; index++) {
             const parameter = languageParameters[index];
-            const parameterName = Helper.formatParameterName(parameters[index].name);
+            const parameterName = Helper.formatParameterName(parameters[index].name, LuaConfiguration.hintBeforeParameter());
             const parameterDefinition = parameters[index].definition;
 
             if (!parameterName) continue;

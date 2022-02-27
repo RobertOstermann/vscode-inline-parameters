@@ -16,8 +16,15 @@ export default class Helper {
     return undefined;
   }
 
-  static formatParameterName(parameterName: string): string {
-    parameterName += ":";
+  /**
+   * Formats the parameter and adds extra characters for display.
+   * 
+   * @param parameterName - The parameter name to format.
+   * @param hintBeforeParameter - The position of the parameter.
+   * @returns The parameter formatted for display.
+   */
+  static formatParameterName(parameterName: string, hintBeforeParameter: boolean): string {
+    if (hintBeforeParameter) parameterName += ":";
 
     return parameterName;
   }

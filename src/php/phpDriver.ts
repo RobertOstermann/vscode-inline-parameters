@@ -25,7 +25,7 @@ export default class PHPDriver {
 
           for (let index = 0; index < languageParameters.length; index++) {
             const parameter = languageParameters[index];
-            const parameterName = Helper.formatParameterName(parameters[index].name);
+            const parameterName = Helper.formatParameterName(parameters[index].name, PHPConfiguration.hintBeforeParameter());
             const parameterDefinition = parameters[index].definition;
 
             if (!parameterName) continue;

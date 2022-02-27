@@ -38,14 +38,24 @@
       {
         "title": "Inline Parameters",
         "properties": {
-          "inline-parameters.showVariadicNumbers": {
+          "inline-parameters.java.enabled": {
+            "type": "boolean",
+            "description": "Enable inline parameters for Java.",
+            "default": true
+          },
+          "inline-parameters.java.hintBeforeParameter": {
+            "type": "boolean",
+            "description": "Should the inlay hint appear before the parameter. If this is set to `false` the hint will appear after the parameter.",
+            "default": true
+          },
+          "inline-parameters.java.showVariadicNumbers": {
             "type": "boolean",
             "description": "Show the number of times a variadic parameter has been called.",
             "default": true
           },
-          "inline-parameters.java.enabled": {
+          "inline-parameters.java.suppressWhenArgumentMatchesName": {
             "type": "boolean",
-            "description": "Enable inline parameters for Java.",
+            "description": "Suppress parameter name hints on arguments whose text is identical to the parameter name.",
             "default": true
           },
           "inline-parameters.lua.enabled": {
