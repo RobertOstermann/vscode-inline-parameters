@@ -1,5 +1,6 @@
 import * as vscode from "vscode";
 
+import Configuration from "./helpers/configuration";
 import JavaConfiguration from "./java/javaConfiguration";
 import JavaDriver from "./java/javaDriver";
 import LuaConfiguration from "./lua/luaConfiguration";
@@ -10,6 +11,8 @@ import PHPDriver from "./php/phpDriver";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export function activate(context: vscode.ExtensionContext) {
+  Configuration.initialize();
+
   setTimeout(() => {
     // MarkdownDriver.Register();
     if (JavaConfiguration.enabled) JavaDriver.Register();

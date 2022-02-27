@@ -4,7 +4,7 @@
   "description": "Function parameter annotations displaying inline in VSCode",
   "publisher": "RobertOstermann",
   "icon": "icon.png",
-  "version": "0.2.0",
+  "version": "1.0.0",
   "license": "MIT",
   "homepage": "https://github.com/RobertOstermann/vscode-inline-parameters",
   "bugs": {
@@ -16,24 +16,22 @@
   },
   "main": "./out/src/extension.js",
   "engines": {
-    "vscode": "^1.40.0"
+    "vscode": "^1.65.0"
   },
   "categories": [
     "Other"
   ],
+  "keywords": [
+    "Parameters",
+    "Inlay Hints",
+    "Hints"
+  ],
   "activationEvents": [
     "onLanguage:java",
     "onLanguage:lua",
-    "onLanguage:markdown",
     "onLanguage:php"
   ],
   "contributes": {
-    "commands": [
-      {
-        "command": "inline-parameters.toggle",
-        "title": "Inline Parameters: Hide / Show"
-      }
-    ],
     "configuration": [
       {
         "title": "Inline Parameters",
