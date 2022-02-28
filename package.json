@@ -38,62 +38,62 @@
         "properties": {
           "inline-parameters.java.enabled": {
             "type": "boolean",
-            "description": "Enable inline parameters for Java.",
+            "markdownDescription": "Enable inline parameters for Java.",
             "default": true
           },
           "inline-parameters.java.hintBeforeParameter": {
             "type": "boolean",
-            "description": "Should the inlay hint appear before the parameter. If this is set to `false` the hint will appear after the parameter.",
+            "markdownDescription": "Should the inlay hint appear before the parameter. If this is set to `false` the hint will appear after the parameter.",
             "default": true
           },
           "inline-parameters.java.showVariadicNumbers": {
             "type": "boolean",
-            "description": "Show the number of times a variadic parameter has been called.",
+            "markdownDescription": "Show the number of times a variadic parameter has been called.",
             "default": true
           },
           "inline-parameters.java.suppressWhenArgumentMatchesName": {
             "type": "boolean",
-            "description": "Suppress parameter name hints on arguments whose text is identical to the parameter name.",
+            "markdownDescription": "Suppress parameter name hints on arguments whose text is identical to the parameter name.",
             "default": true
           },
           "inline-parameters.lua.enabled": {
             "type": "boolean",
-            "description": "Enable inline parameters for Lua.",
+            "markdownDescription": "Enable inline parameters for Lua.",
             "default": true
           },
           "inline-parameters.lua.hintBeforeParameter": {
             "type": "boolean",
-            "description": "Should the inlay hint appear before the parameter. If this is set to `false` the hint will appear after the parameter.",
+            "markdownDescription": "Should the inlay hint appear before the parameter. If this is set to `false` the hint will appear after the parameter.",
             "default": true
           },
           "inline-parameters.lua.suppressWhenArgumentMatchesName": {
             "type": "boolean",
-            "description": "Suppress parameter name hints on arguments whose text is identical to the parameter name.",
+            "markdownDescription": "Suppress parameter name hints on arguments whose text is identical to the parameter name.",
             "default": true
           },
           "inline-parameters.php.enabled": {
             "type": "boolean",
-            "description": "Enable inline parameters for PHP.",
+            "markdownDescription": "Enable inline parameters for PHP.",
             "default": true
           },
           "inline-parameters.php.hintBeforeParameter": {
             "type": "boolean",
-            "description": "Should the inlay hint appear before the parameter. If this is set to `false` the hint will appear after the parameter.",
+            "markdownDescription": "Should the inlay hint appear before the parameter. If this is set to `false` the hint will appear after the parameter.",
             "default": true
           },
           "inline-parameters.php.showDollarSign": {
             "type": "boolean",
-            "description": "Show the $ character before PHP parameter names.",
+            "markdownDescription": "Show the $ character before PHP parameter names.",
             "default": false
           },
           "inline-parameters.php.showVariadicNumbers": {
             "type": "boolean",
-            "description": "Show the number of times a variadic parameter has been called.",
+            "markdownDescription": "Show the number of times a variadic parameter has been called.",
             "default": true
           },
           "inline-parameters.php.suppressWhenArgumentMatchesName": {
             "type": "boolean",
-            "description": "Suppress parameter name hints on arguments whose text is identical to the parameter name.",
+            "markdownDescription": "Suppress parameter name hints on arguments whose text is identical to the parameter name.",
             "default": true
           }
         }
