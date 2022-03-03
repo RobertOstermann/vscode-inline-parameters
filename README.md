@@ -10,9 +10,9 @@
   <a href="https://marketplace.visualstudio.com/items?itemName=RobertOstermann.inline-parameters-extended"><img src="https://vsmarketplacebadge.apphb.com/rating-short/RobertOstermann.inline-parameters-extended.svg" alt="VS Marketplace Rating"></a>
 </p>
   
-<p align="center">
-Add Inline Parameters for Java, Lua, and PHP. 
-</p>
+<h2 align="center">
+Implement the new Inlay Hints API to add Inline Parameters for Java, Lua, and PHP. 
+</h2>
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/imliam/vscode-inline-parameters/master/example.gif" alt="Example of extension">
