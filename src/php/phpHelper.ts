@@ -7,7 +7,7 @@ import ParameterPosition from "../helpers/parameterPosition";
 import PHPConfiguration from "./phpConfiguration";
 
 export default class PHPHelper {
-  static parse(code: string, start: number): ParameterPosition[][] {
+  static parse(code: string, range: vscode.Range): ParameterPosition[][] {
     const parameters: ParameterPosition[][] = [];
     const parser = new php.Engine({
       parser: {
@@ -27,7 +27,7 @@ export default class PHPHelper {
     const functionCalls: any[] = this.crawlAST(ast);
 
     functionCalls.forEach((expression) => {
-      parameters.push(this.getParametersFromExpression(expression, start));
+      parameters.push(this.getParametersFromExpression(expression, range));
     });
 
     return parameters;
@@ -50,7 +50,7 @@ export default class PHPHelper {
     return functionCalls;
   }
 
-  static getParametersFromExpression(expression: any, start: number): ParameterPosition[] | undefined {
+  static getParametersFromExpression(expression: any, range: vscode.Range): ParameterPosition[] | undefined {
     const parameters = [];
     if (!expression.arguments) {
       return undefined;
@@ -62,22 +62,24 @@ export default class PHPHelper {
       }
 
       const expressionLoc = expression.what.offset ? expression.what.offset.loc.start : expression.what.loc.end;
-      parameters.push({
-        namedValue: argument.name ?? null,
-        expression: {
-          line: parseInt(expressionLoc.line) + start - 1,
-          character: parseInt(expressionLoc.column),
-        },
-        key: key,
-        start: {
-          line: parseInt(argument.loc.start.line) + start - 1,
-          character: parseInt(argument.loc.start.column),
-        },
-        end: {
-          line: parseInt(argument.loc.end.line) + start - 1,
-          character: parseInt(argument.loc.end.column),
-        },
-      });
+      if (expressionLoc.line > range.start.line || expressionLoc.line < range.end.line) {
+        parameters.push({
+          namedValue: argument.name ?? null,
+          expression: {
+            line: parseInt(expressionLoc.line) - 1,
+            character: parseInt(expressionLoc.column),
+          },
+          key: key,
+          start: {
+            line: parseInt(argument.loc.start.line) - 1,
+            character: parseInt(argument.loc.start.column),
+          },
+          end: {
+            line: parseInt(argument.loc.end.line) - 1,
+            character: parseInt(argument.loc.end.column),
+          },
+        });
+      }
     });
 
     return parameters;
