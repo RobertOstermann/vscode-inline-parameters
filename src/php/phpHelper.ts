@@ -71,8 +71,7 @@ export default class PHPHelper {
       }
 
       const expressionLoc = expression.what.offset ? expression.what.offset.loc.start : expression.what.loc.end;
-      if (expressionLoc.line > range.start.line || expressionLoc.line < range.end.line) {
-
+      if (expressionLoc.line + start - 1 > range.start.line && expressionLoc.line + start - 1 < range.end.line) {
         parameters.push({
           namedValue: argument.name ?? null,
           expression: {
