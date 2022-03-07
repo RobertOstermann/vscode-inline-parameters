@@ -104,7 +104,7 @@ export default class PHPHelper {
         return Promise.reject();
       }
 
-      await new Promise(timer => setTimeout(timer, 2000));
+      await new Promise(timer => setTimeout(timer, 1000));
     }
 
     const description: any = await vscode.commands.executeCommand<vscode.Hover[]>(
