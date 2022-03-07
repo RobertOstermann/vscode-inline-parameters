@@ -25,16 +25,18 @@ export default class PHPHelper {
     text = Helper.removeShebang(text).replace("<?php", "");
     code = Helper.removeShebang(code).replace("<?php", "");
     let functionCalls: any[] = [];
+    let start = 0;
     try {
       const ast: any = parser.parseEval(code);
       functionCalls = this.crawlAST(ast);
+      start = range.start.line;
     } catch (error) {
       const ast: any = parser.parseEval(text);
       functionCalls = this.crawlAST(ast);
     }
 
     functionCalls.forEach((expression) => {
-      parameters.push(this.getParametersFromExpression(expression, range));
+      parameters.push(this.getParametersFromExpression(expression, range, start));
     });
 
     return parameters;
@@ -57,7 +59,7 @@ export default class PHPHelper {
     return functionCalls;
   }
 
-  static getParametersFromExpression(expression: any, range: vscode.Range): ParameterPosition[] | undefined {
+  static getParametersFromExpression(expression: any, range: vscode.Range, start: number): ParameterPosition[] | undefined {
     const parameters = [];
     if (!expression.arguments) {
       return undefined;
@@ -70,19 +72,20 @@ export default class PHPHelper {
 
       const expressionLoc = expression.what.offset ? expression.what.offset.loc.start : expression.what.loc.end;
       if (expressionLoc.line > range.start.line || expressionLoc.line < range.end.line) {
+
         parameters.push({
           namedValue: argument.name ?? null,
           expression: {
-            line: parseInt(expressionLoc.line) - 1,
+            line: parseInt(expressionLoc.line) + start - 1,
             character: parseInt(expressionLoc.column),
           },
           key: key,
           start: {
-            line: parseInt(argument.loc.start.line) - 1,
+            line: parseInt(argument.loc.start.line) + start - 1,
             character: parseInt(argument.loc.start.column),
           },
           end: {
-            line: parseInt(argument.loc.end.line) - 1,
+            line: parseInt(argument.loc.end.line) + start - 1,
             character: parseInt(argument.loc.end.column),
           },
         });
@@ -123,7 +126,7 @@ export default class PHPHelper {
         console.error(error);
       }
     } else {
-      return this.getParameterNames(uri, languageParameters);
+      return this.getParameterNames(uri, languageParameters, attempt + 1);
     }
 
     if (!parameters) {
