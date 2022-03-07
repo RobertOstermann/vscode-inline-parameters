@@ -94,18 +94,10 @@ export default class PHPHelper {
     return parameters;
   }
 
-  static async getParameterNames(uri: vscode.Uri, languageParameters: ParameterPosition[], attempt = 0): Promise<ParameterDetails[]> {
+  static async getParameterNames(uri: vscode.Uri, languageParameters: ParameterPosition[]): Promise<ParameterDetails[]> {
     const firstParameter = languageParameters[0];
     let parameters: any[];
     let isVariadic = false;
-
-    if (attempt > 0) {
-      if (attempt == 5) {
-        return Promise.reject();
-      }
-
-      await new Promise(timer => setTimeout(timer, 1000));
-    }
 
     const description: any = await vscode.commands.executeCommand<vscode.Hover[]>(
       "vscode.executeHoverProvider",
@@ -124,8 +116,6 @@ export default class PHPHelper {
       } catch (error) {
         console.error(error);
       }
-    } else {
-      return this.getParameterNames(uri, languageParameters, attempt + 1);
     }
 
     if (!parameters) {

@@ -5,7 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [1.0.4] - 2021-03-08
+## [1.0.5] - 2021-03-07
+
+- Backend changes.
+
+## [1.0.4] - 2021-03-07
 
 - Slight performance improvement for PHP parameters.
 
