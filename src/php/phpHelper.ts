@@ -7,7 +7,7 @@ import ParameterPosition from "../helpers/parameterPosition";
 import PHPConfiguration from "./phpConfiguration";
 
 export default class PHPHelper {
-  static parse(code: string, range: vscode.Range): ParameterPosition[][] {
+  static parse(text: string, code: string, range: vscode.Range): ParameterPosition[][] {
     const parameters: ParameterPosition[][] = [];
     const parser = new php.Engine({
       parser: {
@@ -22,9 +22,16 @@ export default class PHPHelper {
       },
     });
 
+    text = Helper.removeShebang(text).replace("<?php", "");
     code = Helper.removeShebang(code).replace("<?php", "");
-    const ast: any = parser.parseEval(code);
-    const functionCalls: any[] = this.crawlAST(ast);
+    let functionCalls: any[] = [];
+    try {
+      const ast: any = parser.parseEval(code);
+      functionCalls = this.crawlAST(ast);
+    } catch (error) {
+      const ast: any = parser.parseEval(text);
+      functionCalls = this.crawlAST(ast);
+    }
 
     functionCalls.forEach((expression) => {
       parameters.push(this.getParametersFromExpression(expression, range));
@@ -85,10 +92,18 @@ export default class PHPHelper {
     return parameters;
   }
 
-  static async getParameterNames(uri: vscode.Uri, languageParameters: ParameterPosition[]): Promise<ParameterDetails[]> {
+  static async getParameterNames(uri: vscode.Uri, languageParameters: ParameterPosition[], attempt = 0): Promise<ParameterDetails[]> {
     const firstParameter = languageParameters[0];
     let parameters: any[];
     let isVariadic = false;
+
+    if (attempt > 0) {
+      if (attempt == 5) {
+        return Promise.reject();
+      }
+
+      await new Promise(timer => setTimeout(timer, 2000));
+    }
 
     const description: any = await vscode.commands.executeCommand<vscode.Hover[]>(
       "vscode.executeHoverProvider",
@@ -107,6 +122,8 @@ export default class PHPHelper {
       } catch (error) {
         console.error(error);
       }
+    } else {
+      return this.getParameterNames(uri, languageParameters);
     }
 
     if (!parameters) {
