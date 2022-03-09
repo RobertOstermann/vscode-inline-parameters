@@ -4,7 +4,7 @@
   "description": "Function parameter annotations displaying inline in VSCode",
   "publisher": "RobertOstermann",
   "icon": "icon.png",
-  "version": "0.2.0",
+  "version": "1.0.6",
   "license": "MIT",
   "homepage": "https://github.com/RobertOstermann/vscode-inline-parameters",
   "bugs": {
@@ -14,224 +14,125 @@
     "type": "git",
     "url": "https://github.com/RobertOstermann/vscode-inline-parameters"
   },
-  "main": "./out/extension.js",
+  "main": "./out/src/extension.js",
   "engines": {
-    "vscode": "^1.40.0"
+    "vscode": "^1.65.0"
   },
   "categories": [
     "Other"
   ],
+  "keywords": [
+    "Parameters",
+    "Inlay Hints",
+    "Hints"
+  ],
   "activationEvents": [
-    "*"
+    "onLanguage:java",
+    "onLanguage:lua",
+    "onLanguage:php"
   ],
   "contributes": {
-    "commands": [
-      {
-        "command": "inline-parameters.toggle",
-        "title": "Inline Parameters: Hide / Show"
-      }
-    ],
     "configuration": [
       {
         "title": "Inline Parameters",
         "properties": {
-          "inline-parameters.enabled": {
+          "inline-parameters.java.enabled": {
             "type": "boolean",
-            "description": "Show inline parameters",
+            "markdownDescription": "Enable inline parameters for Java.",
             "default": true
           },
-          "inline-parameters.enablePHP": {
+          "inline-parameters.java.hintBeforeParameter": {
             "type": "boolean",
-            "description": "Enable inline parameters for PHP",
+            "markdownDescription": "Should the inlay hint appear before the parameter. If this is set to `false` the hint will appear after the parameter.",
             "default": true
           },
-          "inline-parameters.enableLua": {
+          "inline-parameters.java.showVariadicNumbers": {
             "type": "boolean",
-            "description": "Enable inline parameters for Lua",
+            "markdownDescription": "Show the number of times a variadic parameter has been called.",
             "default": true
           },
-          "inline-parameters.enableJavascript": {
+          "inline-parameters.java.suppressWhenArgumentMatchesName": {
             "type": "boolean",
-            "description": "Enable inline parameters for Javascript and JavascriptReact",
+            "markdownDescription": "Suppress parameter name hints on arguments whose text is identical to the parameter name.",
             "default": true
           },
-          "inline-parameters.enableTypescript": {
+          "inline-parameters.lua.enabled": {
             "type": "boolean",
-            "description": "Enable inline parameters for Typescript and TypescriptReact",
+            "markdownDescription": "Enable inline parameters for Lua.",
             "default": true
           },
-          "inline-parameters.enableJava": {
+          "inline-parameters.lua.hintBeforeParameter": {
             "type": "boolean",
-            "description": "Enable inline parameters for Java",
+            "markdownDescription": "Should the inlay hint appear before the parameter. If this is set to `false` the hint will appear after the parameter.",
             "default": true
           },
-          "inline-parameters.lineLimit": {
-            "type": "number",
-            "description": "The max number of lines in a file",
-            "default": 0
-          },
-          "inline-parameters.largeFileOptimizations": {
-            "type": "number",
-            "description": "The number of lines in a file required to use large file optimizations.",
-            "default": 0
-          },
-          "inline-parameters.leadingCharacters": {
-            "type": "string",
-            "description": "Characters to be shown before each parameter annotation",
-            "default": ""
-          },
-          "inline-parameters.trailingCharacters": {
-            "type": "string",
-            "description": "Characters to be shown after each parameter annotation",
-            "default": ":"
-          },
-          "inline-parameters.showPhpDollar": {
+          "inline-parameters.lua.suppressWhenArgumentMatchesName": {
             "type": "boolean",
-            "description": "Show the $ character before PHP parameter names",
+            "markdownDescription": "Suppress parameter name hints on arguments whose text is identical to the parameter name.",
+            "default": true
+          },
+          "inline-parameters.php.enabled": {
+            "type": "boolean",
+            "markdownDescription": "Enable inline parameters for PHP.",
+            "default": true
+          },
+          "inline-parameters.php.hintBeforeParameter": {
+            "type": "boolean",
+            "markdownDescription": "Should the inlay hint appear before the parameter. If this is set to `false` the hint will appear after the parameter.",
+            "default": true
+          },
+          "inline-parameters.php.showDollarSign": {
+            "type": "boolean",
+            "markdownDescription": "Show the $ character before PHP parameter names.",
             "default": false
           },
-          "inline-parameters.hideSingleParameters": {
+          "inline-parameters.php.showVariadicNumbers": {
             "type": "boolean",
-            "description": "Hide inline parameters if a function only has 1 parameter",
-            "default": false
-          },
-          "inline-parameters.parameterCase": {
-            "type": "string",
-            "description": "Forcibly change the case of the inline parameter name",
-            "enum": [
-              "normal",
-              "lowercase",
-              "uppercase"
-            ],
-            "default": "normal"
-          },
-          "inline-parameters.showVariadicNumbers": {
-            "type": "boolean",
-            "description": "Show the number of times a variadic parameter has been called",
+            "markdownDescription": "Show the number of times a variadic parameter has been called.",
             "default": true
           },
-          "inline-parameters.hideRedundantAnnotations": {
+          "inline-parameters.php.suppressWhenArgumentMatchesName": {
             "type": "boolean",
-            "description": "If the value given to a parameter is the same as the parameter name, hide it",
+            "markdownDescription": "Suppress parameter name hints on arguments whose text is identical to the parameter name.",
             "default": true
-          },
-          "inline-parameters.fontWeight": {
-            "type": "string",
-            "default": "400",
-            "enum": [
-              "100",
-              "200",
-              "300",
-              "400",
-              "500",
-              "600",
-              "700",
-              "800",
-              "900"
-            ],
-            "description": "Annotation styling of font-weight CSS property"
-          },
-          "inline-parameters.fontStyle": {
-            "type": "string",
-            "default": "italic",
-            "enum": [
-              "normal",
-              "italic"
-            ],
-            "description": "Annotation styling of font-style CSS property"
-          },
-          "inline-parameters.fontSize": {
-            "type": "string",
-            "default": "0.85em",
-            "description": "Annotation styling of font size CSS property"
-          },
-          "inline-parameters.margin": {
-            "type": "string",
-            "default": "0.25em",
-            "description": "Annotation styling of margin CSS property"
-          },
-          "inline-parameters.padding": {
-            "type": "string",
-            "default": "0.25em 0.5em",
-            "description": "Annotation styling of padding CSS property"
-          },
-          "inline-parameters.borderRadius": {
-            "type": "string",
-            "default": "0.25em",
-            "description": "Annotation styling of border-radius CSS property"
-          },
-          "inline-parameters.border": {
-            "type": "string",
-            "default": "none",
-            "description": "Annotation styling of border CSS property"
-          },
-          "inline-parameters.renderOptions": {
-            "type": "string",
-            "description": "Forcibly change the case of the inline parameter name",
-            "enum": [
-              "afterParameter",
-              "nearParameter",
-              "nearParentheses"
-            ],
-            "default": "nearParentheses"
           }
         }
-      }
-    ],
-    "colors": [
-      {
-        "id": "inlineparameters.annotationForeground",
-        "description": "Specifies the foreground color for the annotations",
-        "defaults": {
-          "dark": "#adbec5",
-          "light": "#797a79",
-          "highContrast": "#adbec5"
-        }
-      },
-      {
-        "id": "inlineparameters.annotationBackground",
-        "description": "Specifies the background color for the annotations",
-        "defaults": {
-          "dark": "#1e2c31",
-          "light": "#f4f5f4",
-          "highContrast": "#1e2c31"
-        }
-      }
-    ],
-    "keybindings": [
-      {
-        "command": "inline-parameters.toggle",
-        "key": "ctrl+k a",
-        "mac": "cmd+k a"
       }
     ]
   },
   "scripts": {
     "vscode:prepublish": "npm run -S esbuild-base -- --minify",
-    "compile": "tsc -p ./",
+    "compile": "rimraf out && tsc -p ./",
     "watch": "tsc -watch -p ./",
-    "esbuild-base": "esbuild ./src/extension.ts --bundle --outfile=out/extension.js --external:vscode --format=cjs --platform=node",
+    "test": "node ./node_modules/vscode/bin/test",
+    "download-api": "vscode-dts dev",
+    "postdownload-api": "vscode-dts main",
+    "esbuild-base": "rimraf out && esbuild ./src/extension.ts --bundle --outfile=out/src/extension.js --external:vscode --format=cjs --platform=node",
     "esbuild": "npm run -S esbuild-base -- --sourcemap",
     "esbuild-watch": "npm run -S esbuild-base -- --sourcemap --watch"
   },
   "devDependencies": {
-    "@types/glob": "^7.1.2",
-    "@types/mocha": "^5.0.0",
-    "@types/node": "^12.12.44",
-    "@types/vscode": "^1.40.0",
-    "esbuild": "^0.13.10",
-    "glob": "^7.1.5",
-    "mocha": "^6.2.2",
-    "typescript": "^3.9.5",
+    "@types/glob": "^7.2.0",
+    "@types/mocha": "^9.1.0",
+    "@types/node": "^17.0.21",
+    "@typescript-eslint/eslint-plugin": "^5.13.0",
+    "@typescript-eslint/parser": "^5.13.0",
+    "esbuild": "^0.14.24",
+    "eslint": "^8.10.0",
+    "eslint-plugin-simple-import-sort": "^7.0.0",
+    "eslint-plugin-tsdoc": "^0.2.14",
+    "glob": "^7.2.0",
+    "mocha": "^9.2.1",
+    "typescript": "^4.6.2",
     "vscode-test": "^1.2.2"
   },
   "dependencies": {
     "babylon": "^7.0.0-beta.47",
     "install": "^0.13.0",
     "java-ast": "^0.3.0",
-    "luaparse": "^0.3.0",
-    "npm": "^6.14.10",
-    "php-parser": "^3.0.0",
-    "recast": "^0.16.0"
+    "luaparse": "^0.3.1",
+    "npm": "^8.5.2",
+    "php-parser": "^3.0.3",
+    "recast": "^0.20.5"
   }
 }
