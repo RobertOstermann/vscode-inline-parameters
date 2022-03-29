@@ -11,7 +11,7 @@
 </p>
 
 <h2 align="center">
-Implement the new Inlay Hints API to add Inline Parameters for Java, Lua, and PHP.
+This extension implements the new Inlay Hints API to add Inline Parameters for Golang, Java, Lua, and PHP.
 </h2>
 
 <p align="center">
@@ -26,6 +26,7 @@ Speed up your development with parameter hints!
 
 Currently, this extension supports the following languages:
 
+- Golang
 - Java
 - Lua (with [Sumneko's Lua language server](https://marketplace.visualstudio.com/items?itemName=sumneko.lua))
 - PHP (with the [Intelephense](https://marketplace.visualstudio.com/items?itemName=bmewburn.vscode-intelephense-client) language server)
