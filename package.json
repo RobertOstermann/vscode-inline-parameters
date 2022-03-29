@@ -3,7 +3,7 @@
   "displayName": "Inline Parameters Extended for VSCode",
   "description": "Function parameter annotations displaying inline in VSCode",
   "publisher": "RobertOstermann",
-  "icon": "icon.png",
+  "icon": "images/icon.png",
   "version": "1.0.7",
   "license": "MIT",
   "homepage": "https://github.com/RobertOstermann/vscode-inline-parameters",
