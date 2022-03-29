@@ -1,12 +1,15 @@
 import * as vscode from "vscode";
 
 import Helper from "../helpers/helper";
+import Output from "../helpers/output";
 import ParameterDetails from "../helpers/parameterDetails";
 import LuaConfiguration from "./luaConfiguration";
 import LuaHelper from "./luaHelper";
 
 export default class LuaDriver {
   static Register() {
+    Output.outputChannel.appendLine("Register Lua");
+
     vscode.languages.registerInlayHintsProvider("lua", new class implements vscode.InlayHintsProvider {
       async provideInlayHints(document: vscode.TextDocument, range: vscode.Range): Promise<vscode.InlayHint[]> {
         const result: vscode.InlayHint[] = [];

@@ -1,5 +1,7 @@
 import * as vscode from "vscode";
 
+import GoConfiguration from "./go/goConfiguration";
+import GoDriver from "./go/goDriver";
 import Configuration from "./helpers/configuration";
 import JavaConfiguration from "./java/javaConfiguration";
 import JavaDriver from "./java/javaDriver";
@@ -15,6 +17,7 @@ export function activate(context: vscode.ExtensionContext) {
 
   setTimeout(() => {
     // MarkdownDriver.Register();
+    if (GoConfiguration.enabled) GoDriver.Register(context);
     if (JavaConfiguration.enabled) JavaDriver.Register();
     if (LuaConfiguration.enabled) LuaDriver.Register();
     if (PHPConfiguration.enabled) PHPDriver.Register();

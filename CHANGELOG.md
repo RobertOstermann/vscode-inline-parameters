@@ -5,6 +5,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.0.7] - 2021-03-29
+
+- Golang Support
+
 ## [1.0.6] - 2021-03-07
 
 - Fix bug in PHP when the parameter name was not found.

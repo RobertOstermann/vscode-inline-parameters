@@ -72,7 +72,7 @@ export default class PHPHelper {
 
       const expressionLoc = expression.what.offset ? expression.what.offset.loc.start : expression.what.loc.end;
       if (expressionLoc.line + start - 1 > range.start.line && expressionLoc.line + start - 1 < range.end.line) {
-        parameters.push({
+        const parameterPosition: ParameterPosition = {
           namedValue: argument.name ?? null,
           expression: {
             line: parseInt(expressionLoc.line) + start - 1,
@@ -86,8 +86,9 @@ export default class PHPHelper {
           end: {
             line: parseInt(argument.loc.end.line) + start - 1,
             character: parseInt(argument.loc.end.column),
-          },
-        });
+          }
+        };
+        parameters.push(parameterPosition);
       }
     });
 
@@ -150,7 +151,8 @@ export default class PHPHelper {
         if (namedValue === undefined) namedValue = parameterDetails[parameterDetails.length - 1].name;
 
         if (suppressWhenArgumentMatchesName && namedValue.replace("$", "") === parameter.namedValue) {
-          return Promise.reject();
+          parameters[i] = undefined;
+          continue;
         }
 
         const name = PHPHelper.showDollarSign(namedValue);

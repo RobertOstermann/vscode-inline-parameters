@@ -149,7 +149,8 @@ export default class JavaHelper {
         if (namedValue === undefined) namedValue = parameters[parameters.length - 1];
 
         if (suppressWhenArgumentMatchesName && namedValue === parameter.namedValue) {
-          return Promise.reject();
+          parameters[i] = undefined;
+          continue;
         }
 
         const number = key - parametersLength + 1;

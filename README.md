@@ -9,9 +9,9 @@
   <a href="https://marketplace.visualstudio.com/items?itemName=RobertOstermann.inline-parameters-extended"><img src="https://vsmarketplacebadge.apphb.com/installs-short/RobertOstermann.inline-parameters-extended.svg" alt="VS Marketplace Installs"></a>
   <a href="https://marketplace.visualstudio.com/items?itemName=RobertOstermann.inline-parameters-extended"><img src="https://vsmarketplacebadge.apphb.com/rating-short/RobertOstermann.inline-parameters-extended.svg" alt="VS Marketplace Rating"></a>
 </p>
-  
+
 <h2 align="center">
-Implement the new Inlay Hints API to add Inline Parameters for Java, Lua, and PHP. 
+Implement the new Inlay Hints API to add Inline Parameters for Java, Lua, and PHP.
 </h2>
 
 <p align="center">
@@ -36,6 +36,10 @@ The extension provides a handful of configuration settings you can use to custom
 
 | Name                                                     | Description                                                                                                            | Default |
 | -------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- | ------- |
+| `inline-parameters.go.enabled`                           | Show inline parameters for Java                                                                                        | `true`  |
+| `inline-parameters.go.hintBeforeParameter`               | Should the inlay hint appear before the parameter. If this is set to `false` the hint will appear after the parameter. | `true`  |
+| `inline-parameters.go.showVariadicNumbers`               | Show the number of times a variadic parameter has been called                                                          | `true`  |
+| `inline-parameters.go.suppressWhenArgumentMatchesName`   | If the value given to a parameter is the same as the parameter name, hide the parameter name                           | `true`  |
 | `inline-parameters.java.enabled`                         | Show inline parameters for Java                                                                                        | `true`  |
 | `inline-parameters.java.hintBeforeParameter`             | Should the inlay hint appear before the parameter. If this is set to `false` the hint will appear after the parameter. | `true`  |
 | `inline-parameters.java.showVariadicNumbers`             | Show the number of times a variadic parameter has been called                                                          | `true`  |
@@ -59,9 +63,9 @@ This extension utilizes the Inlay-Hints API provided by VSCode. Here are some ad
 | `editor.inlayHints.fontFamily` | Controls font family of inlay hints in the editor. When set to empty, the `#editor.fontFamily#` is used.                                                                          | `""`    |
 | `editor.inlayHints.fontSize`   | Controls font size of inlay hints in the editor. A default of 90% of `#editor.fontSize#` is used when the configured value is less than `5` or greater than the editor font size. | `0`     |
 
-There are also several settings to enable Inlay Hints for both JavaScript and TypeScript.  
-These settings are available in the following setting sections.  
-`javascript.inlayHints`  
+There are also several settings to enable Inlay Hints for both JavaScript and TypeScript.
+These settings are available in the following setting sections.
+`javascript.inlayHints`
 `typescript.inlayHints`
 
 ## Contributions

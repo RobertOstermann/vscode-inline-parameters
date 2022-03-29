@@ -1,12 +1,15 @@
 import * as vscode from "vscode";
 
 import Helper from "../helpers/helper";
+import Output from "../helpers/output";
 import ParameterDetails from "../helpers/parameterDetails";
 import PHPConfiguration from "./phpConfiguration";
 import PHPHelper from "./phpHelper";
 
 export default class PHPDriver {
   static Register() {
+    Output.outputChannel.appendLine("Register PHP");
+
     vscode.languages.registerInlayHintsProvider("php", new class implements vscode.InlayHintsProvider {
       async provideInlayHints(document: vscode.TextDocument, range: vscode.Range): Promise<vscode.InlayHint[]> {
         const result: vscode.InlayHint[] = [];

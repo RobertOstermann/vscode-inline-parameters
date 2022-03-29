@@ -55,7 +55,7 @@ export default class LuaHelper {
     expression.arguments.forEach((argument: any, key: number) => {
       const argumentLoc = argument.loc;
       const expressionLoc = expression.base.identifier.loc.start;
-      parameters.push({
+      const parameterPosition: ParameterPosition = {
         namedValue: argument.name ?? null,
         expression: {
           line: parseInt(expressionLoc.line) + start - 1,
@@ -69,8 +69,9 @@ export default class LuaHelper {
         end: {
           line: parseInt(argumentLoc.end.line) + start - 1,
           character: parseInt(argumentLoc.end.column),
-        },
-      });
+        }
+      };
+      parameters.push(parameterPosition);
     });
 
     return parameters;

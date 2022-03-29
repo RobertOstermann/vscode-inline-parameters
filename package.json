@@ -4,7 +4,7 @@
   "description": "Function parameter annotations displaying inline in VSCode",
   "publisher": "RobertOstermann",
   "icon": "icon.png",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "license": "MIT",
   "homepage": "https://github.com/RobertOstermann/vscode-inline-parameters",
   "bugs": {
@@ -27,6 +27,7 @@
     "Hints"
   ],
   "activationEvents": [
+    "onLanguage:go",
     "onLanguage:java",
     "onLanguage:lua",
     "onLanguage:php"
@@ -36,6 +37,26 @@
       {
         "title": "Inline Parameters",
         "properties": {
+          "inline-parameters.go.enabled": {
+            "type": "boolean",
+            "markdownDescription": "Enable inline parameters for Golang.",
+            "default": true
+          },
+          "inline-parameters.go.hintBeforeParameter": {
+            "type": "boolean",
+            "markdownDescription": "Should the inlay hint appear before the parameter. If this is set to `false` the hint will appear after the parameter.",
+            "default": true
+          },
+          "inline-parameters.go.showVariadicNumbers": {
+            "type": "boolean",
+            "markdownDescription": "Show the number of times a variadic parameter has been called.",
+            "default": true
+          },
+          "inline-parameters.go.suppressWhenArgumentMatchesName": {
+            "type": "boolean",
+            "markdownDescription": "Suppress parameter name hints on arguments whose text is identical to the parameter name.",
+            "default": true
+          },
           "inline-parameters.java.enabled": {
             "type": "boolean",
             "markdownDescription": "Enable inline parameters for Java.",
@@ -101,7 +122,8 @@
     ]
   },
   "scripts": {
-    "vscode:prepublish": "npm run -S esbuild-base -- --minify",
+    "copyfiles": "copyfiles \"./src/go/helpers/main.go\" \"./out\"",
+    "vscode:prepublish": "npm run -S esbuild-base -- --minify && npm run copyfiles",
     "compile": "rimraf out && tsc -p ./",
     "watch": "tsc -watch -p ./",
     "test": "node ./node_modules/vscode/bin/test",
@@ -117,6 +139,7 @@
     "@types/node": "^17.0.21",
     "@typescript-eslint/eslint-plugin": "^5.13.0",
     "@typescript-eslint/parser": "^5.13.0",
+    "copyfiles": "^2.4.1",
     "esbuild": "^0.14.24",
     "eslint": "^8.10.0",
     "eslint-plugin-simple-import-sort": "^7.0.0",
