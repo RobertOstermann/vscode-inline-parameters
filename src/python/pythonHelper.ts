@@ -4,14 +4,12 @@ import * as vscode from "vscode";
 import Helper from "../helpers/helper";
 import ParameterDetails from "../helpers/parameterDetails";
 import ParameterPosition from "../helpers/parameterPosition";
-import GoConfiguration from "./goConfiguration";
+import PythonConfiguration from "./pythonConfiguration";
 
-export default class GoHelper {
+export default class PythonHelper {
   static parse(code: string, fsPath: string, context: vscode.ExtensionContext): ParameterPosition[][] {
-    fsPath = fsPath.replace(/\.go/, "");
-
-    // const command = `go run ${context.extensionPath}/src/go/helpers/main.go ${fsPath}`; // Development
-    const command = `go run ${context.extensionPath}/out/src/go/helpers/main.go ${fsPath}`; // Production
+    // const command = `python ${context.extensionPath}/src/python/helpers/main.py ${fsPath}`; // Development
+    const command = `python ${context.extensionPath}/out/src/python/helpers/main.py ${fsPath}`; // Production
     const output = execSync(command).toString();
 
     return this.getParametersFromOutput(code, output);
@@ -27,7 +25,7 @@ export default class GoHelper {
 
     for (const line of lines) {
       const newExpressionRegex = /NEW EXPRESSION/;
-      const goRegex = /expression line: (.*?) \| expression character: (.*?) \| argument start line: (.*?) \| argument start character: (.*?) \| argument end line: (.*?) \| argument end character: (.*)/;
+      const pythonRegex = /expression line: (.*?) \| expression character: (.*?) \| argument start line: (.*?) \| argument start character: (.*?) \| argument end line: (.*?) \| argument end character: (.*)/;
 
       if (newExpressionRegex.test(line)) {
         if (parameters[index].length > 0) {
@@ -38,14 +36,14 @@ export default class GoHelper {
         continue;
       }
 
-      if (goRegex.test(line)) {
-        const result = goRegex.exec(line);
+      if (pythonRegex.test(line)) {
+        const result = pythonRegex.exec(line);
         const expressionLine = parseInt(result[1]) - 1;
-        const expressionCharacter = parseInt(result[2]) - 1;
+        const expressionCharacter = parseInt(result[2]);
         const argumentStartLine = parseInt(result[3]) - 1;
-        const argumentStartCharacter = parseInt(result[4]) - 1;
+        const argumentStartCharacter = parseInt(result[4]);
         const argumentEndLine = parseInt(result[5]) - 1;
-        const argumentEndCharacter = parseInt(result[6]) - 1;
+        const argumentEndCharacter = parseInt(result[6]);
         let namedValue = undefined;
         if (argumentStartLine === argumentEndLine) {
           namedValue = codeLines[argumentStartLine].substring(argumentStartCharacter, argumentEndCharacter);
@@ -89,10 +87,10 @@ export default class GoHelper {
       )
     );
 
-    const goParameterNameRegex = /^[a-zA-Z_]([0-9a-zA-Z_]+)?/g;
+    const pythonParameterNameRegex = /^[a-zA-Z_]([0-9a-zA-Z_]+)?/g;
     if (description && description.length > 0) {
       try {
-        const regEx = /^func .*\((.*)\)/gm;
+        const regEx = /.*?\(function\).*?\((.*?)\)/gs;
         definitions = Helper.getFunctionDefinition(<vscode.MarkdownString[]>description[0].contents)?.match(regEx);
 
         if (!definitions || !definitions[0]) {
@@ -105,21 +103,19 @@ export default class GoHelper {
       }
     }
 
-    if (definition.includes("...")) {
-      isVariadic = true;
-    }
+    definition = definition.replace(/\(function\)/, "");
 
     const parameters: string[] = definition
       .substring(definition.indexOf("(") + 1, definition.indexOf(")"))
-      .replace(/\[/g, "").replace(/\]/g, "")
       // eslint-disable-next-line no-useless-escape
-      .split(/,|[\.\.\.]/)
+      .split(/,/)
       .map(parameter => parameter.trim())
       .map(parameter => {
-        const matches = parameter.match(goParameterNameRegex);
-        if (!matches || !matches[0]) {
+        const matches = parameter.replace(/\*/g, "").match(pythonParameterNameRegex);
+        if (!matches || !matches[0] || isVariadic) {
           return null;
         }
+        if (parameter.includes("*")) isVariadic = true;
 
         return matches[0];
       })
@@ -131,7 +127,7 @@ export default class GoHelper {
 
     let namedValue = undefined;
     const parametersLength = parameters.length;
-    const suppressWhenArgumentMatchesName = GoConfiguration.suppressWhenArgumentMatchesName();
+    const suppressWhenArgumentMatchesName = PythonConfiguration.suppressWhenArgumentMatchesName();
     for (let i = 0; i < languageParameters.length; i++) {
       const parameter = languageParameters[i];
       const key = parameter.key;
@@ -145,7 +141,7 @@ export default class GoHelper {
         }
 
         const number = key - parametersLength + 1;
-        parameters[i] = GoConfiguration.showVariadicNumbers() ? `${namedValue}[${number}]` : namedValue;
+        parameters[i] = PythonConfiguration.showVariadicNumbers() ? `${namedValue}[${number}]` : namedValue;
 
         continue;
       }

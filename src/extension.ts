@@ -10,6 +10,8 @@ import LuaDriver from "./lua/luaDriver";
 // import MarkdownDriver from "./markdown/markdown";
 import PHPConfiguration from "./php/phpConfiguration";
 import PHPDriver from "./php/phpDriver";
+import PythonConfiguration from "./python/pythonConfiguration";
+import PythonDriver from "./python/pythonDriver";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export function activate(context: vscode.ExtensionContext) {
@@ -21,5 +23,6 @@ export function activate(context: vscode.ExtensionContext) {
     if (JavaConfiguration.enabled) JavaDriver.Register();
     if (LuaConfiguration.enabled) LuaDriver.Register();
     if (PHPConfiguration.enabled) PHPDriver.Register();
+    if (PythonConfiguration.enabled) PythonDriver.Register(context);
   }, 1000);
 }

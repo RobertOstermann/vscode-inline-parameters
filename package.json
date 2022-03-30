@@ -4,7 +4,7 @@
   "description": "Function parameter annotations displaying inline in VSCode",
   "publisher": "RobertOstermann",
   "icon": "images/icon.png",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "license": "MIT",
   "homepage": "https://github.com/RobertOstermann/vscode-inline-parameters",
   "bugs": {
@@ -23,14 +23,21 @@
   ],
   "keywords": [
     "Parameters",
+    "Parameter Hints",
     "Inlay Hints",
-    "Hints"
+    "Hints",
+    "Go",
+    "Java",
+    "Lua",
+    "PHP",
+    "Python"
   ],
   "activationEvents": [
     "onLanguage:go",
     "onLanguage:java",
     "onLanguage:lua",
-    "onLanguage:php"
+    "onLanguage:php",
+    "onLanguage:python"
   ],
   "contributes": {
     "configuration": [
@@ -39,7 +46,7 @@
         "properties": {
           "inline-parameters.go.enabled": {
             "type": "boolean",
-            "markdownDescription": "Enable inline parameters for Golang.",
+            "markdownDescription": "Enable inline parameters for Go.",
             "default": true
           },
           "inline-parameters.go.hintBeforeParameter": {
@@ -116,13 +123,35 @@
             "type": "boolean",
             "markdownDescription": "Suppress parameter name hints on arguments whose text is identical to the parameter name.",
             "default": true
+          },
+          "inline-parameters.python.enabled": {
+            "type": "boolean",
+            "markdownDescription": "Enable inline parameters for Python.",
+            "default": true
+          },
+          "inline-parameters.python.hintBeforeParameter": {
+            "type": "boolean",
+            "markdownDescription": "Should the inlay hint appear before the parameter. If this is set to `false` the hint will appear after the parameter.",
+            "default": true
+          },
+          "inline-parameters.python.showVariadicNumbers": {
+            "type": "boolean",
+            "markdownDescription": "Show the number of times a variadic parameter has been called.",
+            "default": true
+          },
+          "inline-parameters.python.suppressWhenArgumentMatchesName": {
+            "type": "boolean",
+            "markdownDescription": "Suppress parameter name hints on arguments whose text is identical to the parameter name.",
+            "default": true
           }
         }
       }
     ]
   },
   "scripts": {
-    "copyfiles": "copyfiles \"./src/go/helpers/main.go\" \"./out\"",
+    "copyfiles": "npm run copy-go && npm run copy-python",
+    "copy-go": "copyfiles \"./src/go/helpers/main.go\" \"./out\"",
+    "copy-python": "copyfiles \"./src/python/helpers/main.py\" \"./out\"",
     "vscode:prepublish": "npm run -S esbuild-base -- --minify && npm run copyfiles",
     "compile": "rimraf out && tsc -p ./",
     "watch": "tsc -watch -p ./",

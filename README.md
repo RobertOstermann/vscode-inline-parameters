@@ -1,4 +1,4 @@
-# Inline Parameters for VSCode
+# Inline Parameters Extended for VSCode
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/RobertOstermann/vscode-inline-parameters/master/images/icon.png" alt="Inline Parameters for VSCode">
@@ -11,7 +11,11 @@
 </p>
 
 <h2 align="center">
-This extension implements the new Inlay Hints API to add Inline Parameters for Golang, Java, Lua, and PHP.
+
+Now with Golang and Python support!
+
+This extension implements the new Inlay Hints API to add Inline Parameters for Golang, Java, Lua, PHP, and Python.
+
 </h2>
 
 <p align="center">
@@ -30,29 +34,34 @@ Currently, this extension supports the following languages:
 - Java
 - Lua (with [Sumneko's Lua language server](https://marketplace.visualstudio.com/items?itemName=sumneko.lua))
 - PHP (with the [Intelephense](https://marketplace.visualstudio.com/items?itemName=bmewburn.vscode-intelephense-client) language server)
+- Python
 
 ## Settings
 
 The extension provides a handful of configuration settings you can use to customise the look and behaviour of the parameters.
 
-| Name                                                     | Description                                                                                                            | Default |
-| -------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- | ------- |
-| `inline-parameters.go.enabled`                           | Show inline parameters for Java                                                                                        | `true`  |
-| `inline-parameters.go.hintBeforeParameter`               | Should the inlay hint appear before the parameter. If this is set to `false` the hint will appear after the parameter. | `true`  |
-| `inline-parameters.go.showVariadicNumbers`               | Show the number of times a variadic parameter has been called                                                          | `true`  |
-| `inline-parameters.go.suppressWhenArgumentMatchesName`   | If the value given to a parameter is the same as the parameter name, hide the parameter name                           | `true`  |
-| `inline-parameters.java.enabled`                         | Show inline parameters for Java                                                                                        | `true`  |
-| `inline-parameters.java.hintBeforeParameter`             | Should the inlay hint appear before the parameter. If this is set to `false` the hint will appear after the parameter. | `true`  |
-| `inline-parameters.java.showVariadicNumbers`             | Show the number of times a variadic parameter has been called                                                          | `true`  |
-| `inline-parameters.java.suppressWhenArgumentMatchesName` | If the value given to a parameter is the same as the parameter name, hide the parameter name                           | `true`  |
-| `inline-parameters.lua.enabled`                          | Show inline parameters for Lua                                                                                         | `true`  |
-| `inline-parameters.lua.hintBeforeParameter`              | Should the inlay hint appear before the parameter. If this is set to `false` the hint will appear after the parameter. | `true`  |
-| `inline-parameters.lua.suppressWhenArgumentMatchesName`  | If the value given to a parameter is the same as the parameter name, hide the parameter name                           | `true`  |
-| `inline-parameters.php.enabled`                          | Show inline parameters for PHP                                                                                         | `true`  |
-| `inline-parameters.php.hintBeforeParameter`              | Should the inlay hint appear before the parameter. If this is set to `false` the hint will appear after the parameter. | `true`  |
-| `inline-parameters.php.showDollarSign`                   | Show the $ character before PHP parameter names                                                                        | `false` |
-| `inline-parameters.php.showVariadicNumbers`              | Show the number of times a variadic parameter has been called                                                          | `true`  |
-| `inline-parameters.php.suppressWhenArgumentMatchesName`  | If the value given to a parameter is the same as the parameter name, hide the parameter name                           | `true`  |
+| Name                                                       | Description                                                                                                            | Default |
+| ---------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- | ------- |
+| `inline-parameters.go.enabled`                             | Show inline parameters for Go                                                                                          | `true`  |
+| `inline-parameters.go.hintBeforeParameter`                 | Should the inlay hint appear before the parameter. If this is set to `false` the hint will appear after the parameter. | `true`  |
+| `inline-parameters.go.showVariadicNumbers`                 | Show the number of times a variadic parameter has been called                                                          | `true`  |
+| `inline-parameters.go.suppressWhenArgumentMatchesName`     | If the value given to a parameter is the same as the parameter name, hide the parameter name                           | `true`  |
+| `inline-parameters.java.enabled`                           | Show inline parameters for Java                                                                                        | `true`  |
+| `inline-parameters.java.hintBeforeParameter`               | Should the inlay hint appear before the parameter. If this is set to `false` the hint will appear after the parameter. | `true`  |
+| `inline-parameters.java.showVariadicNumbers`               | Show the number of times a variadic parameter has been called                                                          | `true`  |
+| `inline-parameters.java.suppressWhenArgumentMatchesName`   | If the value given to a parameter is the same as the parameter name, hide the parameter name                           | `true`  |
+| `inline-parameters.lua.enabled`                            | Show inline parameters for Lua                                                                                         | `true`  |
+| `inline-parameters.lua.hintBeforeParameter`                | Should the inlay hint appear before the parameter. If this is set to `false` the hint will appear after the parameter. | `true`  |
+| `inline-parameters.lua.suppressWhenArgumentMatchesName`    | If the value given to a parameter is the same as the parameter name, hide the parameter name                           | `true`  |
+| `inline-parameters.php.enabled`                            | Show inline parameters for PHP                                                                                         | `true`  |
+| `inline-parameters.php.hintBeforeParameter`                | Should the inlay hint appear before the parameter. If this is set to `false` the hint will appear after the parameter. | `true`  |
+| `inline-parameters.php.showDollarSign`                     | Show the $ character before PHP parameter names                                                                        | `false` |
+| `inline-parameters.php.showVariadicNumbers`                | Show the number of times a variadic parameter has been called                                                          | `true`  |
+| `inline-parameters.php.suppressWhenArgumentMatchesName`    | If the value given to a parameter is the same as the parameter name, hide the parameter name                           | `true`  |
+| `inline-parameters.python.enabled`                         | Show inline parameters for Python                                                                                      | `true`  |
+| `inline-parameters.python.hintBeforeParameter`             | Should the inlay hint appear before the parameter. If this is set to `false` the hint will appear after the parameter. | `true`  |
+| `inline-parameters.python.showVariadicNumbers`             | Show the number of times a variadic parameter has been called                                                          | `true`  |
+| `inline-parameters.python.suppressWhenArgumentMatchesName` | If the value given to a parameter is the same as the parameter name, hide the parameter name                           | `true`  |
 
 ## Inlay Hint Settings
 
