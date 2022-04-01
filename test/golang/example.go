@@ -68,13 +68,13 @@ func main() {
 	a.addSuffix("test")
 
 	// Local package
-	t := anotherpackage.Function("test") // Correct.
+	t := anotherpackage.Function("test")
 	fmt.Println(t)
 
 	s := anotherpackage.Struct{}
-	s.Method("test") // Correct.
+	s.Method("test")
 
-	anotherpackage.FunctionWithInterfaceParameter(s, "test") // First param is correct. Second should be "s:" but is "Interface:" (the type name of the first param).
+	anotherpackage.FunctionWithInterfaceParameter(s, "test")
 
 
 }
