@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"golang/anotherpackage"
+)
 
 type A struct {
 	s string
@@ -63,4 +66,15 @@ func main() {
 	// Method call
 	a := A{}
 	a.addSuffix("test")
+
+	// Local package
+	t := anotherpackage.Function("test") // Correct.
+	fmt.Println(t)
+
+	s := anotherpackage.Struct{}
+	s.Method("test") // Correct.
+
+	anotherpackage.FunctionWithInterfaceParameter(s, "test") // First param is correct. Second should be "s:" but is "Interface:" (the type name of the first param).
+
+
 }

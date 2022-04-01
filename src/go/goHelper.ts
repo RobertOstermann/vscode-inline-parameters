@@ -127,7 +127,7 @@ export default class GoHelper {
       .substring(0, definition.indexOf(")"))
       .replace(/\[/g, "").replace(/\]/g, "")
       // eslint-disable-next-line no-useless-escape
-      .split(/,|[\.\.\.]/)
+      .split(/,|[\.]{3}/)
       .map(parameter => parameter.trim())
       .map(parameter => {
         const matches = parameter.match(goParameterNameRegex);
