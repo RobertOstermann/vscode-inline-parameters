@@ -20,7 +20,8 @@ func main() {
 		functionCall, ok := n.(*ast.CallExpr)
 		if ok {
 			for _, arg := range functionCall.Args {
-				fmt.Printf("expression line: %d | expression character: %d | argument start line: %d | argument start character: %d | argument end line: %d | argument end character: %d\n",
+				fmt.Printf("expression call: %s | expression line: %d | expression character: %d | argument start line: %d | argument start character: %d | argument end line: %d | argument end character: %d\n",
+					functionCall.Fun,
 					fset.Position(functionCall.Lparen).Line,
 					fset.Position(functionCall.Lparen).Column,
 					fset.Position(arg.Pos()).Line,

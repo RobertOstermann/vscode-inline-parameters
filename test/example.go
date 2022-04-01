@@ -2,6 +2,10 @@ package main
 
 import "fmt"
 
+type A struct {
+	s string
+}
+
 func plus(a int, b int) int {
 	return a + b
 }
@@ -23,6 +27,14 @@ func sum(nums ...int) int {
 		res += n
 	}
 	return res
+}
+
+func (a A) addSuffix(suffix string) string {
+	return a.s + suffix
+}
+
+func abc(a string) string {
+	return a
 }
 
 func main() {
@@ -47,4 +59,8 @@ func main() {
 	}(3, 5, 7)
 
 	fmt.Println("5+3+7 =", sum)
+
+	// Method call
+	a := A{}
+	a.addSuffix("test")
 }

@@ -27,7 +27,8 @@ export default class GoHelper {
 
     for (const line of lines) {
       const newExpressionRegex = /NEW EXPRESSION/;
-      const goRegex = /expression line: (.*?) \| expression character: (.*?) \| argument start line: (.*?) \| argument start character: (.*?) \| argument end line: (.*?) \| argument end character: (.*)/;
+      const goRegex = /expression call: (.*?) \| expression line: (.*?) \| expression character: (.*?) \| argument start line: (.*?) \| argument start character: (.*?) \| argument end line: (.*?) \| argument end character: (.*)/;
+      const expressionCallRegex = /(^\w*$)|(?:^&{.*? (\w*)}$)/;
 
       if (newExpressionRegex.test(line)) {
         if (parameters[index].length > 0) {
@@ -40,17 +41,22 @@ export default class GoHelper {
 
       if (goRegex.test(line)) {
         const result = goRegex.exec(line);
-        const expressionLine = parseInt(result[1]) - 1;
-        const expressionCharacter = parseInt(result[2]) - 1;
-        const argumentStartLine = parseInt(result[3]) - 1;
-        const argumentStartCharacter = parseInt(result[4]) - 1;
-        const argumentEndLine = parseInt(result[5]) - 1;
-        const argumentEndCharacter = parseInt(result[6]) - 1;
+        let expressionCall = undefined;
+        if (expressionCallRegex.test(result[1])) {
+          expressionCall = expressionCallRegex.exec(result[1])[1] ?? expressionCallRegex.exec(result[1])[2];
+        }
+        const expressionLine = parseInt(result[2]) - 1;
+        const expressionCharacter = parseInt(result[3]) - 1;
+        const argumentStartLine = parseInt(result[4]) - 1;
+        const argumentStartCharacter = parseInt(result[5]) - 1;
+        const argumentEndLine = parseInt(result[6]) - 1;
+        const argumentEndCharacter = parseInt(result[7]) - 1;
         let namedValue = undefined;
         if (argumentStartLine === argumentEndLine) {
           namedValue = codeLines[argumentStartLine].substring(argumentStartCharacter, argumentEndCharacter);
         }
         const parameterPosition: ParameterPosition = {
+          functionCall: expressionCall,
           namedValue: namedValue,
           expression: {
             line: expressionLine,
@@ -89,6 +95,8 @@ export default class GoHelper {
       )
     );
 
+    if (firstParameter.functionCall === undefined) return Promise.reject();
+
     const goParameterNameRegex = /^[a-zA-Z_]([0-9a-zA-Z_]+)?/g;
     if (description && description.length > 0) {
       try {
@@ -109,8 +117,14 @@ export default class GoHelper {
       isVariadic = true;
     }
 
+    definition = definition.substring(
+      definition.indexOf(firstParameter.functionCall) +
+      firstParameter.functionCall.length +
+      1
+    );
+
     const parameters: string[] = definition
-      .substring(definition.indexOf("(") + 1, definition.indexOf(")"))
+      .substring(0, definition.indexOf(")"))
       .replace(/\[/g, "").replace(/\]/g, "")
       // eslint-disable-next-line no-useless-escape
       .split(/,|[\.\.\.]/)

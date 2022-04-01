@@ -4,7 +4,7 @@
   "description": "Function parameter annotations displaying inline in VSCode",
   "publisher": "RobertOstermann",
   "icon": "images/icon.png",
-  "version": "1.0.9",
+  "version": "1.1.0",
   "license": "MIT",
   "homepage": "https://github.com/RobertOstermann/vscode-inline-parameters",
   "bugs": {

@@ -1,4 +1,6 @@
 export default interface ParameterPosition {
+  functionCall?: string;
+
   namedValue?: string;
 
   expression: {
