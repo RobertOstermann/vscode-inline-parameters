@@ -2,6 +2,7 @@ import { execSync } from "child_process";
 import * as vscode from "vscode";
 
 import Helper from "../helpers/helper";
+import Output from "../helpers/output";
 import ParameterDetails from "../helpers/parameterDetails";
 import ParameterPosition from "../helpers/parameterPosition";
 import GoConfiguration from "./goConfiguration";
@@ -12,6 +13,7 @@ export default class GoHelper {
 
     // const command = `${GoConfiguration.executablePath()} run ${context.extensionPath}/src/go/helpers/main.go ${fsPath}`; // Development
     const command = `${GoConfiguration.executablePath()} run ${context.extensionPath}/out/src/go/helpers/main.go ${fsPath}`; // Production
+    Output.outputChannel.appendLine(`Golang Command: ${command}`);
     const output = execSync(command).toString();
 
     return this.getParametersFromOutput(code, output);

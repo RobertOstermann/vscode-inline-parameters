@@ -18,8 +18,12 @@ class Analyzer(ast.NodeVisitor):
         for argument in node.args:
             argument_start_line = "argument start line: " + str(argument.lineno)
             argument_start_character = "argument start character: " + str(argument.col_offset)
-            argument_end_line = "argument end line: " + str(argument.end_lineno)
-            argument_end_character = "argument end character: " + str(argument.end_col_offset)
+            try:
+                argument_end_line = "argument end line: " + str(argument.end_lineno)
+                argument_end_character = "argument end character: " + str(argument.end_col_offset)
+            except:
+                argument_end_line = "argument end line: " + str(argument.lineno)
+                argument_end_character = "argument end character: " + str(argument.col_offset)
             print(
                 str(expression_line) + " | "
                 + str(expression_character) + " | "
