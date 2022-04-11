@@ -14,7 +14,7 @@ export default class GoConfiguration {
    * @returns The path to the PHPUnit executable.
    */
   static executablePath(): string {
-    return this.goConfiguration.get("executablePath", "go");
+    return this.goConfiguration.get("executablePath");
   }
 
   /**

@@ -14,7 +14,7 @@ export default class PythonConfiguration {
    * @returns The path to the PHPUnit executable.
    */
   static executablePath(): string {
-    return this.pythonConfiguration.get("executablePath", "python");
+    return this.pythonConfiguration.get("executablePath");
   }
 
   /**
