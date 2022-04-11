@@ -1,5 +1,4 @@
 import ast
-from pprint import pprint
 from sys import argv
 
 
@@ -14,14 +13,21 @@ def main():
 
 class Analyzer(ast.NodeVisitor):
     def visit_Call(self, node):
-        expression_line = f"expression line: {node.func.lineno}"
-        expression_character = f"expression character: {node.func.col_offset}"
+        expression_line = "expression line: " + str(node.func.lineno)
+        expression_character = "expression character: " + str(node.func.col_offset)
         for argument in node.args:
-            argument_start_line = f"argument start line: {argument.lineno}"
-            argument_start_character = f"argument start character: {argument.col_offset}"
-            argument_end_line = f"argument end line: {argument.end_lineno}"
-            argument_end_character = f"argument end character: {argument.end_col_offset}"
-            print(f'{expression_line} | {expression_character} | {argument_start_line} | {argument_start_character} | {argument_end_line} | {argument_end_character}')
+            argument_start_line = "argument start line: " + str(argument.lineno)
+            argument_start_character = "argument start character: " + str(argument.col_offset)
+            argument_end_line = "argument end line: " + str(argument.end_lineno)
+            argument_end_character = "argument end character: " + str(argument.end_col_offset)
+            print(
+                str(expression_line) + " | "
+                + str(expression_character) + " | "
+                + str(argument_start_line) + " | "
+                + str(argument_start_character) + " | "
+                + str(argument_end_line) + " | "
+                + str(argument_end_character)
+            )
         print("NEW EXPRESSION")
         ast.NodeVisitor.generic_visit(self, node)
 

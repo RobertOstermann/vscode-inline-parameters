@@ -4,7 +4,7 @@
   "description": "Function parameter annotations displaying inline in VSCode",
   "publisher": "RobertOstermann",
   "icon": "images/icon.png",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "license": "MIT",
   "homepage": "https://github.com/RobertOstermann/vscode-inline-parameters",
   "bugs": {
@@ -48,6 +48,11 @@
             "type": "boolean",
             "markdownDescription": "Enable inline parameters for Go.",
             "default": true
+          },
+          "inline-parameters.go.executablePath": {
+            "type": "string",
+            "default": "go",
+            "description": "Path to golang executable."
           },
           "inline-parameters.go.hintBeforeParameter": {
             "type": "boolean",
@@ -128,6 +133,11 @@
             "type": "boolean",
             "markdownDescription": "Enable inline parameters for Python.",
             "default": true
+          },
+          "inline-parameters.python.executablePath": {
+            "type": "string",
+            "default": "python",
+            "description": "Path to python executable."
           },
           "inline-parameters.python.hintBeforeParameter": {
             "type": "boolean",

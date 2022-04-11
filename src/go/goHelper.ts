@@ -10,8 +10,8 @@ export default class GoHelper {
   static parse(code: string, fsPath: string, context: vscode.ExtensionContext): ParameterPosition[][] {
     fsPath = fsPath.replace(/\.go/, "");
 
-    // const command = `go run ${context.extensionPath}/src/go/helpers/main.go ${fsPath}`; // Development
-    const command = `go run ${context.extensionPath}/out/src/go/helpers/main.go ${fsPath}`; // Production
+    // const command = `${GoConfiguration.executablePath()} run ${context.extensionPath}/src/go/helpers/main.go ${fsPath}`; // Development
+    const command = `${GoConfiguration.executablePath()} run ${context.extensionPath}/out/src/go/helpers/main.go ${fsPath}`; // Production
     const output = execSync(command).toString();
 
     return this.getParametersFromOutput(code, output);

@@ -11,6 +11,13 @@ export default class PythonConfiguration {
   }
 
   /**
+   * @returns The path to the PHPUnit executable.
+   */
+  static executablePath(): string {
+    return this.pythonConfiguration.get("executablePath", "python");
+  }
+
+  /**
    * @returns Should the inlay hint appear before the parameter. If this is set to `false` the hint will appear after the parameter.
    */
   static hintBeforeParameter(): boolean {

@@ -8,8 +8,8 @@ import PythonConfiguration from "./pythonConfiguration";
 
 export default class PythonHelper {
   static parse(code: string, fsPath: string, context: vscode.ExtensionContext): ParameterPosition[][] {
-    // const command = `python ${context.extensionPath}/src/python/helpers/main.py ${fsPath}`; // Development
-    const command = `python ${context.extensionPath}/out/src/python/helpers/main.py ${fsPath}`; // Production
+    // const command = `${PythonConfiguration.executablePath()} ${context.extensionPath}/src/python/helpers/main.py ${fsPath}`; // Development
+    const command = `${PythonConfiguration.executablePath()} ${context.extensionPath}/out/src/python/helpers/main.py ${fsPath}`; // Production
     const output = execSync(command).toString();
 
     return this.getParametersFromOutput(code, output);
