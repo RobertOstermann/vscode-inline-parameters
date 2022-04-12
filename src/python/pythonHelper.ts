@@ -10,8 +10,9 @@ import PythonConfiguration from "./pythonConfiguration";
 
 export default class PythonHelper {
   static parse(code: string, fsPath: string, context: vscode.ExtensionContext): ParameterPosition[][] {
-    // const command = `${PythonConfiguration.executablePath()} ${context.extensionPath}/src/python/helpers/main.py ${fsPath}`; // Development
     const pythonPath = PythonHelper.getPythonPath();
+
+    // const command = `${pythonPath} ${context.extensionPath}/src/python/helpers/main.py ${fsPath}`; // Development
     const command = `${pythonPath} ${context.extensionPath}/out/src/python/helpers/main.py ${fsPath}`; // Production
     Output.outputChannel.appendLine(`Python Command: ${command}`);
     const output = execSync(command).toString();
@@ -20,15 +21,17 @@ export default class PythonHelper {
   }
 
   public static getPythonPath(resource: vscode.Uri = null): string {
-    // adapted from vscode-restructuredtext/vscode-restructuredtext#224
-    const extension = vscode.extensions.getExtension("ms-python.python")
-    if (!extension) {
-      const pythonPath = `${PythonConfiguration.executablePath()}`
-      return pythonPath ? pythonPath : PythonShell.defaultPythonPath
+    if (PythonConfiguration.executablePath()) {
+      return PythonConfiguration.executablePath();
     }
-    const pythonPath = extension.exports.settings.getExecutionDetails(resource).execCommand
-    return pythonPath[0]; // might be more elements if conda, but we are not bothering to support that yet
+    // adapted from vscode-restructuredtext/vscode-restructuredtext#224
+    const extension = vscode.extensions.getExtension("ms-python.python");
+    if (!extension) {
+      return PythonShell.defaultPythonPath;
+    }
 
+    const pythonPath = extension.exports.settings.getExecutionDetails(resource).execCommand;
+    return pythonPath[0]; // might be more elements if conda, but we are not bothering to support that yet
   }
 
   static getParametersFromOutput(code: string, output: string): ParameterPosition[][] | undefined {

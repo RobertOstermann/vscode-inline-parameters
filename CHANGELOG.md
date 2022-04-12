@@ -5,11 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [1.1.3] - 2021-03-31
+## [1.1.4] - 2021-04-11
+
+- Incorporate the Pull Request by l1997i - [PR #5](https://github.com/RobertOstermann/vscode-inline-parameters/pull/5)
+
+## [1.1.3] - 2021-04-11
 
 - Fix Python AST parsing errors when using Python 2.7 - [issue #4](https://github.com/RobertOstermann/vscode-inline-parameters/issues/4)
 
-## [1.1.2] - 2021-03-31
+## [1.1.2] - 2021-04-11
 
 - Add executable path setting for Golang and Python
 - Fix Python parameters not working for version less than Python 3.6 - [issue #4](https://github.com/RobertOstermann/vscode-inline-parameters/issues/4)
