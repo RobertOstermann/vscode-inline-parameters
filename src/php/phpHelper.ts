@@ -75,8 +75,14 @@ export default class PHPHelper {
         const parameterPosition: ParameterPosition = {
           namedValue: argument.name ?? null,
           expression: {
-            line: parseInt(expressionLoc.line) + start - 1,
-            character: parseInt(expressionLoc.column),
+            start: {
+              line: parseInt(expressionLoc.line) + start - 1,
+              character: parseInt(expressionLoc.column),
+            },
+            end: {
+              line: -1,
+              character: -1,
+            },
           },
           key: key,
           start: {
@@ -104,8 +110,8 @@ export default class PHPHelper {
       "vscode.executeHoverProvider",
       uri,
       new vscode.Position(
-        firstParameter.expression.line,
-        firstParameter.expression.character
+        firstParameter.expression.start.line,
+        firstParameter.expression.start.character
       )
     );
 

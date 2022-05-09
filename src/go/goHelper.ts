@@ -61,8 +61,14 @@ export default class GoHelper {
           functionCall: expressionCall,
           namedValue: namedValue,
           expression: {
-            line: expressionLine,
-            character: expressionCharacter,
+            start: {
+              line: expressionLine,
+              character: expressionCharacter,
+            },
+            end: {
+              line: -1,
+              character: -1,
+            }
           },
           key: key,
           start: {
@@ -92,8 +98,8 @@ export default class GoHelper {
       "vscode.executeHoverProvider",
       uri,
       new vscode.Position(
-        firstParameter.expression.line,
-        firstParameter.expression.character
+        firstParameter.expression.start.line,
+        firstParameter.expression.start.character
       )
     );
 

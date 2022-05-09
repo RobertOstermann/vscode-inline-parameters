@@ -63,8 +63,14 @@ export default class JavaHelper {
     const parameter: ParameterPosition = {
       namedValue: argument.text ?? null,
       expression: {
-        line: expression.start.line - 1,
-        character: expression.start.charPositionInLine,
+        start: {
+          line: expression.start.line - 1,
+          character: expression.start.charPositionInLine,
+        },
+        end: {
+          line: -1,
+          character: -1,
+        }
       },
       key: key,
       start: {
@@ -81,7 +87,7 @@ export default class JavaHelper {
 
     const offset = editor.options.insertSpaces ? 0 : line.firstNonWhitespaceCharacterIndex * 3;
 
-    parameter.expression.character -= offset;
+    parameter.expression.start.character -= offset;
     parameter.start.character -= offset;
     parameter.end.character -= offset;
 
@@ -96,8 +102,8 @@ export default class JavaHelper {
       "vscode.executeHoverProvider",
       uri,
       new vscode.Position(
-        firstParameter.expression.line,
-        firstParameter.expression.character
+        firstParameter.expression.start.line,
+        firstParameter.expression.start.character
       )
     );
 
