@@ -5,6 +5,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.1.8] - 2021-05-09
+
+- Python Bug Fix
+
 ## [1.1.7] - 2021-05-09
 
 - Fix Python methods not displaying correctly - [issue #7](https://github.com/RobertOstermann/vscode-inline-parameters/issues/7)
