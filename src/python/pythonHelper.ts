@@ -10,10 +10,10 @@ import PythonConfiguration from "./pythonConfiguration";
 
 export default class PythonHelper {
   static parse(code: string, fsPath: string, context: vscode.ExtensionContext): ParameterPosition[][] {
-    const pythonPath = PythonHelper.getPythonPath();
+    const pythonPath = PythonHelper.getPythonPath().replace(/\\/g, "/");
 
-    // const command = `${pythonPath} "${context.extensionPath}/src/python/helpers/main.py" "${fsPath}""`; // Development
-    const command = `${pythonPath} "${context.extensionPath}/out/src/python/helpers/main.py" "${fsPath}"`; // Production
+    // const command = `"${pythonPath}"" "${context.extensionPath.replace(/\\/g, "/")}/src/python/helpers/main.py" "${fsPath}""`; // Development
+    const command = `"${pythonPath}" "${context.extensionPath.replace(/\\/g, "/")}/out/src/python/helpers/main.py" "${fsPath}"`; // Production
     Output.outputChannel.appendLine(`Python Command: ${command}`);
     const output = execSync(command).toString();
 
