@@ -77,6 +77,7 @@ This extension utilizes the Inlay-Hints API provided by VSCode. Here are some ad
 
 There are also several settings to enable Inlay Hints for both JavaScript and TypeScript.
 These settings are available in the following setting sections.
+
 `javascript.inlayHints`
 `typescript.inlayHints`
 

@@ -75,6 +75,4 @@ func main() {
 	s.Method("test")
 
 	anotherpackage.FunctionWithInterfaceParameter(s, "test")
-
-
 }
