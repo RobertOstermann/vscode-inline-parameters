@@ -12,8 +12,8 @@ export default class PythonHelper {
   static parse(code: string, fsPath: string, context: vscode.ExtensionContext): ParameterPosition[][] {
     const pythonPath = PythonHelper.getPythonPath().replace(/\\/g, "/");
 
-    // const command = `"${pythonPath}"" "${context.extensionPath.replace(/\\/g, "/")}/src/python/helpers/main.py" "${fsPath}""`; // Development
-    const command = `"${pythonPath}" "${context.extensionPath.replace(/\\/g, "/")}/out/src/python/helpers/main.py" "${fsPath}"`; // Production
+    const command = `"${pythonPath}" "${context.extensionPath.replace(/\\/g, "/")}/src/python/helpers/main.py" "${fsPath}"`; // Development
+    // const command = `"${pythonPath}" "${context.extensionPath.replace(/\\/g, "/")}/out/src/python/helpers/main.py" "${fsPath}"`; // Production
     Output.outputChannel.appendLine(`Python Command: ${command}`);
     const output = execSync(command).toString();
 
@@ -44,7 +44,7 @@ export default class PythonHelper {
 
     for (const line of lines) {
       const newExpressionRegex = /NEW EXPRESSION/;
-      const pythonRegex = /expression line: (.*?) \| expression character: (.*?) \| argument start line: (.*?) \| argument start character: (.*?) \| argument end line: (.*?) \| argument end character: (.*)/;
+      const pythonRegex = /expression line: (.*?) \| expression character: (.*?) \| expression end line: (.*?) \| expression end character: (.*?) \| argument start line: (.*?) \| argument start character: (.*?) \| argument end line: (.*?) \| argument end character: (.*)/;
 
       if (newExpressionRegex.test(line)) {
         if (parameters[index].length > 0) {
@@ -59,19 +59,29 @@ export default class PythonHelper {
         const result = pythonRegex.exec(line);
         const expressionLine = parseInt(result[1]) - 1;
         const expressionCharacter = parseInt(result[2]);
-        const argumentStartLine = parseInt(result[3]) - 1;
-        const argumentStartCharacter = parseInt(result[4]);
-        const argumentEndLine = parseInt(result[5]) - 1;
-        const argumentEndCharacter = parseInt(result[6]);
+        const expressionEndLine = parseInt(result[3]) - 1;
+        const expressionEndCharacter = parseInt(result[4]);
+        const argumentStartLine = parseInt(result[5]) - 1;
+        const argumentStartCharacter = parseInt(result[6]);
+        const argumentEndLine = parseInt(result[7]) - 1;
+        const argumentEndCharacter = parseInt(result[8]);
         let namedValue = undefined;
+
         if (argumentStartLine === argumentEndLine) {
           namedValue = codeLines[argumentStartLine].substring(argumentStartCharacter, argumentEndCharacter);
         }
+
         const parameterPosition: ParameterPosition = {
           namedValue: namedValue,
           expression: {
-            line: expressionLine,
-            character: expressionCharacter,
+            start: {
+              line: expressionLine,
+              character: expressionCharacter,
+            },
+            end: {
+              line: expressionEndLine,
+              character: expressionEndCharacter
+            }
           },
           key: key,
           start: {
@@ -101,15 +111,15 @@ export default class PythonHelper {
       "vscode.executeHoverProvider",
       uri,
       new vscode.Position(
-        firstParameter.expression.line,
-        firstParameter.expression.character
+        firstParameter.expression.end.line,
+        firstParameter.expression.end.character
       )
     );
 
     const pythonParameterNameRegex = /^[a-zA-Z_]([0-9a-zA-Z_]+)?/g;
     if (description && description.length > 0) {
       try {
-        const regEx = /.*?\(function\).*?\((.*?)\)/gs;
+        const regEx = /.*?\((?:function|method)\).*?\((.*?)\)/gs;
         definitions = Helper.getFunctionDefinition(<vscode.MarkdownString[]>description[0].contents)?.match(regEx);
 
         if (!definitions || !definitions[0]) {
@@ -123,6 +133,7 @@ export default class PythonHelper {
     }
 
     definition = definition.replace(/\(function\)/, "");
+    definition = definition.replace(/\(method\)/, "");
 
     const parameters: string[] = definition
       .substring(definition.indexOf("(") + 1, definition.indexOf(")"))

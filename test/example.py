@@ -1,3 +1,7 @@
+from tkinter import messagebox
+import os
+
+
 def one_argument(fname):
     print(fname + " Refsnes")
 
@@ -46,3 +50,25 @@ def default_arguments(city="New York City", state="New York"):
 
 # Default arguments
 default_arguments("Dallas", "Texas")
+
+
+def slow_example(self) -> None:
+    with open(R"file") as file:
+        settings = file.readlines()
+
+    for line in settings:
+        split = line.split()
+
+        if split[0] == "Path":
+            path = split[1].replace("\n", "")
+    if not os.path.exists(path):
+        messagebox.warning(
+            self,
+            "Error",
+            "Unable to launch",
+            messagebox.OK
+        )
+
+    os.startfile(path)
+
+    return

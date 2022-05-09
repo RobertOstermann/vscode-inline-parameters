@@ -15,6 +15,12 @@ class Analyzer(ast.NodeVisitor):
     def visit_Call(self, node):
         expression_line = "expression line: " + str(node.func.lineno)
         expression_character = "expression character: " + str(node.func.col_offset)
+        try:
+            expression_end_line = "expression end line: " + str(node.func.end_lineno)
+            expression_end_character = "expression end character: " + str(node.func.end_col_offset)
+        except:
+            expression_end_line = "expression end line: " + str(node.func.lineno)
+            expression_end_character = "expression end character: " + str(node.func.col_offset)
         for argument in node.args:
             argument_start_line = "argument start line: " + str(argument.lineno)
             argument_start_character = "argument start character: " + str(argument.col_offset)
@@ -27,6 +33,8 @@ class Analyzer(ast.NodeVisitor):
             print(
                 str(expression_line) + " | "
                 + str(expression_character) + " | "
+                + str(expression_end_line) + " | "
+                + str(expression_end_character) + " | "
                 + str(argument_start_line) + " | "
                 + str(argument_start_character) + " | "
                 + str(argument_end_line) + " | "
