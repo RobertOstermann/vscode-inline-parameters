@@ -11,13 +11,14 @@ export default class GoDriver {
     Output.outputChannel.appendLine("Register Go");
 
     vscode.languages.registerInlayHintsProvider("go", new class implements vscode.InlayHintsProvider {
-      async provideInlayHints(document: vscode.TextDocument): Promise<vscode.InlayHint[]> {
+      async provideInlayHints(document: vscode.TextDocument, range: vscode.Range): Promise<vscode.InlayHint[]> {
         const result: vscode.InlayHint[] = [];
-        const code = document.getText();
+        const text = document.getText();
+        const code = document.getText(range);
         // eslint-disable-next-line no-useless-escape
         const fsPath = document.uri.fsPath.replace(/\\/g, "/");
 
-        const functionParameters = GoHelper.parse(code, fsPath, context);
+        const functionParameters = GoHelper.parse(text, code, range, fsPath, context);
         for (const languageParameters of functionParameters) {
           if (languageParameters === undefined) continue;
           let parameters: ParameterDetails[];

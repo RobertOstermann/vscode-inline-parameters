@@ -11,13 +11,14 @@ export default class PythonDriver {
     Output.outputChannel.appendLine("Register Python");
 
     vscode.languages.registerInlayHintsProvider("python", new class implements vscode.InlayHintsProvider {
-      async provideInlayHints(document: vscode.TextDocument): Promise<vscode.InlayHint[]> {
+      async provideInlayHints(document: vscode.TextDocument, range: vscode.Range): Promise<vscode.InlayHint[]> {
         const result: vscode.InlayHint[] = [];
-        const code = document.getText();
+        const text = document.getText();
+        const code = document.getText(range);
         // eslint-disable-next-line no-useless-escape
         const fsPath = document.uri.fsPath.replace(/\\/g, "/");
 
-        const functionParameters = PythonHelper.parse(code, fsPath, context);
+        const functionParameters = PythonHelper.parse(text, code, range, fsPath, context);
         for (const languageParameters of functionParameters) {
           if (languageParameters === undefined) continue;
           let parameters: ParameterDetails[];

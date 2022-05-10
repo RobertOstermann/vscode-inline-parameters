@@ -9,15 +9,18 @@ import ParameterPosition from "../helpers/parameterPosition";
 import PythonConfiguration from "./pythonConfiguration";
 
 export default class PythonHelper {
-  static parse(code: string, fsPath: string, context: vscode.ExtensionContext): ParameterPosition[][] {
+  static parse(text: string, code: string, range: vscode.Range, fsPath: string, context: vscode.ExtensionContext): ParameterPosition[][] {
     const pythonPath = PythonHelper.getPythonPath().replace(/\\/g, "/");
+    // const extensionPath = `${context.extensionPath.replace(/\\/g, "/")}/src/python/helpers/main.py`; // Development
+    const extensionPath = `${context.extensionPath.replace(/\\/g, "/")}/out/src/python/helpers/main.py`; // Production
+    const startLine = range.start.line;
+    const endLine = range.end.line;
 
-    // const command = `"${pythonPath}" "${context.extensionPath.replace(/\\/g, "/")}/src/python/helpers/main.py" "${fsPath}"`; // Development
-    const command = `"${pythonPath}" "${context.extensionPath.replace(/\\/g, "/")}/out/src/python/helpers/main.py" "${fsPath}"`; // Production
+    const command = `"${pythonPath}" "${extensionPath}" "${fsPath}" ${startLine} ${endLine}`;
     Output.outputChannel.appendLine(`Python Command: ${command}`);
     const output = execSync(command).toString();
 
-    return this.getParametersFromOutput(code, output);
+    return this.getParametersFromOutput(text, output);
   }
 
   public static getPythonPath(resource: vscode.Uri = null): string {

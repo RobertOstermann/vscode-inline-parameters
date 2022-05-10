@@ -8,15 +8,19 @@ import ParameterPosition from "../helpers/parameterPosition";
 import GoConfiguration from "./goConfiguration";
 
 export default class GoHelper {
-  static parse(code: string, fsPath: string, context: vscode.ExtensionContext): ParameterPosition[][] {
+  static parse(text: string, code: string, range: vscode.Range, fsPath: string, context: vscode.ExtensionContext): ParameterPosition[][] {
     fsPath = fsPath.replace(/\.go/, "");
+    const goPath = GoConfiguration.executablePath();
+    // const extensionPath = `${context.extensionPath.replace(/\\/g, "/")}/src/go/helpers/main.go`; // Development
+    const extensionPath = `${context.extensionPath.replace(/\\/g, "/")}/out/src/go/helpers/main.go`; // Production
+    const startLine = range.start.line;
+    const endLine = range.end.line;
 
-    // const command = `"${GoConfiguration.executablePath()}"" run "${context.extensionPath.replace(/\\/g, "/")}/src/go/helpers/main.go" "${fsPath}"`; // Development
-    const command = `"${GoConfiguration.executablePath()}" run "${context.extensionPath.replace(/\\/g, "/")}/out/src/go/helpers/main.go" "${fsPath}"`; // Production
+    const command = `"${goPath}" run "${extensionPath}" "${fsPath}" ${startLine} ${endLine}`;
     Output.outputChannel.appendLine(`Golang Command: ${command}`);
     const output = execSync(command).toString();
 
-    return this.getParametersFromOutput(code, output);
+    return this.getParametersFromOutput(text, output);
   }
 
   static getParametersFromOutput(code: string, output: string): ParameterPosition[][] | undefined {
