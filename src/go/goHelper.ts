@@ -14,7 +14,7 @@ export default class GoHelper {
     const baseExtensionPath = context.extensionPath.replace(/\\/g, "/");
     // const extensionPath = `${baseExtensionPath}/src/go/programs/main.go`; // Development
     const extensionPath = `${baseExtensionPath}/out/src/go/programs/main.go`; // Production
-    const tempPath = `${baseExtensionPath}/out/temp/temp_golang.go`;
+    const tempPath = `${baseExtensionPath}/out/src/temp/temp_golang.go`;
     const startLine = range.start.line;
     const endLine = range.end.line;
 

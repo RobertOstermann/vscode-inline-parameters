@@ -4,7 +4,7 @@
   "description": "Function parameter annotations displaying inline in VSCode",
   "publisher": "RobertOstermann",
   "icon": "images/icon.png",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "license": "MIT",
   "homepage": "https://github.com/RobertOstermann/vscode-inline-parameters",
   "bugs": {
@@ -159,11 +159,11 @@
     ]
   },
   "scripts": {
-    "copyfiles": "npm run copy-go && npm run copy-python",
+    "copyfiles": "npm run copy-go && npm run copy-python && npm run copy-temp",
     "copy-go": "copyfiles \"./src/go/programs/main.go\" \"./out\"",
     "copy-python": "copyfiles \"./src/python/programs/main.py\" \"./out\"",
-    "create-temp": "mkdir \"./out/temp\"",
-    "vscode:prepublish": "npm run -S esbuild-base -- --minify && npm run copyfiles && npm run create-temp",
+    "copy-temp": "copyfiles \"./src/temp/temp.md\" \"./out\"",
+    "vscode:prepublish": "npm run -S esbuild-base -- --minify && npm run copyfiles",
     "compile": "rimraf out && tsc -p ./",
     "watch": "tsc -watch -p ./",
     "test": "node ./node_modules/vscode/bin/test",

@@ -15,7 +15,7 @@ export default class PythonHelper {
     const baseExtensionPath = context.extensionPath.replace(/\\/g, "/");
     // const extensionPath = `${baseExtensionPath}/src/python/programs/main.py`; // Development
     const extensionPath = `${baseExtensionPath}/out/src/python/programs/main.py`; // Production
-    const tempPath = `${baseExtensionPath}/out/temp/temp_python.py`;
+    const tempPath = `${baseExtensionPath}/out/src/temp/temp_python.py`;
     const startLine = range.start.line;
     const endLine = range.end.line;
 
