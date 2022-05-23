@@ -1,5 +1,5 @@
-from tkinter import messagebox
 import os
+from tkinter import messagebox
 
 
 def one_argument(fname):

@@ -14,11 +14,8 @@ export default class PythonDriver {
       async provideInlayHints(document: vscode.TextDocument, range: vscode.Range): Promise<vscode.InlayHint[]> {
         const result: vscode.InlayHint[] = [];
         const text = document.getText();
-        const code = document.getText(range);
-        // eslint-disable-next-line no-useless-escape
-        const fsPath = document.uri.fsPath.replace(/\\/g, "/");
 
-        const functionParameters = PythonHelper.parse(text, code, range, fsPath, context);
+        const functionParameters = PythonHelper.parse(text, range, context);
         for (const languageParameters of functionParameters) {
           if (languageParameters === undefined) continue;
           let parameters: ParameterDetails[];

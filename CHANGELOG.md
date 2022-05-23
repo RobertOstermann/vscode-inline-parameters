@@ -5,6 +5,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.2.0] - 2021-05-23
+
+- Fix Go and Python not working correctly on unsaved files
+
 ## [1.1.9] - 2021-05-10
 
 - Optimize Go and Python to work better with large file sizes

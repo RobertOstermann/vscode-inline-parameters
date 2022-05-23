@@ -1,4 +1,5 @@
 import { execSync } from "child_process";
+import * as fs from "fs";
 import * as vscode from "vscode";
 
 import Helper from "../helpers/helper";
@@ -8,17 +9,32 @@ import ParameterPosition from "../helpers/parameterPosition";
 import GoConfiguration from "./goConfiguration";
 
 export default class GoHelper {
-  static parse(text: string, code: string, range: vscode.Range, fsPath: string, context: vscode.ExtensionContext): ParameterPosition[][] {
-    fsPath = fsPath.replace(/\.go/, "");
+  static parse(text: string, range: vscode.Range, context: vscode.ExtensionContext): ParameterPosition[][] {
     const goPath = GoConfiguration.executablePath();
-    // const extensionPath = `${context.extensionPath.replace(/\\/g, "/")}/src/go/helpers/main.go`; // Development
-    const extensionPath = `${context.extensionPath.replace(/\\/g, "/")}/out/src/go/helpers/main.go`; // Production
+    const baseExtensionPath = context.extensionPath.replace(/\\/g, "/");
+    // const extensionPath = `${baseExtensionPath}/src/go/programs/main.go`; // Development
+    const extensionPath = `${baseExtensionPath}/out/src/go/programs/main.go`; // Production
+    const tempPath = `${baseExtensionPath}/out/temp/temp_golang.go`;
     const startLine = range.start.line;
     const endLine = range.end.line;
 
-    const command = `"${goPath}" run "${extensionPath}" "${fsPath}" ${startLine} ${endLine}`;
+    try {
+      fs.writeFileSync(tempPath, text);
+    } catch (error) {
+      console.log(error);
+      return [];
+    }
+
+    const command = `"${goPath}" run "${extensionPath}" "${tempPath.replace(/\.go/, "")}" ${startLine} ${endLine}`;
     Output.outputChannel.appendLine(`Golang Command: ${command}`);
-    const output = execSync(command).toString();
+    let output: string;
+    try {
+      output = execSync(command).toString();
+      fs.rmSync(tempPath);
+    } catch (error) {
+      console.log(error);
+      return [];
+    }
 
     return this.getParametersFromOutput(text, output);
   }

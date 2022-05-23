@@ -1,4 +1,5 @@
 import { execSync } from "child_process";
+import * as fs from "fs";
 import { PythonShell } from "python-shell";
 import * as vscode from "vscode";
 
@@ -9,16 +10,32 @@ import ParameterPosition from "../helpers/parameterPosition";
 import PythonConfiguration from "./pythonConfiguration";
 
 export default class PythonHelper {
-  static parse(text: string, code: string, range: vscode.Range, fsPath: string, context: vscode.ExtensionContext): ParameterPosition[][] {
+  static parse(text: string, range: vscode.Range, context: vscode.ExtensionContext): ParameterPosition[][] {
     const pythonPath = PythonHelper.getPythonPath().replace(/\\/g, "/");
-    // const extensionPath = `${context.extensionPath.replace(/\\/g, "/")}/src/python/helpers/main.py`; // Development
-    const extensionPath = `${context.extensionPath.replace(/\\/g, "/")}/out/src/python/helpers/main.py`; // Production
+    const baseExtensionPath = context.extensionPath.replace(/\\/g, "/");
+    // const extensionPath = `${baseExtensionPath}/src/python/programs/main.py`; // Development
+    const extensionPath = `${baseExtensionPath}/out/src/python/programs/main.py`; // Production
+    const tempPath = `${baseExtensionPath}/out/temp/temp_python.py`;
     const startLine = range.start.line;
     const endLine = range.end.line;
 
-    const command = `"${pythonPath}" "${extensionPath}" "${fsPath}" ${startLine} ${endLine}`;
+    try {
+      fs.writeFileSync(tempPath, text);
+    } catch (error) {
+      console.log(error);
+      return [];
+    }
+
+    const command = `"${pythonPath}" "${extensionPath}" "${tempPath}" ${startLine} ${endLine}`;
     Output.outputChannel.appendLine(`Python Command: ${command}`);
-    const output = execSync(command).toString();
+    let output: string;
+    try {
+      output = execSync(command).toString();
+      fs.rmSync(tempPath);
+    } catch (error) {
+      console.log(error);
+      return [];
+    }
 
     return this.getParametersFromOutput(text, output);
   }
