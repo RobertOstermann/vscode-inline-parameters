@@ -19,10 +19,10 @@ export function activate(context: vscode.ExtensionContext) {
 
   setTimeout(() => {
     // MarkdownDriver.Register();
-    if (GoConfiguration.enabled) GoDriver.Register(context);
-    if (JavaConfiguration.enabled) JavaDriver.Register();
-    if (LuaConfiguration.enabled) LuaDriver.Register();
-    if (PHPConfiguration.enabled) PHPDriver.Register();
-    if (PythonConfiguration.enabled) PythonDriver.Register(context);
+    if (GoConfiguration.enabled()) GoDriver.Register(context);
+    if (JavaConfiguration.enabled()) JavaDriver.Register();
+    if (LuaConfiguration.enabled()) LuaDriver.Register();
+    if (PHPConfiguration.enabled()) PHPDriver.Register();
+    if (PythonConfiguration.enabled()) PythonDriver.Register(context);
   }, 1000);
 }
