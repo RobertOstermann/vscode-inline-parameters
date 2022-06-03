@@ -10,6 +10,8 @@ import ParameterPosition from "../helpers/parameterPosition";
 import PythonConfiguration from "./pythonConfiguration";
 
 export default class PythonHelper {
+  static outputCommand = true;
+
   static parse(text: string, range: vscode.Range, context: vscode.ExtensionContext): ParameterPosition[][] {
     const pythonPath = PythonHelper.getPythonPath().replace(/\\/g, "/");
     const baseExtensionPath = context.extensionPath.replace(/\\/g, "/");
@@ -27,7 +29,12 @@ export default class PythonHelper {
     }
 
     const command = `"${pythonPath}" "${extensionPath}" "${tempPath}" ${startLine} ${endLine}`;
-    Output.outputChannel.appendLine(`Python Command: ${command}`);
+
+    if (this.outputCommand) {
+      Output.outputChannel.appendLine(`Python Command: ${command}`);
+      this.outputCommand = false;
+    }
+
     let output: string;
     try {
       output = execSync(command).toString();
@@ -139,7 +146,7 @@ export default class PythonHelper {
     const pythonParameterNameRegex = /^[a-zA-Z_]([0-9a-zA-Z_]+)?/g;
     if (description && description.length > 0) {
       try {
-        const regEx = /.*?\((?:function|method)\).*?\((.*?)\)/gs;
+        const regEx = /.*?\((?:class|function|method)\).*?\((.*?)\)/gs;
         definitions = Helper.getFunctionDefinition(<vscode.MarkdownString[]>description[0].contents)?.match(regEx);
 
         if (!definitions || !definitions[0]) {
@@ -152,6 +159,7 @@ export default class PythonHelper {
       }
     }
 
+    definition = definition.replace(/\(class\)/, "");
     definition = definition.replace(/\(function\)/, "");
     definition = definition.replace(/\(method\)/, "");
 

@@ -5,6 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.2.3] - 2021-05-26
+
+- Display parameters for Python classes
+- Limit output to output channel
+
 ## [1.2.2] - 2021-05-26
 
 - Fix `enabled` setting not working - [issue #9](https://github.com/RobertOstermann/vscode-inline-parameters/issues/9)

@@ -9,6 +9,8 @@ import ParameterPosition from "../helpers/parameterPosition";
 import GoConfiguration from "./goConfiguration";
 
 export default class GoHelper {
+  static outputCommand = true;
+
   static parse(text: string, range: vscode.Range, context: vscode.ExtensionContext): ParameterPosition[][] {
     const goPath = GoConfiguration.executablePath();
     const baseExtensionPath = context.extensionPath.replace(/\\/g, "/");
@@ -26,7 +28,12 @@ export default class GoHelper {
     }
 
     const command = `"${goPath}" run "${extensionPath}" "${tempPath.replace(/\.go/, "")}" ${startLine} ${endLine}`;
-    Output.outputChannel.appendLine(`Golang Command: ${command}`);
+
+    if (this.outputCommand) {
+      Output.outputChannel.appendLine(`Golang Command: ${command}`);
+      this.outputCommand = false;
+    }
+
     let output: string;
     try {
       output = execSync(command).toString();
