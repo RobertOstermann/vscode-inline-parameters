@@ -36,17 +36,13 @@ func (a A) addSuffix(suffix string) string {
 	return a.s + suffix
 }
 
-func abc(a string) string {
-	return a
-}
-
 func main() {
 	// Simple functions
 	res := plus(plus(1, 2), 1)
-	fmt.Println("1+2 =", res)
+	fmt.Println("1 + 2 =", res)
 
 	any := plusPlus(1, 2, 3)
-	fmt.Println("1+2+3 =", any)
+	fmt.Println("1 + 2 + 3 =", any)
 
 	// Multiple return values
 	x, y, z := inc(10, 100, 1000)
@@ -57,11 +53,13 @@ func main() {
 	fmt.Println(res)
 
 	// Anonymous function
-	sum := func(a, b, c int) int {
+	anonymousSum := func(a, b, c int) int {
 		return a + b + c
-	}(3, 5, 7)
+	}
 
-	fmt.Println("5+3+7 =", sum)
+	value := anonymousSum(3, 5, 7)
+
+	fmt.Println("5 + 3 + 7 =", value)
 
 	// Method call
 	a := A{}

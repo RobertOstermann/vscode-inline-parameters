@@ -13,6 +13,7 @@
   ],
   "rules": {
     "eol-last": "error",
+    "no-useless-escape": "off",
     "simple-import-sort/imports": "error",
     "simple-import-sort/exports": "error",
     "tsdoc/syntax": "warn",

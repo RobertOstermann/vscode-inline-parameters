@@ -132,10 +132,11 @@ export default class GoHelper {
 
     if (firstParameter.functionCall === undefined) return Promise.reject();
 
+    // First non-capture group looks for normal function calls. Second non-capture group looks for anonymous function calls.
+    const regEx = /(?:.*func.*?\S\((.*?)\).*)|(?:.*func.*?\((.*?)\).*)/gm;
     const goParameterNameRegex = /^[a-zA-Z_]([0-9a-zA-Z_]+)?/g;
     if (description && description.length > 0) {
       try {
-        const regEx = /^func .*\((.*)\)/gm;
         definitions = Helper.getFunctionDefinition(<vscode.MarkdownString[]>description[0].contents)?.match(regEx);
 
         if (!definitions || !definitions[0]) {
@@ -152,16 +153,12 @@ export default class GoHelper {
       isVariadic = true;
     }
 
-    definition = definition.substring(
-      definition.indexOf(firstParameter.functionCall) +
-      firstParameter.functionCall.length +
-      1
-    );
+    const matches = regEx.exec(definition);
+    definition = matches[1] !== undefined ? matches[1] : matches[2];
 
     const parameters: string[] = definition
-      .substring(0, definition.indexOf(")"))
-      .replace(/\[/g, "").replace(/\]/g, "")
-      // eslint-disable-next-line no-useless-escape
+      .replace(/\[/g, "")
+      .replace(/\]/g, "")
       .split(/,|[\.]{3}/)
       .map(parameter => parameter.trim())
       .map(parameter => {
