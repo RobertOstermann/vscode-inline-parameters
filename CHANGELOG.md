@@ -5,7 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [1.2.4] - 2021-06/06
+## [1.2.5] - 2021-07-12
+
+- Fix Golang incorrect parameter positions for special characters - [issue #12](https://github.com/RobertOstermann/vscode-inline-parameters/issues/12)
+
+## [1.2.4] - 2021-06-06
 
 - Fix parameter hint missing for anonymous functions - [issue #10](https://github.com/RobertOstermann/vscode-inline-parameters/issues/10)
 
@@ -24,11 +28,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [1.2.0] - 2021-05-23
 
-- Fix Go and Python not working correctly on unsaved files
+- Fix Golang and Python not working correctly on unsaved files
 
 ## [1.1.9] - 2021-05-10
 
-- Optimize Go and Python to work better with large file sizes
+- Optimize Golang and Python to work better with large file sizes
 
 ## [1.1.8] - 2021-05-09
 
