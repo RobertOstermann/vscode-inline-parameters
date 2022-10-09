@@ -73,4 +73,7 @@ func main() {
 	s.Method("test")
 
 	anotherpackage.FunctionWithInterfaceParameter(s, "test")
+
+	// Special Characters
+	fmt.Println("割引金額 = ", 1)
 }
