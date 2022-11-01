@@ -159,19 +159,19 @@
     ]
   },
   "scripts": {
+    "compile": "rimraf out && tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "test": "node ./node_modules/vscode/bin/test",
     "copyfiles": "npm run copy-go && npm run copy-python && npm run copy-temp",
     "copy-go": "copyfiles \"./src/go/programs/main.go\" \"./out\"",
     "copy-python": "copyfiles \"./src/python/programs/main.py\" \"./out\"",
     "copy-temp": "copyfiles \"./src/temp/temp.md\" \"./out\"",
     "vscode:prepublish": "npm run -S esbuild-base -- --minify && npm run copyfiles",
-    "compile": "rimraf out && tsc -p ./",
-    "watch": "tsc -watch -p ./",
-    "test": "node ./node_modules/vscode/bin/test",
-    "download-api": "vscode-dts dev",
-    "postdownload-api": "vscode-dts main",
     "esbuild-base": "rimraf out && esbuild ./src/extension.ts --bundle --outfile=out/src/extension.js --external:vscode --format=cjs --platform=node",
     "esbuild": "npm run -S esbuild-base -- --sourcemap",
-    "esbuild-watch": "npm run -S esbuild-base -- --sourcemap --watch"
+    "esbuild-watch": "npm run -S esbuild-base -- --sourcemap --watch",
+    "download-api": "vscode-dts dev",
+    "postdownload-api": "vscode-dts main"
   },
   "dependencies": {
     "babylon": "^7.0.0-beta.47",
