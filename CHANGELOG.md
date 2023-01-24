@@ -5,6 +5,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.2.6] - 2023-01-24
+
+- Update badges on the README
+
 ## [1.2.5] - 2021-07-12
 
 - Fix Golang incorrect parameter positions for special characters - [issue #12](https://github.com/RobertOstermann/vscode-inline-parameters/issues/12)

@@ -5,9 +5,9 @@
 </p>
 
 <p align="center">
-  <a href="https://marketplace.visualstudio.com/items?itemName=RobertOstermann.inline-parameters-extended"><img src="https://vsmarketplacebadge.apphb.com/version-short/RobertOstermann.inline-parameters-extended.svg" alt="VS Marketplace Version"></a>
-  <a href="https://marketplace.visualstudio.com/items?itemName=RobertOstermann.inline-parameters-extended"><img src="https://vsmarketplacebadge.apphb.com/installs-short/RobertOstermann.inline-parameters-extended.svg" alt="VS Marketplace Installs"></a>
-  <a href="https://marketplace.visualstudio.com/items?itemName=RobertOstermann.inline-parameters-extended"><img src="https://vsmarketplacebadge.apphb.com/rating-short/RobertOstermann.inline-parameters-extended.svg" alt="VS Marketplace Rating"></a>
+  <a href="https://marketplace.visualstudio.com/items?itemName=RobertOstermann.inline-parameters-extended"><img src="https://img.shields.io/visual-studio-marketplace/v/RobertOstermann.inline-parameters-extended" alt="VS Marketplace Version"></a>
+  <a href="https://marketplace.visualstudio.com/items?itemName=RobertOstermann.inline-parameters-extended"><img src="https://img.shields.io/visual-studio-marketplace/d/RobertOstermann.inline-parameters-extended" alt="VS Marketplace Installs"></a>
+  <a href="https://marketplace.visualstudio.com/items?itemName=RobertOstermann.inline-parameters-extended"><img src="https://img.shields.io/visual-studio-marketplace/r/RobertOstermann.inline-parameters-extended" alt="VS Marketplace Rating"></a>
 </p>
 
 <h2 align="center">
