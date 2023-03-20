@@ -29,7 +29,7 @@ export default class PythonDriver {
           for (let index = 0; index < languageParameters.length; index++) {
             const parameter = languageParameters[index];
             if (parameters[index] === undefined || parameters[index].name === undefined) continue;
-            const parameterName = Helper.formatParameterName(parameters[index].name, PythonConfiguration.hintBeforeParameter());
+            const parameterName = Helper.formatParameterName(parameters[index].name, PythonConfiguration.hintBeforeParameter(), "=");
             const parameterDefinition = parameters[index].definition;
 
             if (!parameterName) continue;
