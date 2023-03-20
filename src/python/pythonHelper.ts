@@ -143,28 +143,23 @@ export default class PythonHelper {
       )
     );
 
-    const pythonParameterNameRegex = /^[a-zA-Z_]([0-9a-zA-Z_]+)?/g;
     if (description && description.length > 0) {
       try {
-        const regEx = /.*?\((?:class|function|method)\).*?\((.*?)\)/gs;
+        const regEx = /.*?(?:class \w+|\(function\) def \w+|\(method\) def \w+)\((.*?)\)/s;
         definitions = Helper.getFunctionDefinition(<vscode.MarkdownString[]>description[0].contents)?.match(regEx);
 
-        if (!definitions || !definitions[0]) {
+        if (!definitions || !definitions[1]) {
           return Promise.reject();
         }
 
-        definition = definitions[0];
+        definition = definitions[1];
       } catch (error) {
         console.error(error);
       }
     }
 
-    definition = definition.replace(/\(class\)/, "");
-    definition = definition.replace(/\(function\)/, "");
-    definition = definition.replace(/\(method\)/, "");
-
+    const pythonParameterNameRegex = /^[a-zA-Z_]([0-9a-zA-Z_]+)?/g;
     const parameters: string[] = definition
-      .substring(definition.indexOf("(") + 1, definition.indexOf(")"))
       // eslint-disable-next-line no-useless-escape
       .split(/,/)
       .map(parameter => parameter.trim())
