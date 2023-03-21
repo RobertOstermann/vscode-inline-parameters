@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.2.7] - 2023-03-21
+
+- Update to Python - [HoT-1 Pull Request](https://github.com/RobertOstermann/vscode-inline-parameters/pull/15)
+- Changes separator hint to '=' for Python
+- Update VSCode minimum version to 1.66.0
+- Add support for insertion of inlay hint label on Python
+
 ## [1.2.6] - 2023-01-24
 
 - Update badges on the README

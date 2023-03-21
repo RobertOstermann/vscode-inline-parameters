@@ -42,7 +42,7 @@ export default class PythonDriver {
               inlayHint = new vscode.InlayHint(position, [inlayHintPart], vscode.InlayHintKind.Parameter);
               inlayHint.tooltip = new vscode.MarkdownString(parameterDefinition);
               if (index == languageParameters.length - 1) {
-                inlayHint.textEdits = [vscode.TextEdit.insert(position, parameterName)]
+                inlayHint.textEdits = [vscode.TextEdit.insert(position, parameterName)];
               }
               inlayHint.paddingRight = true;
             } else {

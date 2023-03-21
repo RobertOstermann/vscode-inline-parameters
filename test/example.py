@@ -15,7 +15,7 @@ def two_arguments(fname, lname):
 
 
 # Two arguments
-two_arguments("Example", "File")
+two_arguments(fname="Example", lname="File")
 
 
 def multiple_arguments(*kids):

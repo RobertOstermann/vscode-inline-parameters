@@ -7,7 +7,6 @@ import JavaConfiguration from "./java/javaConfiguration";
 import JavaDriver from "./java/javaDriver";
 import LuaConfiguration from "./lua/luaConfiguration";
 import LuaDriver from "./lua/luaDriver";
-// import MarkdownDriver from "./markdown/markdown";
 import PHPConfiguration from "./php/phpConfiguration";
 import PHPDriver from "./php/phpDriver";
 import PythonConfiguration from "./python/pythonConfiguration";
@@ -18,7 +17,6 @@ export function activate(context: vscode.ExtensionContext) {
   Configuration.initialize();
 
   setTimeout(() => {
-    // MarkdownDriver.Register();
     if (GoConfiguration.enabled()) GoDriver.Register(context);
     if (JavaConfiguration.enabled()) JavaDriver.Register();
     if (LuaConfiguration.enabled()) LuaDriver.Register();
