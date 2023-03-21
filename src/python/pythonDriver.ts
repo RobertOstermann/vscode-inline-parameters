@@ -29,7 +29,7 @@ export default class PythonDriver {
           for (let index = 0; index < languageParameters.length; index++) {
             const parameter = languageParameters[index];
             if (parameters[index] === undefined || parameters[index].name === undefined) continue;
-            const parameterName = Helper.formatParameterName(parameters[index].name, PythonConfiguration.hintBeforeParameter());
+            const parameterName = Helper.formatParameterName(parameters[index].name, PythonConfiguration.hintBeforeParameter(), "=");
             const parameterDefinition = parameters[index].definition;
 
             if (!parameterName) continue;
@@ -41,6 +41,9 @@ export default class PythonDriver {
               const inlayHintPart = new vscode.InlayHintLabelPart(parameterName);
               inlayHint = new vscode.InlayHint(position, [inlayHintPart], vscode.InlayHintKind.Parameter);
               inlayHint.tooltip = new vscode.MarkdownString(parameterDefinition);
+              if (index == languageParameters.length - 1) {
+                inlayHint.textEdits = [vscode.TextEdit.insert(position, parameterName)]
+              }
               inlayHint.paddingRight = true;
             } else {
               const position = new vscode.Position(parameter.end.line, parameter.end.character);

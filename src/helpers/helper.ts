@@ -21,10 +21,11 @@ export default class Helper {
    * 
    * @param parameterName - The parameter name to format.
    * @param hintBeforeParameter - The position of the parameter.
+   * @param separator - Separator to add between hint and parameter if hint is before parameter. Default is `:`.
    * @returns The parameter formatted for display.
    */
-  static formatParameterName(parameterName: string, hintBeforeParameter: boolean): string {
-    if (hintBeforeParameter) parameterName += ":";
+  static formatParameterName(parameterName: string, hintBeforeParameter: boolean, separator: string = ":"): string {
+    if (hintBeforeParameter) parameterName += separator;
 
     return parameterName;
   }
