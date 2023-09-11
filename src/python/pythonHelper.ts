@@ -157,20 +157,18 @@ export default class PythonHelper {
         console.error(error);
       }
     }
-
-    const pythonParameterNameRegex = /^[a-zA-Z_]([0-9a-zA-Z_]+)?/g;
-    const parameters: string[] = definition
+    
+    const pythonParameterRegex = /\*?[a-zA-Z_][0-9a-zA-Z_]+?:/g;
+    const parameters: string[] = Array.from(definition.match(pythonParameterRegex), m => m)
       // eslint-disable-next-line no-useless-escape
-      .split(/,/)
-      .map(parameter => parameter.trim())
       .map(parameter => {
-        const matches = parameter.replace(/\*/g, "").match(pythonParameterNameRegex);
-        if (!matches || !matches[0] || isVariadic) {
+        const paramaterName = parameter.replace(/\*|:/g, "");
+        if (isVariadic) {
           return null;
         }
         if (parameter.includes("*")) isVariadic = true;
 
-        return matches[0];
+        return paramaterName;
       })
       .filter(parameter => parameter);
 
