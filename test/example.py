@@ -1,5 +1,6 @@
 import os
 from tkinter import messagebox
+from typing import Tuple, Union
 
 
 def one_argument(fname):
@@ -21,6 +22,18 @@ two_arguments(fname="Example", lname="File")
 def multiple_arguments(*kids):
     print("The youngest child is " + kids[2])
 
+# Complex types
+def complex_types(
+    first: str,
+    second: Union[str, Tuple[int, int, float, float, float]],
+    third,
+    fourth: dict,
+    *fifth,
+    sixth=None,
+):
+    return first, second, third, fourth, fifth, sixth
+
+complex_types('', '', [], {})
 
 # Arbitrary number of arguments
 multiple_arguments("Emil", "Tobias", "Linus")
