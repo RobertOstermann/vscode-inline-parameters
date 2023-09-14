@@ -157,8 +157,8 @@ export default class PythonHelper {
         console.error(error);
       }
     }
-    
-    const pythonParameterRegex = /\*?[a-zA-Z_][0-9a-zA-Z_]+?:/g;
+
+    const pythonParameterRegex = /\*?[a-zA-Z_][0-9a-zA-Z_]*?:/g;
     const parameters: string[] = Array.from(definition.match(pythonParameterRegex), m => m)
       // eslint-disable-next-line no-useless-escape
       .map(parameter => {

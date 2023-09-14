@@ -5,6 +5,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.2.8] - 2023-09-13
+
+- Fix Python Regex - [Issue #17](https://github.com/RobertOstermann/vscode-inline-parameters/issues/18)
+
 ## [1.2.8] - 2023-09-12
 
 - Update Python to handle complex types - [iAmNikola Pull Request](https://github.com/RobertOstermann/vscode-inline-parameters/pull/17)
