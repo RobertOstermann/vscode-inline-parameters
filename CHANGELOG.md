@@ -5,7 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [1.2.8] - 2023-09-13
+## [1.3.0] - 2024-04-06
+
+- Update Python to allow ignoring built-in functions - [Issue #22](https://github.com/RobertOstermann/vscode-inline-parameters/issues/22)
+
+## [1.2.9] - 2023-09-13
 
 - Fix Python Regex - [Issue #17](https://github.com/RobertOstermann/vscode-inline-parameters/issues/18)
 

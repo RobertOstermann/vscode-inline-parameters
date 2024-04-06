@@ -37,4 +37,11 @@ export default class PythonConfiguration {
   static suppressWhenArgumentMatchesName(): boolean {
     return this.pythonConfiguration.get("suppressWhenArgumentMatchesName");
   }
+
+  /**
+   * @returns Suppress parameter name hints on arguments whose text is identical to the parameter name.
+   */
+  static ignoreBuiltInFunctions(): boolean {
+    return this.pythonConfiguration.get("ignoreBuiltInFunctions");
+  }
 }

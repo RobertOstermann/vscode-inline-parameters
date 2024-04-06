@@ -15,8 +15,9 @@ export default class PythonHelper {
   static parse(text: string, range: vscode.Range, context: vscode.ExtensionContext): ParameterPosition[][] {
     const pythonPath = PythonHelper.getPythonPath().replace(/\\/g, "/");
     const baseExtensionPath = context.extensionPath.replace(/\\/g, "/");
-    // const extensionPath = `${baseExtensionPath}/src/python/programs/main.py`; // Development
-    const extensionPath = `${baseExtensionPath}/out/src/python/programs/main.py`; // Production
+    const extensionPath = vscode.ExtensionMode.Development
+      ? `${baseExtensionPath}/src/python/programs/main.py`
+      : `${baseExtensionPath}/out/src/python/programs/main.py`;
     const tempPath = `${baseExtensionPath}/out/src/temp/temp_python.py`;
     const startLine = range.start.line;
     const endLine = range.end.line;
@@ -28,7 +29,8 @@ export default class PythonHelper {
       return [];
     }
 
-    const command = `"${pythonPath}" "${extensionPath}" "${tempPath}" ${startLine} ${endLine}`;
+    const ignoreBuiltInFunctions = PythonConfiguration.ignoreBuiltInFunctions() ? "true" : "false"
+    const command = `"${pythonPath}" "${extensionPath}" "${tempPath}" ${startLine} ${endLine} ${ignoreBuiltInFunctions}`;
 
     if (this.outputCommand) {
       Output.outputChannel.appendLine(`Python Command: ${command}`);

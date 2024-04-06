@@ -11,10 +11,25 @@
         "${workspaceFolder}/test",
         "--extensionDevelopmentPath=${workspaceRoot}"
       ],
-      "stopOnEntry": false,
       "sourceMaps": true,
       "outFiles": ["${workspaceRoot}/out/**/*.js"],
-      "preLaunchTask": "npm"
-    }
+      "preLaunchTask": "npm",
+      "env": {
+        "VSCODE_DEBUG_MODE": "true"
+      }
+    },
+    {
+      "name": "Python: main.py",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/src/python/programs/main.py",
+      "console": "internalConsole",
+      "args": [
+        "C:/Users/RobertOstermann/source/repos/extensions/vscode-inline-parameters/test/temp.py",
+        "0",
+        "100",
+        "False"
+      ]
+    },
   ]
 }

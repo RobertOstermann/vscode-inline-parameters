@@ -1,6 +1,7 @@
 import ast
+import types
+import builtins
 from sys import argv
-
 
 def main():
     with open(argv[1], "r") as source:
@@ -13,10 +14,22 @@ def main():
 
 range_start_line = int(argv[2])
 range_end_line = int(argv[3])
+ignore_built_in = argv[4].lower() == 'true' if len(argv) > 4 else False
 
 
 class Analyzer(ast.NodeVisitor):
     def visit_Call(self, node):
+        try:
+            function_id = node.func.id # type: ignore
+            getattr(builtins, function_id)
+            is_built_in = True
+        except:
+            is_built_in = False
+
+        if ignore_built_in and is_built_in:
+            ast.NodeVisitor.generic_visit(self, node)
+            return
+
         expression_line = "expression line: " + str(node.func.lineno)
         expression_character = "expression character: " + str(node.func.col_offset)
         if range_start_line < node.func.lineno <= range_end_line:

@@ -75,7 +75,7 @@ def slow_example(self) -> None:
         if split[0] == "Path":
             path = split[1].replace("\n", "")
     if not os.path.exists(path):
-        messagebox.warning(
+        messagebox.warning( # type: ignore
             self,
             "Error",
             "Unable to launch",

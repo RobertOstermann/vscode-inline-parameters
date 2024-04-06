@@ -4,7 +4,7 @@
   "description": "Function parameter annotations displaying inline in VSCode",
   "publisher": "RobertOstermann",
   "icon": "images/icon.png",
-  "version": "1.2.9",
+  "version": "1.3.0",
   "license": "MIT",
   "homepage": "https://github.com/RobertOstermann/vscode-inline-parameters",
   "bugs": {
@@ -153,6 +153,11 @@
             "type": "boolean",
             "markdownDescription": "Suppress parameter name hints on arguments whose text is identical to the parameter name.",
             "default": true
+          },
+          "inline-parameters.python.ignoreBuiltInFunctions": {
+            "type": "boolean",
+            "markdownDescription": "Suppress parameter name hints when the function is a built-in python function.",
+            "default": false
           }
         }
       }
