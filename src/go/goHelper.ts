@@ -14,9 +14,8 @@ export default class GoHelper {
   static parse(text: string, range: vscode.Range, context: vscode.ExtensionContext): ParameterPosition[][] {
     const goPath = GoConfiguration.executablePath();
     const baseExtensionPath = context.extensionPath.replace(/\\/g, "/");
-    const extensionPath = vscode.ExtensionMode.Development
-      ? `${baseExtensionPath}/src/go/programs/main.go`
-      : `${baseExtensionPath}/out/src/go/programs/main.go`;
+    // const extensionPath = `${baseExtensionPath}/src/go/programs/main.go`; // Development
+    const extensionPath = `${baseExtensionPath}/out/src/go/programs/main.go`; // Production
     const tempPath = `${baseExtensionPath}/out/src/temp/temp_golang.go`;
     const startLine = range.start.line;
     const endLine = range.end.line;

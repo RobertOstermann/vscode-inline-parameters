@@ -5,6 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.3.1] - 2024-04-06
+
+- Fix bug with Python and Go introduced in 1.3.0
+- Update README to no longer show settings as VSCode shows settings in a separate tab
+
 ## [1.3.0] - 2024-04-06
 
 - Update Python to allow ignoring built-in functions - [Issue #22](https://github.com/RobertOstermann/vscode-inline-parameters/issues/22)
