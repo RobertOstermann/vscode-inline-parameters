@@ -44,4 +44,11 @@ export default class PythonConfiguration {
   static ignoreBuiltInFunctions(): boolean {
     return this.pythonConfiguration.get("ignoreBuiltInFunctions");
   }
+
+  /**
+   * @returns Suppress parameter name hints on arguments whose function name is within this list.
+   */
+  static ignoreFunctions(): string[] {
+    return this.pythonConfiguration.get("ignoreFunctions");
+  }
 }

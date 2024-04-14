@@ -85,14 +85,15 @@ export default class PythonHelper {
 
       if (pythonRegex.test(line)) {
         const result = pythonRegex.exec(line);
-        const expressionLine = parseInt(result[1]) - 1;
-        const expressionCharacter = parseInt(result[2]);
-        const expressionEndLine = parseInt(result[3]) - 1;
-        const expressionEndCharacter = parseInt(result[4]);
-        const argumentStartLine = parseInt(result[5]) - 1;
-        const argumentStartCharacter = parseInt(result[6]);
-        const argumentEndLine = parseInt(result[7]) - 1;
-        const argumentEndCharacter = parseInt(result[8]);
+        let i = 0;
+        const expressionLine = parseInt(result[++i]) - 1;
+        const expressionCharacter = parseInt(result[++i]);
+        const expressionEndLine = parseInt(result[++i]) - 1;
+        const expressionEndCharacter = parseInt(result[++i]);
+        const argumentStartLine = parseInt(result[++i]) - 1;
+        const argumentStartCharacter = parseInt(result[++i]);
+        const argumentEndLine = parseInt(result[++i]) - 1;
+        const argumentEndCharacter = parseInt(result[++i]);
         let namedValue = undefined;
 
         if (argumentStartLine === argumentEndLine) {
@@ -132,6 +133,7 @@ export default class PythonHelper {
 
   static async getParameterNames(uri: vscode.Uri, languageParameters: ParameterPosition[]): Promise<ParameterDetails[]> {
     let isVariadic = false;
+    let functionName = "";
     let definition = "";
     let definitions: string[];
     const firstParameter = languageParameters[0];
@@ -146,14 +148,17 @@ export default class PythonHelper {
 
     if (description && description.length > 0) {
       try {
-        const regEx = /.*?(?:class \w+|\(function\) def \w+|\(method\) def \w+)\((.*?)\)/s;
-        definitions = Helper.getFunctionDefinition(<vscode.MarkdownString[]>description[0].contents)?.match(regEx);
+        const regEx = /.*?(?:class |\(function\) def |\(method\) def )(\w+)\((.*?)\)/s;
+        const functionDefinition = Helper.getFunctionDefinition(<vscode.MarkdownString[]>description[0].contents);
+        definitions = functionDefinition?.match(regEx);
 
-        if (!definitions || !definitions[1]) {
+        if (!definitions || !definitions[2]) {
           return Promise.reject();
         }
 
-        definition = definitions[1];
+
+        functionName = definitions[1] ?? "";
+        definition = definitions[2];
       } catch (error) {
         console.error(error);
       }
@@ -174,6 +179,10 @@ export default class PythonHelper {
       .filter(parameter => parameter);
 
     if (!parameters || parameters.length === 0) {
+      return Promise.reject();
+    }
+
+    if (PythonConfiguration.ignoreFunctions().includes(functionName)) {
       return Promise.reject();
     }
 

@@ -25,7 +25,7 @@
       "program": "${workspaceFolder}/src/python/programs/main.py",
       "console": "internalConsole",
       "args": [
-        "C:/Users/RobertOstermann/source/repos/extensions/vscode-inline-parameters/test/temp.py",
+        "C:/Users/RobertOstermann/source/repos/extensions/vscode-inline-parameters/test/example.py",
         "0",
         "100",
         "False"
