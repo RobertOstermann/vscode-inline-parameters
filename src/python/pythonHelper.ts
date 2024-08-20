@@ -17,9 +17,14 @@ export default class PythonHelper {
     const baseExtensionPath = context.extensionPath.replace(/\\/g, "/");
     // const extensionPath = `${baseExtensionPath}/src/python/programs/main.py`; // Development
     const extensionPath = `${baseExtensionPath}/out/src/python/programs/main.py`; // Production
-    const tempPath = `${baseExtensionPath}/out/src/temp/temp_python.py`;
+    const tempFolder = `${baseExtensionPath}/out/src/temp`;
+    const tempPath = `${tempFolder}/temp_python.go`;
     const startLine = range.start.line;
     const endLine = range.end.line;
+
+    if (!fs.existsSync(tempFolder)) {
+      fs.mkdirSync(tempFolder, { recursive: true });
+    }
 
     try {
       fs.writeFileSync(tempPath, text);

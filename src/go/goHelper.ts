@@ -16,14 +16,19 @@ export default class GoHelper {
     const baseExtensionPath = context.extensionPath.replace(/\\/g, "/");
     // const extensionPath = `${baseExtensionPath}/src/go/programs/main.go`; // Development
     const extensionPath = `${baseExtensionPath}/out/src/go/programs/main.go`; // Production
-    const tempPath = `${baseExtensionPath}/out/src/temp/temp_golang.go`;
+    const tempFolder = `${baseExtensionPath}/out/src/temp`;
+    const tempPath = `${tempFolder}/temp_golang.go`;
     const startLine = range.start.line;
     const endLine = range.end.line;
+
+    if (!fs.existsSync(tempFolder)) {
+      fs.mkdirSync(tempFolder, { recursive: true });
+    }
 
     try {
       fs.writeFileSync(tempPath, text);
     } catch (error) {
-      console.log(error);
+      console.log("Unable to write file", error);
       return [];
     }
 
