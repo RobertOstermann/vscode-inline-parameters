@@ -40,13 +40,17 @@ export default class GoDriver {
               const position = new vscode.Position(parameter.start.line, parameter.start.character);
               const inlayHintPart = new vscode.InlayHintLabelPart(parameterName);
               inlayHint = new vscode.InlayHint(position, [inlayHintPart], vscode.InlayHintKind.Parameter);
-              inlayHint.tooltip = new vscode.MarkdownString(parameterDefinition);
+              if (parameterDefinition) {
+                inlayHint.tooltip = new vscode.MarkdownString(parameterDefinition);
+              }
               inlayHint.paddingRight = true;
             } else {
               const position = new vscode.Position(parameter.end.line, parameter.end.character);
               const inlayHintPart = new vscode.InlayHintLabelPart(parameterName);
               inlayHint = new vscode.InlayHint(position, [inlayHintPart], vscode.InlayHintKind.Parameter);
-              inlayHint.tooltip = new vscode.MarkdownString(parameterDefinition);
+              if (parameterDefinition) {
+                inlayHint.tooltip = new vscode.MarkdownString(parameterDefinition);
+              }
               inlayHint.paddingLeft = true;
             }
 

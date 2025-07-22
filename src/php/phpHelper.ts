@@ -103,7 +103,7 @@ export default class PHPHelper {
 
   static async getParameterNames(uri: vscode.Uri, languageParameters: ParameterPosition[]): Promise<ParameterDetails[]> {
     const firstParameter = languageParameters[0];
-    let parameters: any[];
+    let parameters: any[] = [];
     let isVariadic = false;
 
     const description: any = await vscode.commands.executeCommand<vscode.Hover[]>(
@@ -118,14 +118,19 @@ export default class PHPHelper {
     if (description && description.length > 0) {
       try {
         const regex = /(?<=@param)[^.]*?((?:\.{3})?\$[\w]+).*?[\r\n|\n—] ?(.*?)[\r\n|\n](?:_@param|_@return)/gs;
-        const definition = Helper.getFunctionDefinition(<vscode.MarkdownString[]>description[0].contents);
-        parameters = definition ? [...definition.matchAll(regex)] : [];
+        let index = 0;
+        while (parameters.length === 0 && Array.isArray(description) && index < description.length) {
+          const definition = Helper.getFunctionDefinition(<vscode.MarkdownString[]>description[index].contents);
+          parameters = definition ? [...definition.matchAll(regex)] : [];
+          index++;
+        }
+
       } catch (error) {
         console.error(error);
       }
     }
 
-    if (!parameters) {
+    if (!parameters || parameters.length === 0) {
       return Promise.reject();
     }
 

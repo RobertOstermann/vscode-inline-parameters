@@ -164,7 +164,7 @@ export default class GoHelper {
     const parameters: string[] = definition
       .replace(/\[/g, "")
       .replace(/\]/g, "")
-      .split(/,|[\.]{3}/)
+      .split(/,/)
       .map(parameter => parameter.trim())
       .map(parameter => {
         const matches = parameter.match(goParameterNameRegex);

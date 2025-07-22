@@ -40,7 +40,9 @@ export default class PythonDriver {
               const position = new vscode.Position(parameter.start.line, parameter.start.character);
               const inlayHintPart = new vscode.InlayHintLabelPart(parameterName);
               inlayHint = new vscode.InlayHint(position, [inlayHintPart], vscode.InlayHintKind.Parameter);
-              inlayHint.tooltip = new vscode.MarkdownString(parameterDefinition);
+              if (parameterDefinition) {
+                inlayHint.tooltip = new vscode.MarkdownString(parameterDefinition);
+              }
               if (index == languageParameters.length - 1) {
                 inlayHint.textEdits = [vscode.TextEdit.insert(position, parameterName)];
               }
@@ -49,7 +51,9 @@ export default class PythonDriver {
               const position = new vscode.Position(parameter.end.line, parameter.end.character);
               const inlayHintPart = new vscode.InlayHintLabelPart(parameterName);
               inlayHint = new vscode.InlayHint(position, [inlayHintPart], vscode.InlayHintKind.Parameter);
-              inlayHint.tooltip = new vscode.MarkdownString(parameterDefinition);
+              if (parameterDefinition) {
+                inlayHint.tooltip = new vscode.MarkdownString(parameterDefinition);
+              }
               inlayHint.paddingLeft = true;
             }
 

@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.3.5] - 2025-07-22
+
+- Fix bug with 1.3.4
+
+## [1.3.4] - 2025-07-22
+
+- Fix inline hints for variadic functions in Go - [Issue #27](https://github.com/RobertOstermann/vscode-inline-parameters/issues/27)
+- Add inline parameter hints for PHP functions - [Issue #24](https://github.com/RobertOstermann/vscode-inline-parameters/issues/24)
+- Update npm version
+- Do not show empty tooltips
+
 ## [1.3.3] - 2024-04-13
 
 - Create the temp folder if it does not exist - [Issue #23](https://github.com/RobertOstermann/vscode-inline-parameters/issues/23)
